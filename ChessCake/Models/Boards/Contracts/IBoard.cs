@@ -11,19 +11,19 @@ namespace ChessCake.Models.Boards.Contracts {
         public int Rows { get; }
         public int Columns { get; }
 
-        public BasePiece findPiece(int row, int column);
+        public BasePiece FindPiece(int row, int column);
 
-        public BasePiece findPiece(Position position);
+        public BasePiece FindPiece(Position position);
 
-        public BasePiece findPiece(Cell cell);
+        public BasePiece FindPiece(Cell cell);
 
-        public Cell getCell(Position position);
+        public Cell GetCell(Position position);
 
-        public Cell getCell(int row, int column);
+        public Cell GetCell(int row, int column);
 
-        public void placePiece(BasePiece piece, Cell cell);
+        public void PlacePiece(BasePiece piece, Cell cell);
 
-        public BasePiece removePiece(Position position);
+        public BasePiece RemovePiece(Position position);
 
     }
 }

@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessCake", "ChessCake\ChessCake.csproj", "{6874F91C-385C-4D5A-AC0C-D25ED98F13A8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chesscake Console", "..\Users\ccgab\source\repos\Chesscake Console\Chesscake Console\Chesscake Console.csproj", "{B9E6D490-CADB-4299-A80B-70BEDD4BFCAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessCake", "ChessCake\ChessCake.csproj", "{6874F91C-385C-4D5A-AC0C-D25ED98F13A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{6874F91C-385C-4D5A-AC0C-D25ED98F13A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6874F91C-385C-4D5A-AC0C-D25ED98F13A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6874F91C-385C-4D5A-AC0C-D25ED98F13A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9E6D490-CADB-4299-A80B-70BEDD4BFCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9E6D490-CADB-4299-A80B-70BEDD4BFCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9E6D490-CADB-4299-A80B-70BEDD4BFCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9E6D490-CADB-4299-A80B-70BEDD4BFCAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

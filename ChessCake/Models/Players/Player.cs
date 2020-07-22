@@ -2,12 +2,13 @@
 using ChessCake.Commons.Enumerations;
 using ChessCake.Exceptions;
 using ChessCake.Models.Pieces.Contracts;
+using ChessCake.Models.Players.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ChessCake.Models.Players {
-    public class Player {
+    public class Player : IPlayer {
         public string Name { get; set; }
         public ChessColor Color { get; set; }
         public IList<BasePiece> Pieces { get; set; }

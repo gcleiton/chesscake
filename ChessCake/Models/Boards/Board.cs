@@ -27,22 +27,22 @@ namespace ChessCake.Models.Boards {
             }
         }
 
-        public BasePiece findPiece(int row, int column) {
+        public BasePiece FindPiece(int row, int column) {
             if (!Position.isValidCoordinates(row, column)) {
                 throw new ChessException("Coordenadas da posição inválida!");
             }
             return Grid[row, column].Piece;
         }
 
-        public BasePiece findPiece(Position position) {
+        public BasePiece FindPiece(Position position) {
             return Grid[position.Row, position.Column].Piece;
         }
 
-        public BasePiece findPiece(Cell cell) {
+        public BasePiece FindPiece(Cell cell) {
             return Grid[cell.Position.Row, cell.Position.Row].Piece;
         }
 
-        public Cell getCell(Position position) {
+        public Cell GetCell(Position position) {
             if (Position.isValidCoordinates(position.Row, position.Column)) {
                 throw new BoardException("Coordenadas da posição inválida!");
             }
@@ -50,7 +50,7 @@ namespace ChessCake.Models.Boards {
             return Grid[position.Row, position.Column];
         }
 
-        public Cell getCell(int row, int column) {
+        public Cell GetCell(int row, int column) {
             if (!Position.isValidCoordinates(row, column)) {
                 throw new BoardException("Coordenadas da posição inválida!");
             }
@@ -58,12 +58,12 @@ namespace ChessCake.Models.Boards {
             return Grid[row, column];
         }
 
-        public void placePiece(BasePiece piece, Cell cell) {
+        public void PlacePiece(BasePiece piece, Cell cell) {
             Grid[cell.Position.Row, cell.Position.Column].placePiece(piece);
         }
 
-        public BasePiece removePiece(Position position) {
-            Cell cell = getCell(position);
+        public BasePiece RemovePiece(Position position) {
+            Cell cell = GetCell(position);
             BasePiece releasedPiece = cell.releasePiece();
 
             Grid[position.Row, position.Column] = cell;

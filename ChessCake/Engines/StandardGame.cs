@@ -18,7 +18,7 @@ namespace ChessCake.Engines {
     class StandardGame : IEngine {
         public IBoard Board { get; private set; }
 
-        private readonly Dictionary<ChessColor, IPlayer> Players; // use OrderedDictionary
+        private readonly IDictionary<ChessColor, IPlayer> Players; // use OrderedDictionary
 
         public IPlayer CurrentPlayer { get; set; }
 
@@ -26,7 +26,7 @@ namespace ChessCake.Engines {
 
         private IList<BasePiece> CapturedPieces;
 
-        public StandardGame(Dictionary<ChessColor, IPlayer> players) {
+        public StandardGame(IDictionary<ChessColor, IPlayer> players) {
             this.ValidateStandardGame();
             Board = ChessFactory.CreateBoard();
 
@@ -37,6 +37,7 @@ namespace ChessCake.Engines {
 
             InitBoard();
         }
+
         private void ValidateStandardGame() {
             if (Players.Count != GlobalConstants.STANDARD_NUMBER_OF_PLAYERS_GAME) {
                 throw new ChessException("Standard game needs two human players to start.");
@@ -55,7 +56,7 @@ namespace ChessCake.Engines {
         }
 
         private void PlaceNewPiece(BasePiece piece, ChessPosition chessPosition) {
-            Board.placePiece(piece, Board.getCell(chessPosition.ToPosition()));
+            Board.PlacePiece(piece, Board.GetCell(chessPosition.ToPosition()));
             AddPieceOnPlayer(piece.Color, piece);
         }
 
