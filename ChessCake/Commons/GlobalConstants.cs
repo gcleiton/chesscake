@@ -5,7 +5,10 @@ using System.Text;
 namespace ChessCake.Commons {
     class GlobalConstants {
 
-        public const string PLAYER_NAME_FORMATTER_INPUT = "Qual é o nome do {0}º jogador? ";
+        public const string PLAYER_NAME_FORMATTER_INPUT = "What is the name of the {0}º player? ";
+        public const string FIRST_MESSAGE_ON_CHARACTER = "\n\n           /  {0}!\n";
+        public const string SECOND_MESSAGE_ON_CHARACTER = "         / {0}\n";
+        public const string DEFAULT_ASTERISKS_DIVIDER = "**********************";
 
         public const int MIN_ROW_VALUE_ON_GRID = 0;
         public const int MAX_ROW_VALUE_ON_GRID = 7;

@@ -20,8 +20,8 @@ namespace ChessCake.Commons {
         public const int INITIAL_MAJOR_ROW_OF_FIRST_PLAYER = 8;
         public const int INITIAL_PAWNS_ROW_OF_FIRST_PLAYER = 7;
 
-        public const int INITIAL_MAJOR_ROW_OF_SECOND_PLAYER = 2;
-        public const int INITIAL_PAWNS_ROW_OF_SECOND_PLAYER = 1;
+        public const int INITIAL_MAJOR_ROW_OF_SECOND_PLAYER = 1;
+        public const int INITIAL_PAWNS_ROW_OF_SECOND_PLAYER = 2;
 
     }
 }

@@ -22,5 +22,9 @@ namespace ChessCake.Commons {
 
         }
 
+        public static void QuitGame() {
+            Environment.Exit(1);
+        }
+
     }
 }

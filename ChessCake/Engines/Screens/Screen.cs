@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Drawing;
+using ChessCake.Commons;
 
 namespace ChessCake.Engines.Screens
 {
@@ -23,7 +24,38 @@ namespace ChessCake.Engines.Screens
             FigletFont font = FigletFont.Load("../../../Assets/Fonts/standard.flf");
             Figlet figlet = new Figlet(font);
 
-            Console.WriteLine(figlet.ToAscii("CHESSCAKE CONSOLE"), ColorTranslator.FromHtml("#8AFFEF"));
+            Console.WriteLine();
+            Console.WriteLine(figlet.ToAscii(GlobalConstants.DEFAULT_ASTERISKS_DIVIDER), ColorTranslator.FromHtml("#8AFFEF"));
+            Console.WriteLine(figlet.ToAscii(" CHESSCAKE CONSOLE_ "), ColorTranslator.FromHtml("#FFD700"));
+            Console.WriteLine(figlet.ToAscii(GlobalConstants.DEFAULT_ASTERISKS_DIVIDER), ColorTranslator.FromHtml("#8AFFEF"));
+            Console.WriteLine();
+        }
+
+        public static void PrintWelcome() {
+            const string firstMessage = "Hello, welcome!";
+            const string secondMessage = "Do you want to start a game?";
+
+            PrintMessage(firstMessage, secondMessage);
+        }
+
+        public static void PrintMessage(string msg1, string msg2) {
+            Console.WriteLine(String.Format(GlobalConstants.FIRST_MESSAGE_ON_CHARACTER, msg1), Color.Gold);
+            Console.WriteLine(String.Format(GlobalConstants.SECOND_MESSAGE_ON_CHARACTER, msg2), Color.Gold);
+            PrintCharacter();
+
+        }
+
+        public static void PrintCharacter() {
+            Console.WriteLine("    |||||", Color.White);
+            Console.WriteLine("   ||O O|`____.", Color.White);
+            Console.WriteLine("  |||\\-/|| \\ __\\", Color.White);
+            Console.WriteLine("  |.--:--|  .   :", Color.White);
+            Console.WriteLine(" (~m  : /  | oo:|", Color.White);
+            Console.WriteLine(" ~~~~~~~~~~~~~~~~~%s\n\n", Color.Beige);
+        }
+
+        public static void PrintDivider() {
+
         }
 
         public static void PrintBoard(IBoard board)
