@@ -19,7 +19,8 @@ namespace ChessCake.Models.Players {
             Pieces = new List<BasePiece>();
         }
 
-        public void addPiece(BasePiece piece) {
+        public void AddPiece(BasePiece piece) {
+            Console.WriteLine(piece);
             if (Common.isObjectNull(piece)) {
                 throw new ChessException("Peça inválida!");
             }

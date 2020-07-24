@@ -4,6 +4,9 @@ using System.Text;
 
 namespace ChessCake.Commons {
     class GlobalConstants {
+
+        public const string PLAYER_NAME_FORMATTER_INPUT = "Qual é o nome do {0}º jogador? ";
+
         public const int MIN_ROW_VALUE_ON_GRID = 0;
         public const int MAX_ROW_VALUE_ON_GRID = 7;
         public const int MIN_COLUMN_VALUE_ON_GRID = 0;

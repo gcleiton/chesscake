@@ -10,9 +10,9 @@ namespace ChessCake.Models.Positions {
         public int Column { get; set; }
 
         public Position(int row, int column) {
-            if (!isValidCoordinates(row, column)) {
-                throw new ChessException("Coordenadas da posição inválida!");
-            }
+            //if (!isValidCoordinates(row, column)) {
+            //    throw new ChessException("Coordenadas da posição inválida!");
+            //}
 
             this.Row = row;
             this.Column = column;

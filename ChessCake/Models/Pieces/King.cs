@@ -10,5 +10,8 @@ namespace ChessCake.Models.Pieces {
 
         }
 
+        public override string ToString() {
+            return "K";
+        }
     }
 }

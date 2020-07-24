@@ -1,6 +1,7 @@
 ﻿using ChessCake.Commons;
 using ChessCake.Commons.Enumerations;
 using ChessCake.Engines.Contracts;
+using ChessCake.Engines.Screens;
 using ChessCake.Exceptions;
 using ChessCake.Models.Boards.Contracts;
 using ChessCake.Models.Pieces;
@@ -8,6 +9,7 @@ using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Players;
 using ChessCake.Models.Players.Contracts;
 using ChessCake.Models.Positions.Chess;
+using ChessCake.Models.Positions.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -27,7 +29,6 @@ namespace ChessCake.Engines {
         private IList<BasePiece> CapturedPieces;
 
         public StandardGame(IDictionary<ChessColor, IPlayer> players) {
-            this.ValidateStandardGame();
             Board = ChessFactory.CreateBoard();
 
             this.Players = players;
@@ -35,7 +36,38 @@ namespace ChessCake.Engines {
             this.Turn = 1;
             this.CurrentPlayer = FindPlayer(ChessColor.WHITE);
 
+            this.ValidateStandardGame();
+
             InitBoard();
+        }
+
+        public void Initialize() {
+            while (true) {
+                try {
+                    Console.Clear();
+
+                    Screen.PrintBoard(this.Board);
+
+                    break;
+
+                    //IPosition source = Screen.ReadChessPosition().ToPosition();
+
+                    //List<Cell> possibleMoves = match.legalMoves(source);
+
+                    //Console.Clear();
+
+                    //Screen.printBoard(match.board, possibleMoves);
+
+                    //Console.WriteLine();
+
+                    //Position target = Screen.readChessPosition(false).ToPosition();
+
+                    //match.performChessMove(match.board.getCell(source), match.board.getCell(target));
+                } catch (ChessException e) {
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
+                }
+            }
         }
 
         private void ValidateStandardGame() {
@@ -52,12 +84,14 @@ namespace ChessCake.Engines {
         }
 
         private void AddPieceOnPlayer(ChessColor color, BasePiece piece) {
-            Players[color].addPiece(piece);
+            Players[color].AddPiece(piece);
         }
 
         private void PlaceNewPiece(BasePiece piece, ChessPosition chessPosition) {
             Board.PlacePiece(piece, Board.GetCell(chessPosition.ToPosition()));
             AddPieceOnPlayer(piece.Color, piece);
+            Console.WriteLine("test");
+
         }
 
         private void AddPawnsOnBoard(ChessColor color, int row) {
@@ -75,20 +109,16 @@ namespace ChessCake.Engines {
             }
         }
 
-        private void LoadPieces() {
+        private void InitBoard() {
             Player firstPlayer = (Player)Players.Values.First();
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
             AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
+
             AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
 
             AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
             AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
-
-        }
-
-        private void InitBoard() {
-            LoadPieces();
 
         }
 

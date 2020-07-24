@@ -10,7 +10,7 @@ namespace ChessCake.Models.Players.Contracts {
         public ChessColor Color { get; }
         public IList<BasePiece> Pieces { get; }
 
-        public void addPiece(BasePiece piece);
+        public void AddPiece(BasePiece piece);
 
         public void removePiece(BasePiece piece);
 

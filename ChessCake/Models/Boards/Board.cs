@@ -43,7 +43,7 @@ namespace ChessCake.Models.Boards {
         }
 
         public Cell GetCell(Position position) {
-            if (Position.isValidCoordinates(position.Row, position.Column)) {
+            if (!Position.isValidCoordinates(position.Row, position.Column)) {
                 throw new BoardException("Coordenadas da posição inválida!");
             }
 

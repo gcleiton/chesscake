@@ -9,11 +9,13 @@ namespace ChessCake.Models.Positions.Chess {
         public int Row { get; protected set; }
 
         public ChessPosition(char column, int row) {
-
+            this.Column = column;
+            this.Row = row;
         }
 
         public Position ToPosition() {
-            return new Position(8 - Row, Char.ToUpper(Column) - 'A');
+            return ChessFactory.CreatePosition(8 - Row, Char.ToUpper(Column) - 'A');
+
         }
 
         public static bool isValidChessPosition(ChessPosition chessPosition) {

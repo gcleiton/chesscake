@@ -43,7 +43,7 @@ namespace ChessCake.Engines.Screens
             Console.Write("    (A)(B)(C)(D)(E)(F)(G)(H)");
         }
 
-        public static void printBoard(IBoard board, List<ICell> possibleMoves)
+        public static void PrintBoard(IBoard board, List<ICell> possibleMoves)
         {
             Console.WriteLine("Test");
 
@@ -74,7 +74,7 @@ namespace ChessCake.Engines.Screens
             Console.Write("    (A)(B)(C)(D)(E)(F)(G)(H)");
         }
 
-        public static IChessPosition readChessPosition(bool isSource = true)
+        public static IChessPosition ReadChessPosition(bool isSource = true)
         {
             try
             {

@@ -13,10 +13,13 @@ namespace ChessCake.Engines
         public static void Start() {
             try {
                 IDictionary<ChessColor, IPlayer> players = InputProvider.ReadPlayers();
+
                 StandardGame engine = GameFactory.CreateStandardGame(players);
 
-            } catch (Exception) {
+                engine.Initialize();
 
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
             }
 
         }

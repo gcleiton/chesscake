@@ -12,7 +12,7 @@ namespace ChessCake
 {
     class ChessCake {
         static void Main(string[] args) {
-            
+            GameStart.Start();
         }
     }
 }
