@@ -1,11 +1,15 @@
 ﻿using ChessCake.Commons.Enumerations;
 using ChessCake.Models.Boards;
 using ChessCake.Models.Boards.Cells;
+using ChessCake.Models.Boards.Cells.Contracts;
+using ChessCake.Models.Movements;
+using ChessCake.Models.Movements.Contracts;
 using ChessCake.Models.Pieces;
 using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Players;
 using ChessCake.Models.Positions;
 using ChessCake.Models.Positions.Chess;
+using ChessCake.Models.Positions.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,6 +38,10 @@ namespace ChessCake.Commons {
 
         public static Player CreatePlayer(string name, ChessColor color) {
             return new Player(name, color);
+        }
+
+        public static IMovement CreateMovement(ICell source, ICell target) {
+            return new Movement(source, target);
         }
 
         public static BasePiece CreatePiece(PieceType type, ChessColor color) {

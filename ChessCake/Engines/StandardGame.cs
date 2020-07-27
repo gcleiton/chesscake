@@ -4,12 +4,14 @@ using ChessCake.Engines.Contracts;
 using ChessCake.Engines.Screens;
 using ChessCake.Exceptions;
 using ChessCake.Models.Boards.Contracts;
+using ChessCake.Models.Movements.Contracts;
 using ChessCake.Models.Pieces;
 using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Players;
 using ChessCake.Models.Players.Contracts;
 using ChessCake.Models.Positions.Chess;
 using ChessCake.Models.Positions.Contracts;
+using ChessCake.Providers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -46,7 +48,12 @@ namespace ChessCake.Engines {
                 try {
                     Console.Clear();
 
-                    Screen.PrintBoard(this.Board);
+                    Screen.PrintBoard(Board);
+
+                    IMovement nextMove = InputProvider.ReadMove(Board);
+
+                    Console.WriteLine(nextMove.Source.Position);
+                    Console.WriteLine(nextMove.Target.Position);
 
                     break;
 

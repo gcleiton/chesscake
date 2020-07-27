@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ChessCake.Models.Players.Contracts {
-    interface IPlayer {
+    public interface IPlayer {
         public string Name { get; }
         public ChessColor Color { get; }
         public IList<BasePiece> Pieces { get; }

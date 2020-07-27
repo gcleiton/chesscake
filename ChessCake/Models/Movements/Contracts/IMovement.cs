@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ChessCake.Models.Movements.Contracts {
-    interface IMovement {
+    public interface IMovement {
 
         public IPlayer player { get; }
         public ICell Source { get; }

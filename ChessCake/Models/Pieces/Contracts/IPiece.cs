@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ChessCake.Models.Pieces.Contracts {
-    interface IPiece {
+    public interface IPiece {
         public ChessColor Color { get; }
 
     }

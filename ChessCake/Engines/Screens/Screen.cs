@@ -25,10 +25,9 @@ namespace ChessCake.Engines.Screens
             Figlet figlet = new Figlet(font);
 
             Console.WriteLine();
+            PrintDivider(figlet);
             Console.WriteLine(figlet.ToAscii(GlobalConstants.DEFAULT_ASTERISKS_DIVIDER), ColorTranslator.FromHtml("#8AFFEF"));
-            Console.WriteLine(figlet.ToAscii(" CHESSCAKE CONSOLE_ "), ColorTranslator.FromHtml("#FFD700"));
-            Console.WriteLine(figlet.ToAscii(GlobalConstants.DEFAULT_ASTERISKS_DIVIDER), ColorTranslator.FromHtml("#8AFFEF"));
-            Console.WriteLine();
+            PrintDivider(figlet);
         }
 
         public static void PrintWelcome() {
@@ -54,7 +53,8 @@ namespace ChessCake.Engines.Screens
             Console.WriteLine(" ~~~~~~~~~~~~~~~~~%s\n\n", Color.Beige);
         }
 
-        public static void PrintDivider() {
+        public static void PrintDivider(Figlet figlet) {
+            Console.WriteLine(figlet.ToAscii(GlobalConstants.DEFAULT_ASTERISKS_DIVIDER), ColorTranslator.FromHtml("#8AFFEF"));
 
         }
 
@@ -77,7 +77,6 @@ namespace ChessCake.Engines.Screens
 
         public static void PrintBoard(IBoard board, List<ICell> possibleMoves)
         {
-            Console.WriteLine("Test");
 
             ConsoleColor fundoOriginal = Console.BackgroundColor;
             ConsoleColor fundoAlterado = ConsoleColor.DarkGray;
@@ -106,13 +105,22 @@ namespace ChessCake.Engines.Screens
             Console.Write("    (A)(B)(C)(D)(E)(F)(G)(H)");
         }
 
+        public static void PrintSourceInput() {
+            Console.WriteLine('\n');
+            Console.Write("Source: ");
+        }
+
+        public static void PrintTargetInput() {
+            Console.WriteLine();
+            Console.Write("Target: ");
+        }
+
         public static IChessPosition ReadChessPosition(bool isSource = true)
         {
             try
             {
                 if (isSource)
                 {
-                    Console.WriteLine();
                     Console.Write("Source: ");
                 }
                 else

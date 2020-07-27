@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ChessCake.Models.Boards.Cells.Contracts {
-    interface ICell {
+    public interface ICell {
         public Position Position { get; }
         public BasePiece Piece { get; }
 
