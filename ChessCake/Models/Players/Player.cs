@@ -21,7 +21,7 @@ namespace ChessCake.Models.Players {
 
         public void AddPiece(BasePiece piece) {
             Console.WriteLine(piece);
-            if (Common.isObjectNull(piece)) {
+            if (Common.IsObjectNull(piece)) {
                 throw new ChessException("Peça inválida!");
             }
             if (isPieceExists(piece)) {
@@ -32,7 +32,7 @@ namespace ChessCake.Models.Players {
         }
 
         public void removePiece(BasePiece piece) {
-            if (Common.isObjectNull(piece)) {
+            if (Common.IsObjectNull(piece)) {
                 throw new ChessException("Peça inválida!");
             }
 

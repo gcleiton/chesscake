@@ -75,9 +75,7 @@ namespace ChessCake.Engines.Screens
             Console.Write("    (A)(B)(C)(D)(E)(F)(G)(H)");
         }
 
-        public static void PrintBoard(IBoard board, List<ICell> possibleMoves)
-        {
-
+        public static void PrintBoard(IBoard board, IList<ICell> possibleMoves) {
             ConsoleColor fundoOriginal = Console.BackgroundColor;
             ConsoleColor fundoAlterado = ConsoleColor.DarkGray;
 

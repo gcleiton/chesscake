@@ -7,5 +7,7 @@ namespace ChessCake.Models.Pieces.Contracts {
     public interface IPiece {
         public ChessColor Color { get; }
 
+        public PieceType Type { get; }
+
     }
 }

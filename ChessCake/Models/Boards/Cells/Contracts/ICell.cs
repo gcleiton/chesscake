@@ -9,7 +9,7 @@ namespace ChessCake.Models.Boards.Cells.Contracts {
         public Position Position { get; }
         public BasePiece Piece { get; }
 
-        public bool isOccupied();
+        public bool IsOccupied();
 
         public void placePiece(BasePiece piece);
 

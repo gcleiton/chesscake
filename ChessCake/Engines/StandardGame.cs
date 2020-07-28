@@ -3,15 +3,19 @@ using ChessCake.Commons.Enumerations;
 using ChessCake.Engines.Contracts;
 using ChessCake.Engines.Screens;
 using ChessCake.Exceptions;
+using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
+using ChessCake.Models.Movements;
 using ChessCake.Models.Movements.Contracts;
 using ChessCake.Models.Pieces;
 using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Players;
 using ChessCake.Models.Players.Contracts;
+using ChessCake.Models.Positions;
 using ChessCake.Models.Positions.Chess;
 using ChessCake.Models.Positions.Contracts;
 using ChessCake.Providers;
+using ChessCake.Providers.Movements;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -50,10 +54,7 @@ namespace ChessCake.Engines {
 
                     Screen.PrintBoard(Board);
 
-                    IMovement nextMove = InputProvider.ReadMove(Board);
-
-                    Console.WriteLine(nextMove.Source.Position);
-                    Console.WriteLine(nextMove.Target.Position);
+                    IMovement nextMove = InputProvider.ReadMove(this);
 
                     break;
 
@@ -97,8 +98,36 @@ namespace ChessCake.Engines {
         private void PlaceNewPiece(BasePiece piece, ChessPosition chessPosition) {
             Board.PlacePiece(piece, Board.GetCell(chessPosition.ToPosition()));
             AddPieceOnPlayer(piece.Color, piece);
-            Console.WriteLine("test");
 
+        }
+
+        public bool IsThereOpponentPiece(ICell cell) {
+            BasePiece piece = Board.FindPiece(cell.Position);
+            return piece != null && piece.Color != CurrentPlayer.Color;
+        }
+
+        public IList<ICell> LegalMoves(IPosition sourcePosition) {
+            ICell sourceCell = Board.GetCell(sourcePosition);
+            ValidateSource(sourceCell);
+            return MovementProvider.GenerateLegalMoves(this, sourceCell);
+        }
+
+        private void ValidateSource(ICell source) {
+            if (!source.IsOccupied()) {
+                throw new ChessException("Não existe nenhuma peça na posição de origem informado.");
+            }
+            if (CurrentPlayer != FindPlayer(source.Piece.Color)) {
+                throw new ChessException("A peça selecionada não pertence a você.");
+            }
+            //if (!source.Piece.isThereAnyLegalMove()) {
+            //    throw new ChessException("Não existe movimentos possíveis para a peça selecionada.");
+            //}
+        }
+
+        private void ValidateTarget(ICell source, ICell target) {
+            //if (!source.piece.isLegalMove(target)) {
+            //    throw new ChessException("A peça selecionada não pode mover para essa posição.");
+            //}
         }
 
         private void AddPawnsOnBoard(ChessColor color, int row) {
@@ -116,16 +145,16 @@ namespace ChessCake.Engines {
             }
         }
 
+
         private void InitBoard() {
             Player firstPlayer = (Player)Players.Values.First();
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
             AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
-
-            AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+            //AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
 
             AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
-            AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
+            //AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
 
         }
 

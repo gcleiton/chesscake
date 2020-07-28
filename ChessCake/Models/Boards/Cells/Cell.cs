@@ -19,8 +19,8 @@ namespace ChessCake.Models.Boards.Cells {
         
         }
 
-        public bool isOccupied() {
-            return Common.isObjectNull(Piece);
+        public bool IsOccupied() {
+            return !Common.IsObjectNull(Piece);
         }
 
         public void placePiece(BasePiece piece) {

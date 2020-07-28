@@ -30,7 +30,7 @@ namespace ChessCake.Models.Boards {
         }
 
         public BasePiece FindPiece(int row, int column) {
-            if (!Position.isValidCoordinates(row, column)) {
+            if (!Position.IsValidCoordinates(row, column)) {
                 throw new ChessException("Coordenadas da posição inválida!");
             }
             return Grid[row, column].Piece;
@@ -45,7 +45,7 @@ namespace ChessCake.Models.Boards {
         }
 
         public ICell GetCell(IPosition position) {
-            if (!Position.isValidCoordinates(position.Row, position.Column)) {
+            if (!Position.IsValidCoordinates(position.Row, position.Column)) {
                 throw new BoardException("Coordenadas da posição inválida!");
             }
 
@@ -53,7 +53,7 @@ namespace ChessCake.Models.Boards {
         }
 
         public ICell GetCell(int row, int column) {
-            if (!Position.isValidCoordinates(row, column)) {
+            if (!Position.IsValidCoordinates(row, column)) {
                 throw new BoardException("Coordenadas da posição inválida!");
             }
 

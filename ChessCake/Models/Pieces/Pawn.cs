@@ -3,9 +3,10 @@ using ChessCake.Models.Pieces.Contracts;
 
 namespace ChessCake.Models.Pieces {
     class Pawn: BasePiece {
-        
-        public Pawn(ChessColor color) : base(color) {
 
+        public const PieceType pieceType = PieceType.PAWN;
+        public Pawn(ChessColor color) : base(color) {
+            Type = PieceType.PAWN;
         }
 
         public override string ToString() {

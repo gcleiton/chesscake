@@ -1,7 +1,9 @@
 ﻿using ChessCake.Commons;
 using ChessCake.Commons.Enumerations;
+using ChessCake.Engines.Contracts;
 using ChessCake.Engines.Screens;
 using ChessCake.Exceptions;
+using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
 using ChessCake.Models.ChessPositions.Contracts;
 using ChessCake.Models.Movements.Contracts;
@@ -74,8 +76,7 @@ namespace ChessCake.Providers
             try {
                 if (isSource) Screen.PrintSourceInput();
                 else Screen.PrintTargetInput();
-                
-
+               
                 string pos = Console.ReadLine();
                 string pattern = @"([A-Za-z])([1-9])";
 
@@ -92,8 +93,18 @@ namespace ChessCake.Providers
             }
         }
 
-        public static IMovement ReadMove(IBoard board) {
+        public static IMovement ReadMove(IEngine engine) {
+            IBoard board = engine.Board;
+
             IPosition source = ReadChessPosition().ToPosition();
+            IList<ICell> legalMoves = engine.LegalMoves(source);
+
+            Console.WriteLine(legalMoves.Count);
+
+            Console.Clear();
+
+            Screen.PrintBoard(board, legalMoves);
+
             IPosition target = ReadChessPosition(false).ToPosition();
 
             return ChessFactory.CreateMovement(board.GetCell(source), board.GetCell(target));

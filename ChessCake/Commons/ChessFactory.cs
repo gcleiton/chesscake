@@ -1,4 +1,5 @@
 ﻿using ChessCake.Commons.Enumerations;
+using ChessCake.Engines.Contracts;
 using ChessCake.Models.Boards;
 using ChessCake.Models.Boards.Cells;
 using ChessCake.Models.Boards.Cells.Contracts;
@@ -9,7 +10,7 @@ using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Players;
 using ChessCake.Models.Positions;
 using ChessCake.Models.Positions.Chess;
-using ChessCake.Models.Positions.Contracts;
+using ChessCake.Providers.Movements.Pieces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,6 +43,10 @@ namespace ChessCake.Commons {
 
         public static IMovement CreateMovement(ICell source, ICell target) {
             return new Movement(source, target);
+        }
+
+        public static BishopMovement CreateBishopMovement(IEngine engine, ICell source) {
+            return new BishopMovement(engine, source);
         }
 
         public static BasePiece CreatePiece(PieceType type, ChessColor color) {

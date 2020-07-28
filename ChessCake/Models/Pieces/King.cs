@@ -6,8 +6,9 @@ using System.Text;
 
 namespace ChessCake.Models.Pieces {
     class King : BasePiece {
-        public King(ChessColor color) : base(color) {
 
+        public King(ChessColor color) : base(color) {
+            Type = PieceType.KING;
         }
 
         public override string ToString() {

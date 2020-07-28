@@ -21,7 +21,7 @@ namespace ChessCake.Models.Movements {
             this.Target = target;
             this.MovedPiece = source.Piece;
 
-            if(!Common.isObjectNull(Target.Piece)) {
+            if(!Common.IsObjectNull(Target.Piece)) {
                 this.CapturedPiece = Target.Piece;
             }
         }

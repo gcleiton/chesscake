@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ChessCake.Commons {
     class Common {
-        public static Boolean isObjectNull(object obj) {
+        public static Boolean IsObjectNull(object obj) {
             if (obj == null) return true;
             return false;
         }

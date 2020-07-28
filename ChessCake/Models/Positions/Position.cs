@@ -18,12 +18,12 @@ namespace ChessCake.Models.Positions {
             this.Column = column;
         }
 
-        public static bool isValidPosition(Position position) {
+        public static bool IsValidPosition(Position position) {
             return (position.Row >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && position.Row <= GlobalConstants.MAX_ROW_VALUE_ON_GRID
                 && position.Column >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && position.Column <= GlobalConstants.MAX_ROW_VALUE_ON_GRID);
         }
 
-        public static bool isValidCoordinates(int row, int column) {
+        public static bool IsValidCoordinates(int row, int column) {
             return (row >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && row <= GlobalConstants.MAX_ROW_VALUE_ON_GRID
                 && column >= GlobalConstants.MIN_COLUMN_VALUE_ON_GRID && column <= GlobalConstants.MAX_COLUMN_VALUE_ON_GRID);
         }

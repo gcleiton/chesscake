@@ -6,8 +6,10 @@ using System.Text;
 
 namespace ChessCake.Models.Pieces {
     class Rook : BasePiece {
-        public Rook(ChessColor color) : base(color) {
 
+        public const PieceType pieceType = PieceType.ROOK;
+        public Rook(ChessColor color) : base(color) {
+            Type = PieceType.ROOK;
         }
 
         public override string ToString() {

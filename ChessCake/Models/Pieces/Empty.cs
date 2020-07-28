@@ -7,7 +7,7 @@ using System.Text;
 namespace ChessCake.Models.Pieces {
     class Empty : BasePiece {
         public Empty(ChessColor color) : base(color) {
-
+            Type = PieceType.EMPTY;
         }
 
         public override string ToString() {
