@@ -22,6 +22,10 @@ namespace ChessCake.Commons {
 
         }
 
+        public static void ClearConsole() {
+            Console.Clear();
+        }
+
         public static void QuitGame() {
             Environment.Exit(1);
         }

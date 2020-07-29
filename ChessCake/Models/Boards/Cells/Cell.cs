@@ -23,13 +23,13 @@ namespace ChessCake.Models.Boards.Cells {
             return !Common.IsObjectNull(Piece);
         }
 
-        public void placePiece(BasePiece piece) {
+        public void PlacePiece(BasePiece piece) {
             //if (Common.isObjectNull(piece)) this.Piece.isAvailable = false;
 
             this.Piece = piece;
         }
 
-        public BasePiece releasePiece() {
+        public BasePiece ReleasePiece() {
             BasePiece releasedPiece = Piece;
             Piece = null;
 

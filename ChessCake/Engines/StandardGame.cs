@@ -1,81 +1,123 @@
 ﻿using ChessCake.Commons;
+using ChessCake.Commons.Constants;
 using ChessCake.Commons.Enumerations;
 using ChessCake.Engines.Contracts;
 using ChessCake.Engines.Screens;
 using ChessCake.Exceptions;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
-using ChessCake.Models.Movements;
 using ChessCake.Models.Movements.Contracts;
 using ChessCake.Models.Pieces;
 using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Players;
 using ChessCake.Models.Players.Contracts;
-using ChessCake.Models.Positions;
 using ChessCake.Models.Positions.Chess;
 using ChessCake.Models.Positions.Contracts;
-using ChessCake.Providers;
-using ChessCake.Providers.Movements;
+using ChessCake.Providers.Inputs;
+using ChessCake.Providers.Movements.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
 
 namespace ChessCake.Engines {
     class StandardGame : IEngine {
         public IBoard Board { get; private set; }
 
+        private IMovementProvider movementProvider;
+
         private readonly IDictionary<ChessColor, IPlayer> Players; // use OrderedDictionary
 
         public IPlayer CurrentPlayer { get; set; }
 
-        private int Turn;
+        public IPlayer BlackPlayer {
+            get { 
+                return Players[ChessColor.BLACK];
+            } 
+        }
 
-        private IList<BasePiece> CapturedPieces;
+        public IPlayer WhitePlayer {
+            get {
+                return Players[ChessColor.WHITE];
+            }
+        }
+
+        private int Turn { get; set; }
+
+        private IDictionary<ChessColor, IList<BasePiece>> CapturedPieces;
 
         public StandardGame(IDictionary<ChessColor, IPlayer> players) {
             Board = ChessFactory.CreateBoard();
 
             this.Players = players;
-            this.CapturedPieces = new List<BasePiece>();
+            this.CapturedPieces = new Dictionary<ChessColor, IList<BasePiece>>();
             this.Turn = 1;
             this.CurrentPlayer = FindPlayer(ChessColor.WHITE);
 
             this.ValidateStandardGame();
 
             InitBoard();
+
+            movementProvider = GameFactory.CreateMovementProvider(this);
+
         }
 
         public void Initialize() {
             while (true) {
                 try {
-                    Console.Clear();
+
+                    Common.ClearConsole();
 
                     Screen.PrintBoard(Board);
 
-                    IMovement nextMove = InputProvider.ReadMove(this);
+                    IPosition source = InputProvider.ReadChessPosition().ToPosition();
+                    IList<ICell> legalMoves = LegalMoves(source);
 
-                    break;
+                    Common.ClearConsole();
 
-                    //IPosition source = Screen.ReadChessPosition().ToPosition();
+                    Screen.PrintBoard(Board, legalMoves);
 
-                    //List<Cell> possibleMoves = match.legalMoves(source);
+                    IPosition target = InputProvider.ReadChessPosition(false).ToPosition();
 
-                    //Console.Clear();
+                    IMovement nextMove = ChessFactory.CreateMovement(Board.GetCell(source), Board.GetCell(target));
 
-                    //Screen.printBoard(match.board, possibleMoves);
+                    PerformMove(nextMove);
 
-                    //Console.WriteLine();
-
-                    //Position target = Screen.readChessPosition(false).ToPosition();
-
-                    //match.performChessMove(match.board.getCell(source), match.board.getCell(target));
                 } catch (ChessException e) {
                     Console.WriteLine(e.Message);
                     Console.ReadLine();
                 }
             }
+        }
+
+        public void PerformMove(IMovement move) {
+            ValidateSource(move.Source);
+            ValidateTarget(move.Source, move.Target);
+
+            MakeMove(move);
+
+            movementProvider.Update(this);
+
+            NextTurn();
+
+        }
+
+        public void NextTurn() {
+            Turn++;
+            CurrentPlayer = CurrentPlayer.Color == ChessColor.WHITE ? BlackPlayer : WhitePlayer;
+     
+        }
+
+        public void MakeMove(IMovement move) {
+            BasePiece movedPiece = Board.RemovePiece(move.Source.Position);
+            BasePiece capturedPiece = Board.RemovePiece(move.Target.Position);
+            Board.PlacePiece(movedPiece, move.Target);
+
+            if (!Common.IsObjectNull(capturedPiece)) {
+                Console.WriteLine(capturedPiece);
+                CapturedPieces[CurrentPlayer.Color].Add(capturedPiece);
+
+            }
+
         }
 
         private void ValidateStandardGame() {
@@ -109,7 +151,7 @@ namespace ChessCake.Engines {
         public IList<ICell> LegalMoves(IPosition sourcePosition) {
             ICell sourceCell = Board.GetCell(sourcePosition);
             ValidateSource(sourceCell);
-            return MovementProvider.GenerateLegalMoves(this, sourceCell);
+            return movementProvider.GenerateLegalMoves(sourceCell);
         }
 
         private void ValidateSource(ICell source) {
@@ -119,15 +161,15 @@ namespace ChessCake.Engines {
             if (CurrentPlayer != FindPlayer(source.Piece.Color)) {
                 throw new ChessException("A peça selecionada não pertence a você.");
             }
-            //if (!source.Piece.isThereAnyLegalMove()) {
-            //    throw new ChessException("Não existe movimentos possíveis para a peça selecionada.");
-            //}
+            if (!movementProvider.IsThereAnyLegalMove(source)) {
+                throw new ChessException("Não existe movimentos possíveis para a peça selecionada.");
+            }
         }
 
         private void ValidateTarget(ICell source, ICell target) {
-            //if (!source.piece.isLegalMove(target)) {
-            //    throw new ChessException("A peça selecionada não pode mover para essa posição.");
-            //}
+            if (!movementProvider.IsLegalMovement(source, target)) {
+                throw new ChessException("A peça selecionada não pode mover para essa posição.");
+            }
         }
 
         private void AddPawnsOnBoard(ChessColor color, int row) {
@@ -159,19 +201,6 @@ namespace ChessCake.Engines {
         }
 
 
-        //    public ChessEngine(Dictionary<Color, Player> players) {
-        //        this.players = players;
-        //        board = new Board();
-        //        capturedPieces = new List<Piece>();
-        //        turn = 1;
-        //        currentPlayer = findPlayer(Color.WHITE);
-
-        //        whitePlayer = this.players[Color.WHITE];
-        //        blackPlayer = this.players[Color.BLACK];
-
-        //        initBoard();
-        //    }
-
         //    public Player findPlayer(Color color) {
         //        return players[color];
         //    }
@@ -195,115 +224,6 @@ namespace ChessCake.Engines {
         //        players[Color.WHITE] = whitePlayer;
         //        players[Color.BLACK] = blackPlayer;
         //    }
-
-        //    private void removePieceOnPlayer(Piece piece) {
-        //        if (piece.color == Color.WHITE) {
-        //            whitePlayer.removePiece(piece);
-        //        } else {
-        //            blackPlayer.removePiece(piece);
-        //        }
-
-        //        updatePlayers(whitePlayer, blackPlayer);
-        //    }
-
-        //    private void validateSourceCell(Cell source) {
-        //        if (!source.isOccupied()) {
-        //            throw new ChessException("Não existe nenhuma peça na posição de origem informado.");
-        //        }
-        //        if (currentPlayer != findPlayer(source.piece.color)) {
-        //            throw new ChessException("A peça selecionada não pertence a você.");
-        //        }
-        //        if (!source.piece.isThereAnyLegalMove()) {
-        //            throw new ChessException("Não existe movimentos possíveis para a peça selecionada.");
-        //        }
-        //    }
-
-        //    private void validateTargetCell(Cell source, Cell target) {
-        //        if (!source.piece.isLegalMove(target)) {
-        //            throw new ChessException("A peça selecionada não pode mover para essa posição.");
-        //        }
-        //    }
-
-        //    public List<Cell> legalMoves(Position sourcePosition) {
-        //        Cell sourceCell = board.getCell(sourcePosition);
-        //        validateSourceCell(sourceCell);
-        //        return sourceCell.piece.generateLegalMoves();
-        //    }
-
-        //    public Move performChessMove(Cell source, Cell target) {
-        //        validateSourceCell(source);
-        //        validateTargetCell(source, target);
-
-        //        Move move = makeMove(source, target);
-
-        //        nextTurn();
-
-        //        return move;
-
-        //    }
-
-        //    public Move makeMove(Cell source, Cell target) {
-        //        Piece movedPiece = board.removePiece(source.position);
-        //        Piece capturedPiece = board.removePiece(target.position);
-        //        board.placePiece(movedPiece, target);
-
-        //        if (capturedPiece != null) {
-        //            Console.WriteLine(capturedPiece);
-        //            capturedPieces.Add((Piece)capturedPiece);
-
-        //            removePieceOnPlayer(capturedPiece);
-        //        }
-
-        //        return new Move(currentPlayer, source, target);
-        //    }
-
-        //    private void placeNewPiece(Piece piece, char column, int row) {
-        //        board.placePiece(piece, board.getCell(new ChessPosition(column, row).ToPosition()));
-        //        if (piece.color == Color.WHITE) {
-        //            players[Color.WHITE].addPiece(piece);
-        //        } else {
-        //            players[Color.BLACK].addPiece(piece);
-        //        }
-        //    }
-
-        //    private void initBoard() {
-        //        placeNewPiece(new Rook(Color.WHITE, true, this), 'A', 1);
-        //        placeNewPiece(new Knight(Color.WHITE, true, this), 'B', 1);
-        //        placeNewPiece(new Bishop(Color.WHITE, true, this), 'C', 1);
-        //        placeNewPiece(new King(Color.WHITE, true, this), 'D', 1);
-        //        placeNewPiece(new Queen(Color.WHITE, true, this), 'E', 1);
-        //        placeNewPiece(new Bishop(Color.WHITE, true, this), 'F', 1);
-        //        placeNewPiece(new Knight(Color.WHITE, true, this), 'G', 1);
-        //        placeNewPiece(new Rook(Color.WHITE, true, this), 'H', 1);
-        //        /*placeNewPiece(new Pawn(Color.WHITE, true, this), 'A', 2);
-        //        placeNewPiece(new Pawn(Color.WHITE, true, this), 'B', 2); 
-        //        placeNewPiece(new Pawn(Color.WHITE, true, this), 'C', 2);
-        //        placeNewPiece(new Pawn(Color.WHITE, true, this), 'D', 2);
-        //        placeNewPiece(new Pawn(Color.WHITE, true, this), 'E', 2);
-        //        placeNewPiece(new Pawn(Color.WHITE, true, this), 'F', 2);
-        //        placeNewPiece(new Pawn(Color.WHITE, true, this), 'G', 2);
-        //        placeNewPiece(new Pawn(Color.WHITE, true, this), 'H', 2);*/
-
-        //        placeNewPiece(new Rook(Color.BLACK, true, this), 'A', 8);
-        //        placeNewPiece(new Knight(Color.BLACK, true, this), 'B', 8);
-        //        placeNewPiece(new Bishop(Color.BLACK, true, this), 'C', 8);
-        //        placeNewPiece(new King(Color.BLACK, true, this), 'D', 8);
-        //        placeNewPiece(new Queen(Color.BLACK, true, this), 'E', 8);
-        //        placeNewPiece(new Bishop(Color.BLACK, true, this), 'F', 8);
-        //        placeNewPiece(new Knight(Color.BLACK, true, this), 'G', 8);
-        //        placeNewPiece(new Rook(Color.BLACK, true, this), 'H', 8);
-        //        /*placeNewPiece(new Pawn(Color.BLACK, true, this), 'A', 7);
-        //        placeNewPiece(new Pawn(Color.BLACK, true, this), 'B', 7);
-        //        placeNewPiece(new Pawn(Color.BLACK, true, this), 'C', 7);
-        //        placeNewPiece(new Pawn(Color.BLACK, true, this), 'D', 7);
-        //        placeNewPiece(new Pawn(Color.BLACK, true, this), 'E', 7);
-        //        placeNewPiece(new Pawn(Color.BLACK, true, this), 'F', 7);
-        //        placeNewPiece(new Pawn(Color.BLACK, true, this), 'G', 7);
-        //        placeNewPiece(new Pawn(Color.BLACK, true, this), 'H', 7);*/
-
-        //    }
-
-        //}
 
     }
 }

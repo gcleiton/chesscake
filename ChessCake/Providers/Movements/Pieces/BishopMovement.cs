@@ -13,25 +13,22 @@ namespace ChessCake.Providers.Movements.Pieces {
 
         private IEngine Engine;
 
-        private ICell Source;
-
-        public BishopMovement(IEngine engine, ICell source) {
+        public BishopMovement(IEngine engine) {
             Engine = engine;
-            Source = source;
         }
 
-        public IList<ICell> GenerateLegalMoves() {
+        public IList<ICell> GenerateLegalMoves(ICell source) {
             IList<ICell> legalMoves = new List<ICell>();
             ICell referenceCell;
 
             int referenceRow;
             int referenceColumn;
 
-            referenceRow = Source.Position.Row - 1;
-            referenceColumn = Source.Position.Column - 1;
+            referenceRow = source.Position.Row - 1;
+            referenceColumn = source.Position.Column - 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
 
-            while (!(Source is null) && Position.IsValidPosition(referenceCell.Position)) {
+            while (!(referenceCell is null) && Position.IsValidPosition(referenceCell.Position)) {
                 if (!referenceCell.IsOccupied()) {
                     legalMoves.Add(referenceCell);
                 }
@@ -50,8 +47,8 @@ namespace ChessCake.Providers.Movements.Pieces {
             }
 
 
-            referenceRow = Source.Position.Row - 1;
-            referenceColumn = Source.Position.Column + 1;
+            referenceRow = source.Position.Row - 1;
+            referenceColumn = source.Position.Column + 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
             while (!(referenceCell is null) && Position.IsValidPosition(referenceCell.Position)) {
                 if (!referenceCell.IsOccupied()) {
@@ -69,8 +66,8 @@ namespace ChessCake.Providers.Movements.Pieces {
                 legalMoves.Add(referenceCell);
             }
 
-            referenceRow = Source.Position.Row + 1;
-            referenceColumn = Source.Position.Column + 1;
+            referenceRow = source.Position.Row + 1;
+            referenceColumn = source.Position.Column + 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
             while (!(referenceCell is null) && Position.IsValidPosition(referenceCell.Position)) {
                 if (!referenceCell.IsOccupied()) {
@@ -88,8 +85,8 @@ namespace ChessCake.Providers.Movements.Pieces {
                 legalMoves.Add(referenceCell);
             }
 
-            referenceRow = Source.Position.Row + 1;
-            referenceColumn = Source.Position.Column - 1;
+            referenceRow = source.Position.Row + 1;
+            referenceColumn = source.Position.Column - 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
             while (!(referenceCell is null) && Position.IsValidPosition(referenceCell.Position)) {
                 if (!referenceCell.IsOccupied()) {

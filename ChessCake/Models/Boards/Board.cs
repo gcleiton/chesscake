@@ -1,4 +1,5 @@
 ﻿using ChessCake.Commons;
+using ChessCake.Commons.Constants;
 using ChessCake.Exceptions;
 using ChessCake.Models.Boards.Cells;
 using ChessCake.Models.Boards.Cells.Contracts;
@@ -61,12 +62,12 @@ namespace ChessCake.Models.Boards {
         }
 
         public void PlacePiece(BasePiece piece, ICell cell) {
-            Grid[cell.Position.Row, cell.Position.Column].placePiece(piece);
+            Grid[cell.Position.Row, cell.Position.Column].PlacePiece(piece);
         }
 
         public BasePiece RemovePiece(IPosition position) {
             ICell cell = GetCell(position);
-            BasePiece releasedPiece = cell.releasePiece();
+            BasePiece releasedPiece = cell.ReleasePiece();
 
             Grid[position.Row, position.Column] = cell;
 

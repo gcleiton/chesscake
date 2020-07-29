@@ -1,28 +1,31 @@
 ﻿using ChessCake.Commons;
 using ChessCake.Commons.Enumerations;
+using ChessCake.Commons.Factories;
 using ChessCake.Engines.Contracts;
-using ChessCake.Models.Boards.Cells;
 using ChessCake.Models.Boards.Cells.Contracts;
-using ChessCake.Models.Boards.Contracts;
-using ChessCake.Models.Pieces;
 using ChessCake.Models.Pieces.Contracts;
-using ChessCake.Models.Positions;
+using ChessCake.Providers.Movements.Contracts;
 using ChessCake.Providers.Movements.Pieces.Contracts;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace ChessCake.Providers.Movements {
-    class MovementProvider {
+    class MovementProvider : IMovementProvider {
 
-        public static IList<ICell> GenerateLegalMoves(IEngine engine, ICell source) {
+        private IEngine Engine;
+
+        public MovementProvider(IEngine engine) {
+            Engine = engine;
+        }
+
+        public IList<ICell> GenerateLegalMoves(ICell source) {
             BasePiece piece = source.Piece;
 
             if (Common.IsObjectNull(piece)) return null;
 
             IList<ICell> legalMoves = new List<ICell>();
-
+            
             switch (piece.Type) {
                 case PieceType.PAWN:
                     break;
@@ -31,7 +34,7 @@ namespace ChessCake.Providers.Movements {
                     break;
 
                 case PieceType.BISHOP:
-                    legalMoves = GenerateBishopMoves(engine, source);
+                    legalMoves = GenerateBishopMovements(source);
                     break;
 
                 case PieceType.ROOK:
@@ -51,14 +54,43 @@ namespace ChessCake.Providers.Movements {
 
         }
 
-        public static IList<ICell> GenerateBishopMoves(IEngine engine, ICell source) {
-            IPieceMovement bishopMovement = ChessFactory.CreateBishopMovement(engine, source);
-
-            return bishopMovement.GenerateLegalMoves();
         
+
+        public IList<ICell> GeneratePawnMovements(ICell source) {
+            return null;
+        }
+        public IList<ICell> GenerateKnightMovements(ICell source) {
+            return null;
         }
 
+        public IList<ICell> GenerateBishopMovements(ICell source) {
+            IPieceMovement bishopMovement = MovementGeneratorFactory.CreateBishopMovement(Engine);
 
+            return bishopMovement.GenerateLegalMoves(source);
+
+        }
+
+        public IList<ICell> GenerateRookMovements(ICell source) {
+            return null;
+        }
+        public IList<ICell> GenerateQueenMovements(ICell source) {
+            return null;
+        }
+        public IList<ICell> GenerateKingMovements(ICell source) {
+            return null;
+        }
+
+        public bool IsLegalMovement(ICell source, ICell target) {
+            return GenerateLegalMoves(source).Contains(target);
+        }
+
+        public bool IsThereAnyLegalMove(ICell source) {
+            return GenerateLegalMoves(source).Count != 0;
+        }
+
+        public void Update(IEngine engine) {
+            this.Engine = engine;
+        }
 
     }
 

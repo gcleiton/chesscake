@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessCake.Commons {
+namespace ChessCake.Commons.Constants {
     class GlobalConstants {
 
         public const string PLAYER_NAME_FORMATTER_INPUT = "What is the name of the {0}º player? ";

@@ -11,9 +11,9 @@ namespace ChessCake.Models.Boards.Cells.Contracts {
 
         public bool IsOccupied();
 
-        public void placePiece(BasePiece piece);
+        public void PlacePiece(BasePiece piece);
 
-        public BasePiece releasePiece();
+        public BasePiece ReleasePiece();
 
     }
 }

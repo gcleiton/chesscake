@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Drawing;
 using ChessCake.Commons;
+using ChessCake.Commons.Constants;
 
 namespace ChessCake.Engines.Screens
 {
@@ -109,38 +110,8 @@ namespace ChessCake.Engines.Screens
         }
 
         public static void PrintTargetInput() {
-            Console.WriteLine();
+            Console.WriteLine("\n");
             Console.Write("Target: ");
-        }
-
-        public static IChessPosition ReadChessPosition(bool isSource = true)
-        {
-            try
-            {
-                if (isSource)
-                {
-                    Console.Write("Source: ");
-                }
-                else
-                {
-                    Console.Write("Target: ");
-                }
-                string pos = Console.ReadLine();
-                string pattern = @"([A-Za-z])([1-9])";
-
-                Regex regex = new Regex(pattern);
-                Match match = regex.Match(pos);
-
-                char column = char.Parse(match.Groups[1].ToString().ToUpper());
-                int row = int.Parse(match.Groups[2].ToString());
-
-                return new ChessPosition(column, row);
-
-            }
-            catch (Exception e)
-            {
-                throw new ChessException("Erro ao ler a posição do xadrez. Tente novamente.");
-            }
         }
 
         public static void PrintPiece(BasePiece piece)

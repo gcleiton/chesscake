@@ -9,8 +9,4 @@
     <PackageReference Include="Colorful.Console" Version="1.2.10" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Providers\Inputs\" />
-  </ItemGroup>
-
 </Project>

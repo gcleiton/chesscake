@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ChessCake.Commons {
+namespace ChessCake.Commons.Constants {
     class GameConstants {
         public static readonly IEnumerable<PieceType> MAJOR_PIECES_SEQUENCE = new List<PieceType>
             {

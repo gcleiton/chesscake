@@ -1,4 +1,5 @@
 ﻿using ChessCake.Commons;
+using ChessCake.Commons.Constants;
 using ChessCake.Commons.Enumerations;
 using ChessCake.Engines.Contracts;
 using ChessCake.Engines.Screens;
@@ -14,7 +15,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ChessCake.Providers
+namespace ChessCake.Providers.Inputs
 {
     class InputProvider {
 
