@@ -67,14 +67,14 @@ namespace ChessCake.Engines {
 
                     Common.ClearConsole();
 
-                    Screen.PrintBoard(Board);
+                    Screen.PrintBoard(this);
 
                     IPosition source = InputProvider.ReadChessPosition().ToPosition();
                     IList<ICell> legalMoves = LegalMoves(source);
 
                     Common.ClearConsole();
 
-                    Screen.PrintBoard(Board, legalMoves);
+                    Screen.PrintBoard(this, legalMoves);
 
                     IPosition target = InputProvider.ReadChessPosition(false).ToPosition();
 

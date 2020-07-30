@@ -15,6 +15,8 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using ChessCake.Commons;
 using ChessCake.Commons.Constants;
+using ChessCake.Engines.Contracts;
+using ChessCake.Models.Players.Contracts;
 
 namespace ChessCake.Engines.Screens
 {
@@ -27,8 +29,12 @@ namespace ChessCake.Engines.Screens
 
             Console.WriteLine();
             PrintDivider(figlet);
-            Console.WriteLine(figlet.ToAscii(GlobalConstants.DEFAULT_ASTERISKS_DIVIDER), ColorTranslator.FromHtml("#8AFFEF"));
+            Console.WriteLine(figlet.ToAscii(GetTitle()), ColorTranslator.FromHtml("#FFD700"));
             PrintDivider(figlet);
+        }
+
+        private static String GetTitle() {
+            return "  " + GlobalConstants.APP_NAME + "_";
         }
 
         public static void PrintWelcome() {
@@ -59,8 +65,12 @@ namespace ChessCake.Engines.Screens
 
         }
 
-        public static void PrintBoard(IBoard board)
-        {
+        public static void PrintBoard(IEngine engine) {
+            IBoard board = engine.Board;
+            IPlayer currentPlayer = engine.CurrentPlayer;
+
+            Console.WriteLine(String.Format(GlobalConstants.CURRENT_PLAYER_FORMATTER, currentPlayer.Name, currentPlayer.Color));
+
             for (int i = 0; i < board.Rows; i++)
             {
                 Console.Write("(" + (8 - i) + ") ");
@@ -76,9 +86,14 @@ namespace ChessCake.Engines.Screens
             Console.Write("    (A)(B)(C)(D)(E)(F)(G)(H)");
         }
 
-        public static void PrintBoard(IBoard board, IList<ICell> possibleMoves) {
+        public static void PrintBoard(IEngine engine, IList<ICell> possibleMoves) {
+            IBoard board = engine.Board;
+            IPlayer currentPlayer = engine.CurrentPlayer;
+
             ConsoleColor fundoOriginal = Console.BackgroundColor;
             ConsoleColor fundoAlterado = ConsoleColor.DarkGray;
+
+            Console.WriteLine(String.Format(GlobalConstants.CURRENT_PLAYER_FORMATTER, currentPlayer.Name, currentPlayer.Color));
 
             for (int i = 0; i < board.Rows; i++)
             {

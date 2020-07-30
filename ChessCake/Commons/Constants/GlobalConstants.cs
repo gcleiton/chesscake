@@ -10,6 +10,9 @@ namespace ChessCake.Commons.Constants {
         public const string SECOND_MESSAGE_ON_CHARACTER = "         / {0}\n";
         public const string DEFAULT_ASTERISKS_DIVIDER = "**********************";
 
+        public const string APP_NAME = "CHESSCAKE CONSOLE";
+        public const string CURRENT_PLAYER_FORMATTER = "Current Player: {0} - {1} Pieces\n";
+
         public const int MIN_ROW_VALUE_ON_GRID = 0;
         public const int MAX_ROW_VALUE_ON_GRID = 7;
         public const int MIN_COLUMN_VALUE_ON_GRID = 0;

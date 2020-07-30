@@ -1,11 +1,15 @@
 ﻿using ChessCake.Commons.Enumerations;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
 namespace ChessCake.Commons {
     class Common {
+
+        public static TextInfo StringFormatter = new CultureInfo("en-US", false).TextInfo;
+
         public static Boolean IsObjectNull(object obj) {
             if (obj == null) return true;
             return false;

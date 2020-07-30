@@ -104,7 +104,7 @@ namespace ChessCake.Providers.Inputs
 
             Console.Clear();
 
-            Screen.PrintBoard(board, legalMoves);
+            Screen.PrintBoard(engine, legalMoves);
 
             IPosition target = ReadChessPosition(false).ToPosition();
 

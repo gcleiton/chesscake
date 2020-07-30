@@ -4,6 +4,7 @@ using ChessCake.Engines.Screens;
 using ChessCake.Models.Players;
 using ChessCake.Models.Players.Contracts;
 using ChessCake.Providers;
+using ChessCake.Providers.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Text;
