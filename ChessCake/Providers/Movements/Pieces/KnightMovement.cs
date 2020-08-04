@@ -9,15 +9,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ChessCake.Providers.Movements.Pieces {
-    public class KnightMovement : IPieceMovement {
+    public class KnightMovement : BasePieceMovement {
 
-        private IEngine Engine;
+        public KnightMovement(IEngine engine) : base(engine) { }
 
-        public KnightMovement(IEngine engine) {
-            Engine = engine;
-        }
-
-        public IList<ICell> GenerateLegalMoves(ICell source) {
+        public override IList<ICell> GenerateLegalMoves(ICell source) {
             IList<ICell> legalMoves = new List<ICell>();
 
             return legalMoves;

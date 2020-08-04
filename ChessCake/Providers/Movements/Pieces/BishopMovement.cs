@@ -1,4 +1,5 @@
-﻿using ChessCake.Engines.Contracts;
+﻿using ChessCake.Commons;
+using ChessCake.Engines.Contracts;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
 using ChessCake.Models.Pieces.Contracts;
@@ -9,48 +10,22 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ChessCake.Providers.Movements.Pieces {
-    public class BishopMovement : IPieceMovement {
+    public class BishopMovement : BasePieceMovement {
 
-        private IEngine Engine;
+        public BishopMovement(IEngine engine) : base(engine) { }
 
-        public BishopMovement(IEngine engine) {
-            Engine = engine;
-        }
-
-        public IList<ICell> GenerateLegalMoves(ICell source) {
+        public override IList<ICell> GenerateLegalMoves(ICell source) {
             IList<ICell> legalMoves = new List<ICell>();
             ICell referenceCell;
 
             int referenceRow;
             int referenceColumn;
 
-            referenceRow = source.Position.Row - 1;
-            referenceColumn = source.Position.Column - 1;
-            referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
-
-            while (!(referenceCell is null) && Position.IsValidPosition(referenceCell.Position)) {
-                if (!referenceCell.IsOccupied()) {
-                    legalMoves.Add(referenceCell);
-                }
-
-                referenceRow--;
-                referenceColumn--;
-
-                if (!Position.IsValidCoordinates(referenceRow, referenceColumn)) break;
-
-                referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
-
-            }
-            if (!(referenceCell is null) && Engine.IsThereOpponentPiece(referenceCell)) {
-
-                legalMoves.Add(referenceCell);
-            }
-
-
+            // Northeast Direction:
             referenceRow = source.Position.Row - 1;
             referenceColumn = source.Position.Column + 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
-            while (!(referenceCell is null) && Position.IsValidPosition(referenceCell.Position)) {
+            while (ValidateReferenceCell(referenceCell)) {
                 if (!referenceCell.IsOccupied()) {
                     legalMoves.Add(referenceCell);
                 }
@@ -62,14 +37,15 @@ namespace ChessCake.Providers.Movements.Pieces {
 
                 referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
             }
-            if (referenceCell != null && Engine.IsThereOpponentPiece(referenceCell)) {
+            if (ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
+            // Southeast Direction:
             referenceRow = source.Position.Row + 1;
             referenceColumn = source.Position.Column + 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
-            while (!(referenceCell is null) && Position.IsValidPosition(referenceCell.Position)) {
+            while (ValidateReferenceCell(referenceCell)) {
                 if (!referenceCell.IsOccupied()) {
                     legalMoves.Add(referenceCell);
                 }
@@ -81,14 +57,15 @@ namespace ChessCake.Providers.Movements.Pieces {
 
                 referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
             }
-            if (referenceCell != null && Engine.IsThereOpponentPiece(referenceCell)) {
+            if (ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
+            // Southwest Direction:
             referenceRow = source.Position.Row + 1;
             referenceColumn = source.Position.Column - 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
-            while (!(referenceCell is null) && Position.IsValidPosition(referenceCell.Position)) {
+            while (ValidateReferenceCell(referenceCell)) {
                 if (!referenceCell.IsOccupied()) {
                     legalMoves.Add(referenceCell);
                 }
@@ -101,8 +78,31 @@ namespace ChessCake.Providers.Movements.Pieces {
                 referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
 
             }
-            if (referenceCell != null && Engine.IsThereOpponentPiece(referenceCell)) {
+            if (ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
+            }
+
+            // Northwest Direction:
+            referenceRow = source.Position.Row - 1;
+            referenceColumn = source.Position.Column - 1;
+            referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+
+            while (ValidateReferenceCell(referenceCell)) {
+                if (!referenceCell.IsOccupied()) {
+                    legalMoves.Add(referenceCell);
+                }
+
+                referenceRow--;
+                referenceColumn--;
+
+                if (!Position.IsValidCoordinates(referenceRow, referenceColumn)) break;
+
+                referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+
+            }
+            if (ValidateBreakCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+
             }
 
             return legalMoves;

@@ -1,15 +1,12 @@
 ﻿using ChessCake.Commons;
 using ChessCake.Commons.Constants;
 using ChessCake.Exceptions;
-using ChessCake.Models.Boards.Cells;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
 using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Positions;
 using ChessCake.Models.Positions.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ChessCake.Models.Boards {
     public class Board : IBoard {
@@ -62,6 +59,10 @@ namespace ChessCake.Models.Boards {
         }
 
         public void PlacePiece(BasePiece piece, ICell cell) {
+            // Verificar o motivo do disparo da exceção durante a alocação das peças
+            //if(ThereIsAPiece(cell)) {
+            //    throw new BoardException("There is already a piece on position " + cell.Position);
+            //}
             Grid[cell.Position.Row, cell.Position.Column].PlacePiece(piece);
         }
 
@@ -74,6 +75,19 @@ namespace ChessCake.Models.Boards {
             return releasedPiece;
         }
 
+        public bool ThereIsAPiece(IPosition position) {
+            if (!Position.IsValidPosition(position)) {
+                throw new BoardException("Invalid Position");
+            }
+            return !Common.IsObjectNull(FindPiece(position));
+        }
+
+        public bool ThereIsAPiece(ICell cell) {
+            if (!Position.IsValidPosition(cell.Position)) {
+                throw new BoardException("Invalid Position");
+            }
+            return !Common.IsObjectNull(FindPiece(cell));
+        }
 
     }
 }

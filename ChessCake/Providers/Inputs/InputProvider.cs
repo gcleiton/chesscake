@@ -79,7 +79,7 @@ namespace ChessCake.Providers.Inputs
                 else Screen.PrintTargetInput();
                
                 string pos = Console.ReadLine();
-                string pattern = @"([A-Za-z])([1-9])";
+                string pattern = @"([A-Ha-h])([1-9])";
 
                 Regex regex = new Regex(pattern);
                 Match match = regex.Match(pos);
@@ -94,22 +94,22 @@ namespace ChessCake.Providers.Inputs
             }
         }
 
-        public static IMovement ReadMove(IEngine engine) {
-            IBoard board = engine.Board;
+        //public static IMovement ReadMove(IEngine engine) {
+        //    IBoard board = engine.Board;
 
-            IPosition source = ReadChessPosition().ToPosition();
-            IList<ICell> legalMoves = engine.LegalMoves(source);
+        //    IPosition source = ReadChessPosition().ToPosition();
+        //    IList<ICell> legalMoves = engine.LegalMoves(source);
 
-            Console.WriteLine(legalMoves.Count);
+        //    Console.WriteLine(legalMoves.Count);
 
-            Console.Clear();
+        //    Console.Clear();
 
-            Screen.PrintBoard(engine, legalMoves);
+        //    Screen.PrintBoard(engine, legalMoves);
 
-            IPosition target = ReadChessPosition(false).ToPosition();
+        //    IPosition target = ReadChessPosition(false).ToPosition();
 
-            return ChessFactory.CreateMovement(board.GetCell(source), board.GetCell(target));
-        }
+        //    return ChessFactory.CreateMovement(board.GetCell(source), board.GetCell(target));
+        //}
 
     }
 }

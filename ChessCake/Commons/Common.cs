@@ -10,7 +10,7 @@ namespace ChessCake.Commons {
 
         public static TextInfo StringFormatter = new CultureInfo("en-US", false).TextInfo;
 
-        public static Boolean IsObjectNull(object obj) {
+        public static bool IsObjectNull(object obj) {
             if (obj == null) return true;
             return false;
         }
@@ -27,7 +27,7 @@ namespace ChessCake.Commons {
         }
 
         public static void ClearConsole() {
-            Console.Clear();
+            Console.WriteLine("\n");
         }
 
         public static void QuitGame() {

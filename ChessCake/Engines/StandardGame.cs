@@ -139,7 +139,7 @@ namespace ChessCake.Engines {
 
         private void PlaceNewPiece(BasePiece piece, ChessPosition chessPosition) {
             Board.PlacePiece(piece, Board.GetCell(chessPosition.ToPosition()));
-            AddPieceOnPlayer(piece.Color, piece);
+            //AddPieceOnPlayer(piece.Color, piece);
 
         }
 

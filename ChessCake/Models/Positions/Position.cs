@@ -19,7 +19,7 @@ namespace ChessCake.Models.Positions {
             this.Column = column;
         }
 
-        public static bool IsValidPosition(Position position) {
+        public static bool IsValidPosition(IPosition position) {
             return (position.Row >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && position.Row <= GlobalConstants.MAX_ROW_VALUE_ON_GRID
                 && position.Column >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && position.Column <= GlobalConstants.MAX_ROW_VALUE_ON_GRID);
         }

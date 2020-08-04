@@ -41,6 +41,7 @@ namespace ChessCake.Providers.Movements {
                     break;
 
                 case PieceType.QUEEN:
+                    legalMoves = GenerateQueenMovements(source);
                     break;
 
                 case PieceType.KING:
@@ -53,8 +54,6 @@ namespace ChessCake.Providers.Movements {
             return legalMoves;
 
         }
-
-        
 
         public IList<ICell> GeneratePawnMovements(ICell source) {
             return null;
@@ -74,7 +73,9 @@ namespace ChessCake.Providers.Movements {
             return null;
         }
         public IList<ICell> GenerateQueenMovements(ICell source) {
-            return null;
+            IPieceMovement queenMovement = MovementGeneratorFactory.CreateQueenMovement(Engine);
+
+            return queenMovement.GenerateLegalMoves(source);
         }
         public IList<ICell> GenerateKingMovements(ICell source) {
             return null;
