@@ -15,6 +15,90 @@ namespace ChessCake.Providers.Movements.Pieces {
 
         public override IList<ICell> GenerateLegalMoves(ICell source) {
             IList<ICell> legalMoves = new List<ICell>();
+            ICell referenceCell;
+
+            int referenceRow;
+            int referenceColumn;
+
+            // North Direction:
+            referenceRow = source.Position.Row - 1;
+            referenceColumn = source.Position.Column;
+            referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+
+            while (ValidateReferenceCell(referenceCell)) {
+                if (!referenceCell.IsOccupied()) {
+                    legalMoves.Add(referenceCell);
+                }
+
+                referenceRow--;
+
+                if (!Position.IsValidCoordinates(referenceRow, referenceColumn)) break;
+
+                referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+
+            }
+            if (ValidateBreakCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+
+            }
+
+            // East Direction:
+            referenceRow = source.Position.Row;
+            referenceColumn = source.Position.Column + 1;
+            referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+            while (ValidateReferenceCell(referenceCell)) {
+                if (!referenceCell.IsOccupied()) {
+                    legalMoves.Add(referenceCell);
+                }
+
+                referenceColumn++;
+
+                if (!Position.IsValidCoordinates(referenceRow, referenceColumn)) break;
+
+                referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+            }
+            if (ValidateBreakCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // South Direction:
+            referenceRow = source.Position.Row + 1;
+            referenceColumn = source.Position.Column;
+            referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+            while (ValidateReferenceCell(referenceCell)) {
+                if (!referenceCell.IsOccupied()) {
+                    legalMoves.Add(referenceCell);
+                }
+
+                referenceRow++;
+
+                if (!Position.IsValidCoordinates(referenceRow, referenceColumn)) break;
+
+                referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+            }
+            if (ValidateBreakCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // West Direction:
+            referenceRow = source.Position.Row;
+            referenceColumn = source.Position.Column - 1;
+            referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+            while (ValidateReferenceCell(referenceCell)) {
+                if (!referenceCell.IsOccupied()) {
+                    legalMoves.Add(referenceCell);
+                }
+
+                referenceColumn--;
+
+                if (!Position.IsValidCoordinates(referenceRow, referenceColumn)) break;
+
+                referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
+
+            }
+            if (ValidateBreakCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
 
             return legalMoves;
 

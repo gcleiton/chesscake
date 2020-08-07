@@ -109,7 +109,10 @@ namespace ChessCake.Engines {
 
         public void MakeMove(IMovement move) {
             BasePiece movedPiece = Board.RemovePiece(move.Source.Position);
+            movedPiece.increaseMoveCount();
+
             BasePiece capturedPiece = Board.RemovePiece(move.Target.Position);
+
             Board.PlacePiece(movedPiece, move.Target);
 
             if (!Common.IsObjectNull(capturedPiece)) {
@@ -151,7 +154,8 @@ namespace ChessCake.Engines {
         public IList<ICell> LegalMoves(IPosition sourcePosition) {
             ICell sourceCell = Board.GetCell(sourcePosition);
             ValidateSource(sourceCell);
-            return movementProvider.GenerateLegalMoves(sourceCell);
+            var test = movementProvider.GenerateLegalMoves(sourceCell);
+            return test;
         }
 
         private void ValidateSource(ICell source) {
@@ -193,10 +197,10 @@ namespace ChessCake.Engines {
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
             AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
-            //AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+            AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
 
             AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
-            //AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
+            AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
 
         }
 

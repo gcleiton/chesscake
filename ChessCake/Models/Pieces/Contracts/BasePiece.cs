@@ -14,8 +14,15 @@ namespace ChessCake.Models.Pieces.Contracts {
 
         public bool IsAvailable { get; set; }
 
+        public int MoveCount { get; set; }
+
         public BasePiece(ChessColor color) {
-            this.Color = color;        
+            Color = color;
+            MoveCount = 0;
         }
+        public void increaseMoveCount() {
+            MoveCount++;
+        }
+
     }
 }

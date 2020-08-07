@@ -39,7 +39,7 @@ namespace ChessCake.Models.Boards {
         }
 
         public BasePiece FindPiece(ICell cell) {
-            return Grid[cell.Position.Row, cell.Position.Row].Piece;
+            return Grid[cell.Position.Row, cell.Position.Column].Piece;
         }
 
         public ICell GetCell(IPosition position) {

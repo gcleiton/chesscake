@@ -9,5 +9,7 @@ namespace ChessCake.Models.Pieces.Contracts {
 
         public PieceType Type { get; }
 
+        public int MoveCount { get; }
+
     }
 }

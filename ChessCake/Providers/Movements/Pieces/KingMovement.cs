@@ -15,6 +15,55 @@ namespace ChessCake.Providers.Movements.Pieces {
 
         public override IList<ICell> GenerateLegalMoves(ICell source) {
             IList<ICell> legalMoves = new List<ICell>();
+            ICell referenceCell;
+
+            // North Direction
+            referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column);
+            if (ValidateReferenceCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // Northeast Direction
+            referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 1);
+            if (ValidateReferenceCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // East Direction
+            referenceCell = LoadReferenceCell(source.Position.Row, source.Position.Column + 1);
+            if (ValidateReferenceCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // Southeast Direction
+            referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 1);
+            if (ValidateReferenceCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // South Direction
+            referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column);
+            if (ValidateReferenceCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // Southwest Direction
+            referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 1);
+            if (ValidateReferenceCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // West Direction
+            referenceCell = LoadReferenceCell(source.Position.Row, source.Position.Column - 1);
+            if (ValidateReferenceCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
+
+            // Northwest Direction
+            referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 1);
+            if (ValidateReferenceCell(referenceCell)) {
+                legalMoves.Add(referenceCell);
+            }
 
             return legalMoves;
 

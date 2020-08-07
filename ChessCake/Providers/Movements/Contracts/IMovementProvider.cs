@@ -7,6 +7,8 @@ using System.Text;
 namespace ChessCake.Providers.Movements.Contracts {
     public interface IMovementProvider {
 
+        public IEngine Engine { get; }
+
         public IList<ICell> GenerateLegalMoves(ICell source);
 
         public bool IsLegalMovement(ICell source, ICell target);

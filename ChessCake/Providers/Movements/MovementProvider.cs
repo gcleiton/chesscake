@@ -13,7 +13,7 @@ using System.Text;
 namespace ChessCake.Providers.Movements {
     class MovementProvider : IMovementProvider {
 
-        private IEngine Engine;
+        public IEngine Engine { get; set; }
 
         public MovementProvider(IEngine engine) {
             Engine = engine;
@@ -28,9 +28,11 @@ namespace ChessCake.Providers.Movements {
             
             switch (piece.Type) {
                 case PieceType.PAWN:
+                    legalMoves = GeneratePawnMovements(source);
                     break;
 
                 case PieceType.KNIGHT:
+                    legalMoves = GenerateKnightMovements(source);
                     break;
 
                 case PieceType.BISHOP:
@@ -38,6 +40,7 @@ namespace ChessCake.Providers.Movements {
                     break;
 
                 case PieceType.ROOK:
+                    legalMoves = GenerateRookMovements(source);
                     break;
 
                 case PieceType.QUEEN:
@@ -45,6 +48,7 @@ namespace ChessCake.Providers.Movements {
                     break;
 
                 case PieceType.KING:
+                    legalMoves = GenerateKingMovements(source);
                     break;
 
                 default:
@@ -56,10 +60,14 @@ namespace ChessCake.Providers.Movements {
         }
 
         public IList<ICell> GeneratePawnMovements(ICell source) {
-            return null;
+            IPieceMovement pawnMovement = MovementGeneratorFactory.CreatePawnMovement(Engine);
+
+            return pawnMovement.GenerateLegalMoves(source);
         }
         public IList<ICell> GenerateKnightMovements(ICell source) {
-            return null;
+            IPieceMovement knightMovement = MovementGeneratorFactory.CreateKnightMovement(Engine);
+
+            return knightMovement.GenerateLegalMoves(source);
         }
 
         public IList<ICell> GenerateBishopMovements(ICell source) {
@@ -70,7 +78,9 @@ namespace ChessCake.Providers.Movements {
         }
 
         public IList<ICell> GenerateRookMovements(ICell source) {
-            return null;
+            IPieceMovement rookMovements = MovementGeneratorFactory.CreateRookMovement(Engine);
+
+            return rookMovements.GenerateLegalMoves(source);
         }
         public IList<ICell> GenerateQueenMovements(ICell source) {
             IPieceMovement queenMovement = MovementGeneratorFactory.CreateQueenMovement(Engine);
@@ -78,7 +88,9 @@ namespace ChessCake.Providers.Movements {
             return queenMovement.GenerateLegalMoves(source);
         }
         public IList<ICell> GenerateKingMovements(ICell source) {
-            return null;
+            IPieceMovement kingMovement = MovementGeneratorFactory.CreateKingMovement(Engine);
+
+            return kingMovement.GenerateLegalMoves(source);
         }
 
         public bool IsLegalMovement(ICell source, ICell target) {
@@ -90,7 +102,7 @@ namespace ChessCake.Providers.Movements {
         }
 
         public void Update(IEngine engine) {
-            this.Engine = engine;
+            Engine = engine;
         }
 
     }

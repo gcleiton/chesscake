@@ -1,6 +1,7 @@
 ﻿using ChessCake.Commons;
 using ChessCake.Engines.Contracts;
 using ChessCake.Models.Boards.Cells.Contracts;
+using ChessCake.Models.Positions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,12 +19,12 @@ namespace ChessCake.Providers.Movements.Pieces.Contracts {
         public abstract IList<ICell> GenerateLegalMoves(ICell source);
 
         protected bool ValidateReferenceCell(ICell cell) {
-            return !Common.IsObjectNull(cell) && !Engine.Board.ThereIsAPiece(cell);
+            return !Common.IsObjectNull(cell) && Position.IsValidPosition(cell.Position) && !Engine.Board.ThereIsAPiece(cell);
 
         }
 
         protected bool ValidateBreakCell(ICell cell) {
-            return !Common.IsObjectNull(cell) && Engine.IsThereOpponentPiece(cell);
+            return !Common.IsObjectNull(cell) && Position.IsValidPosition(cell.Position) && Engine.IsThereOpponentPiece(cell);
 
         }
     }
