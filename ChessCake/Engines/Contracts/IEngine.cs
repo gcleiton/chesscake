@@ -16,6 +16,9 @@ namespace ChessCake.Engines.Contracts {
 
         public IList<ICell> LegalMoves(IPosition sourcePosition);
 
+        public IDictionary<IPlayer, IList<BasePiece>> CapturedPieces { get; }
+
+        public int Turn { get; }
 
         public bool IsThereOpponentPiece(ICell cell);
 

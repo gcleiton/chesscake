@@ -17,6 +17,7 @@ using ChessCake.Commons;
 using ChessCake.Commons.Constants;
 using ChessCake.Engines.Contracts;
 using ChessCake.Models.Players.Contracts;
+using System.Linq;
 
 namespace ChessCake.Engines.Screens
 {
@@ -65,12 +66,28 @@ namespace ChessCake.Engines.Screens
 
         }
 
-        public static void PrintBoard(IEngine engine) {
-            IBoard board = engine.Board;
-            IPlayer currentPlayer = engine.CurrentPlayer;
+        public static void PrintMatch(IEngine engine) {
+            PrintCurrentPlayer(engine.CurrentPlayer);
+            PrintTurn(engine.Turn);
+            Console.WriteLine();
+            PrintBoard(engine.Board);
+            Console.WriteLine("\n");
 
+            PrintCapturedPieces(engine.CapturedPieces);
+            Console.WriteLine();
+
+        }
+
+        public static void PrintCurrentPlayer(IPlayer currentPlayer) {
             Console.WriteLine(String.Format(GlobalConstants.CURRENT_PLAYER_FORMATTER, currentPlayer.Name, currentPlayer.Color));
+        }
 
+        public static void PrintTurn(int turn) {
+            Console.WriteLine("Turn Count: " + turn);
+
+        }
+
+        public static void PrintBoard(IBoard board) {
             for (int i = 0; i < board.Rows; i++)
             {
                 Console.Write("(" + (8 - i) + ") ");
@@ -120,12 +137,12 @@ namespace ChessCake.Engines.Screens
         }
 
         public static void PrintSourceInput() {
-            Console.WriteLine('\n');
+            Console.WriteLine();
             Console.Write("Source: ");
         }
 
         public static void PrintTargetInput() {
-            Console.WriteLine("\n");
+            Console.WriteLine();
             Console.Write("Target: ");
         }
 
@@ -146,6 +163,19 @@ namespace ChessCake.Engines.Screens
                     Console.Write(piece, ConsoleColor.Yellow);
                 }
             }
+
+        }
+
+        private static void PrintCapturedPieces(IDictionary<IPlayer, IList<BasePiece>> capturedPieces) {
+            IPlayer whitePlayer = capturedPieces.FirstOrDefault(x => x.Key.Color == ChessColor.WHITE).Key;
+            IPlayer blackPlayer = capturedPieces.FirstOrDefault(x => x.Key.Color == ChessColor.BLACK).Key;
+
+            Console.WriteLine("Captured Pieces By Player: ");
+            Console.Write(whitePlayer.Name + ": ");
+            Console.WriteLine(string.Join(", ", capturedPieces[whitePlayer]), Color.Yellow);
+
+            Console.Write(blackPlayer.Name + ": ");
+            Console.WriteLine(string.Join(", ", capturedPieces[blackPlayer]));
 
         }
     }

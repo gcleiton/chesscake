@@ -41,17 +41,18 @@ namespace ChessCake.Engines {
             }
         }
 
-        private int Turn { get; set; }
+        public int Turn { get; private set; }
 
-        private IDictionary<ChessColor, IList<BasePiece>> CapturedPieces;
+        public IDictionary<IPlayer, IList<BasePiece>> CapturedPieces { get; private set; }
 
         public StandardGame(IDictionary<ChessColor, IPlayer> players) {
             Board = ChessFactory.CreateBoard();
 
             this.Players = players;
-            this.CapturedPieces = new Dictionary<ChessColor, IList<BasePiece>>();
             this.Turn = 1;
             this.CurrentPlayer = FindPlayer(ChessColor.WHITE);
+
+            CapturedPieces = initCapturedPieces();
 
             this.ValidateStandardGame();
 
@@ -60,14 +61,14 @@ namespace ChessCake.Engines {
             movementProvider = GameFactory.CreateMovementProvider(this);
 
         }
-
+        
         public void Initialize() {
             while (true) {
                 try {
 
                     Common.ClearConsole();
 
-                    Screen.PrintBoard(this);
+                    Screen.PrintMatch(this);
 
                     IPosition source = InputProvider.ReadChessPosition().ToPosition();
                     IList<ICell> legalMoves = LegalMoves(source);
@@ -116,8 +117,7 @@ namespace ChessCake.Engines {
             Board.PlacePiece(movedPiece, move.Target);
 
             if (!Common.IsObjectNull(capturedPiece)) {
-                Console.WriteLine(capturedPiece);
-                CapturedPieces[CurrentPlayer.Color].Add(capturedPiece);
+                CapturedPieces[CurrentPlayer].Add(capturedPiece);
 
             }
 
@@ -197,11 +197,18 @@ namespace ChessCake.Engines {
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
             AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
-            AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+            //AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
 
             AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
-            AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
+            //AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
 
+        }
+
+        private IDictionary<IPlayer, IList<BasePiece>> initCapturedPieces() {
+            return new Dictionary<IPlayer, IList<BasePiece>>() {
+                [WhitePlayer] = new List<BasePiece>(),
+                [BlackPlayer] = new List<BasePiece>()
+            };
         }
 
 

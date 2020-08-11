@@ -27,7 +27,7 @@ namespace ChessCake.Commons {
         }
 
         public static void ClearConsole() {
-            Console.WriteLine("\n");
+            Console.Clear();
         }
 
         public static void QuitGame() {
