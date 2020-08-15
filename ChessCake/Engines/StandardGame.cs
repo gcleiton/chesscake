@@ -4,6 +4,7 @@ using ChessCake.Commons.Enumerations;
 using ChessCake.Engines.Contracts;
 using ChessCake.Engines.Screens;
 using ChessCake.Exceptions;
+using ChessCake.Models.Boards.Cells;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
 using ChessCake.Models.Movements.Contracts;
@@ -18,6 +19,7 @@ using ChessCake.Providers.Movements.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ChessCake.Engines {
     class StandardGame : IEngine {
@@ -43,18 +45,23 @@ namespace ChessCake.Engines {
 
         public int Turn { get; private set; }
 
+        public IDictionary<IPlayer, IList<BasePiece>> Pieces { get; private set; }
+
         public IDictionary<IPlayer, IList<BasePiece>> CapturedPieces { get; private set; }
+
+        public bool InCheck { get; private set; }
 
         public StandardGame(IDictionary<ChessColor, IPlayer> players) {
             Board = ChessFactory.CreateBoard();
 
-            this.Players = players;
-            this.Turn = 1;
-            this.CurrentPlayer = FindPlayer(ChessColor.WHITE);
+            Players = players;
+            Turn = 1;
+            CurrentPlayer = FindPlayer(ChessColor.WHITE);
 
+            Pieces = initPieces();
             CapturedPieces = initCapturedPieces();
 
-            this.ValidateStandardGame();
+            ValidateStandardGame();
 
             InitBoard();
 
@@ -79,7 +86,7 @@ namespace ChessCake.Engines {
 
                     IPosition target = InputProvider.ReadChessPosition(false).ToPosition();
 
-                    IMovement nextMove = ChessFactory.CreateMovement(Board.GetCell(source), Board.GetCell(target));
+                    IMovement nextMove = ChessFactory.CreateMovement(Board.GetCell(source), Board.GetCell(target), CurrentPlayer);
 
                     PerformMove(nextMove);
 
@@ -90,36 +97,65 @@ namespace ChessCake.Engines {
             }
         }
 
-        public void PerformMove(IMovement move) {
+        private void PerformMove(IMovement move) {
+            Console.WriteLine(move.Source.Position);
             ValidateSource(move.Source);
             ValidateTarget(move.Source, move.Target);
 
-            MakeMove(move);
+            move = MakeMove(move);
 
             movementProvider.Update(this);
+
+            ValidateCheck(move);
+
+            Console.WriteLine("dps");
 
             NextTurn();
 
         }
 
-        public void NextTurn() {
-            Turn++;
-            CurrentPlayer = CurrentPlayer.Color == ChessColor.WHITE ? BlackPlayer : WhitePlayer;
-     
-        }
-
-        public void MakeMove(IMovement move) {
+        private IMovement MakeMove(IMovement move) {
             BasePiece movedPiece = Board.RemovePiece(move.Source.Position);
-            movedPiece.increaseMoveCount();
+            movedPiece.IncreaseMoveCount();
+            move.MovedPiece = movedPiece;
 
             BasePiece capturedPiece = Board.RemovePiece(move.Target.Position);
+            move.CapturedPiece = capturedPiece;
 
             Board.PlacePiece(movedPiece, move.Target);
 
             if (!Common.IsObjectNull(capturedPiece)) {
+                Pieces[move.Player].Remove(capturedPiece);
                 CapturedPieces[CurrentPlayer].Add(capturedPiece);
 
             }
+
+            return move;
+
+        }
+
+        private void NextTurn() {
+            Turn++;
+            CurrentPlayer = CurrentPlayer.Color == ChessColor.WHITE ? BlackPlayer : WhitePlayer;
+
+        }
+
+        private IMovement UndoMove(IMovement move) {
+            BasePiece capturedPiece = move.CapturedPiece;
+
+            BasePiece movedPiece = Board.RemovePiece(move.Target);
+            movedPiece.DecreaseMoveCount();
+            move.MovedPiece = movedPiece;
+
+            Board.PlacePiece(movedPiece, move.Source);
+            
+            if(!Common.IsObjectNull(capturedPiece)) {
+                Board.PlacePiece(capturedPiece, move.Target);
+                Pieces[move.Player].Add(capturedPiece);
+                CapturedPieces[move.Player].Remove(capturedPiece);
+            }
+
+            return move;
 
         }
 
@@ -136,14 +172,62 @@ namespace ChessCake.Engines {
             return Players[color];
         }
 
-        private void AddPieceOnPlayer(ChessColor color, BasePiece piece) {
-            Players[color].AddPiece(piece);
+        public IPlayer FindOpponentPlayer() {
+            return CurrentPlayer.Color == ChessColor.WHITE ? BlackPlayer : WhitePlayer;
+        }
+
+        public IPlayer FindOpponentPlayer(IPlayer player) {
+            return player.Color == ChessColor.WHITE ? BlackPlayer : WhitePlayer;
+        }
+
+        private IList<BasePiece> FetchOpponentPieces() {
+            return Pieces[FindOpponentPlayer()];
+        }
+
+        private ICell FindKing(ChessColor color) {
+            foreach(ICell cell in Board.Grid) {
+                BasePiece piece = cell.Piece;
+                if(!Common.IsObjectNull(piece) && piece.Type == PieceType.KING && piece.Color == color) {
+                    return cell;
+                }
+            }
+
+            throw new IllegalStateException("There is no king on the board");
+        }
+
+        private void ValidateCheck(IMovement move) {
+            if (IsPlayerInCheck(CurrentPlayer)) {
+                UndoMove(move);
+                throw new ChessException("You can't put yourself in check!");
+
+            }
+
+            InCheck = IsPlayerInCheck(FindOpponentPlayer()) ? true : false;
+
+        }
+
+        private bool IsPlayerInCheck(IPlayer player) {
+            ICell kingCell = FindKing(player.Color);
+            IList<BasePiece> opponentPieces = FetchOpponentPieces();
+
+            foreach(BasePiece piece in opponentPieces) {
+                IList<ICell> possibleMoves = LegalMoves(piece.Position, false);
+                if(possibleMoves.Contains(kingCell)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void AddPieceOnPlayer(BasePiece piece) {
+            IPlayer player = FindPlayer(piece.Color);
+            Pieces[player].Add(piece);
         }
 
         private void PlaceNewPiece(BasePiece piece, ChessPosition chessPosition) {
             Board.PlacePiece(piece, Board.GetCell(chessPosition.ToPosition()));
-            //AddPieceOnPlayer(piece.Color, piece);
-
+            AddPieceOnPlayer(piece);
         }
 
         public bool IsThereOpponentPiece(ICell cell) {
@@ -151,11 +235,15 @@ namespace ChessCake.Engines {
             return piece != null && piece.Color != CurrentPlayer.Color;
         }
 
-        public IList<ICell> LegalMoves(IPosition sourcePosition) {
+        public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = true) {
             ICell sourceCell = Board.GetCell(sourcePosition);
-            ValidateSource(sourceCell);
-            var test = movementProvider.GenerateLegalMoves(sourceCell);
-            return test;
+            if(validateSource) ValidateSource(sourceCell);
+            IList<ICell> legalMoves = movementProvider.GenerateLegalMoves(sourceCell);
+            return legalMoves;
+        }
+
+        public IList<ICell> LegalMoves(ICell sourceCell) {
+            return LegalMoves(sourceCell.Position);
         }
 
         private void ValidateSource(ICell source) {
@@ -178,7 +266,7 @@ namespace ChessCake.Engines {
 
         private void AddPawnsOnBoard(ChessColor color, int row) {
             for (int i = 0; i < GlobalConstants.STANDARD_BOARD_ROWS; i++) {
-                Pawn pawn = (Pawn)ChessFactory.CreatePiece(PieceType.PAWN, color);
+                Pawn pawn = (Pawn)ChessFactory.CreatePiece(PieceType.PAWN, color, ChessFactory.CreatePosition(row, i));
                 PlaceNewPiece(pawn, ChessFactory.CreateChessPosition((char)(i + 'A'), row));
             }
         }
@@ -186,7 +274,7 @@ namespace ChessCake.Engines {
         private void AddMajorPiecesOnBoard(ChessColor color, int row) {
             for (int i = 0; i < GlobalConstants.STANDARD_BOARD_ROWS; i++) {
                 PieceType type = GameConstants.MAJOR_PIECES_SEQUENCE.ElementAt(i);
-                BasePiece piece = ChessFactory.CreatePiece(type, color);
+                BasePiece piece = ChessFactory.CreatePiece(type, color, ChessFactory.CreatePosition(row, i));
                 PlaceNewPiece(piece, ChessFactory.CreateChessPosition((char)(i + 'A'), row));
             }
         }
@@ -205,6 +293,13 @@ namespace ChessCake.Engines {
         }
 
         private IDictionary<IPlayer, IList<BasePiece>> initCapturedPieces() {
+            return new Dictionary<IPlayer, IList<BasePiece>>() {
+                [WhitePlayer] = new List<BasePiece>(),
+                [BlackPlayer] = new List<BasePiece>()
+            };
+        }
+
+        private IDictionary<IPlayer, IList<BasePiece>> initPieces() {
             return new Dictionary<IPlayer, IList<BasePiece>>() {
                 [WhitePlayer] = new List<BasePiece>(),
                 [BlackPlayer] = new List<BasePiece>()

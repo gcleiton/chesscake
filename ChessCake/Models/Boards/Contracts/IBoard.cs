@@ -27,6 +27,8 @@ namespace ChessCake.Models.Boards.Contracts {
 
         public BasePiece RemovePiece(IPosition position);
 
+        public BasePiece RemovePiece(ICell cell);
+
         public bool ThereIsAPiece(IPosition position);
 
         public bool ThereIsAPiece(ICell cell);

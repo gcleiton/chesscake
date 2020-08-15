@@ -8,8 +8,10 @@ using ChessCake.Models.Movements.Contracts;
 using ChessCake.Models.Pieces;
 using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Players;
+using ChessCake.Models.Players.Contracts;
 using ChessCake.Models.Positions;
 using ChessCake.Models.Positions.Chess;
+using ChessCake.Models.Positions.Contracts;
 using ChessCake.Providers.Movements;
 using ChessCake.Providers.Movements.Contracts;
 using ChessCake.Providers.Movements.Pieces;
@@ -43,42 +45,42 @@ namespace ChessCake.Commons {
             return new Player(name, color);
         }
 
-        public static IMovement CreateMovement(ICell source, ICell target) {
-            return new Movement(source, target);
+        public static IMovement CreateMovement(ICell source, ICell target, IPlayer player) {
+            return new Movement(source, target, player);
         }
 
 
         
 
-        public static BasePiece CreatePiece(PieceType type, ChessColor color) {
+        public static BasePiece CreatePiece(PieceType type, ChessColor color, IPosition position) {
             BasePiece piece = null;
             switch (type) {
                 case PieceType.PAWN:
-                    piece = new Pawn(color);
+                    piece = new Pawn(color, position);
                     break;
 
                 case PieceType.KNIGHT:
-                    piece = new Knight(color);
+                    piece = new Knight(color, position);
                     break;
 
                 case PieceType.BISHOP:
-                    piece = new Bishop(color);
+                    piece = new Bishop(color, position);
                     break;
 
                 case PieceType.ROOK:
-                    piece = new Rook(color);
+                    piece = new Rook(color, position);
                     break;
 
                 case PieceType.QUEEN:
-                    piece = new Queen(color);
+                    piece = new Queen(color, position);
                     break;
 
                 case PieceType.KING:
-                    piece = new King(color);
+                    piece = new King(color, position);
                     break;
 
                 case PieceType.EMPTY:
-                    piece = new Empty(color);
+                    piece = new Empty(color, position);
                     break;
 
                 default:

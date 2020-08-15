@@ -63,6 +63,7 @@ namespace ChessCake.Models.Boards {
             //if(ThereIsAPiece(cell)) {
             //    throw new BoardException("There is already a piece on position " + cell.Position);
             //}
+            piece.Position = cell.Position;
             Grid[cell.Position.Row, cell.Position.Column].PlacePiece(piece);
         }
 
@@ -73,6 +74,11 @@ namespace ChessCake.Models.Boards {
             Grid[position.Row, position.Column] = cell;
 
             return releasedPiece;
+        }
+
+        public BasePiece RemovePiece(ICell cell) {
+            return RemovePiece(cell.Position);
+
         }
 
         public bool ThereIsAPiece(IPosition position) {

@@ -73,9 +73,17 @@ namespace ChessCake.Engines.Screens
             PrintBoard(engine.Board);
             Console.WriteLine("\n");
 
+            if(engine.InCheck) {
+                PrintInCheck();
+            }
+
             PrintCapturedPieces(engine.CapturedPieces);
             Console.WriteLine();
 
+        }
+
+        private static void PrintInCheck() {
+            PrintMessage("Pay Attention!", "Match in Check!");
         }
 
         public static void PrintCurrentPlayer(IPlayer currentPlayer) {

@@ -14,7 +14,9 @@ namespace ChessCake.Engines.Contracts {
 
         public IPlayer CurrentPlayer { get;  }
 
-        public IList<ICell> LegalMoves(IPosition sourcePosition);
+        public bool InCheck { get; }
+
+        public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = false);
 
         public IDictionary<IPlayer, IList<BasePiece>> CapturedPieces { get; }
 

@@ -8,11 +8,11 @@ using System.Text;
 namespace ChessCake.Models.Movements.Contracts {
     public interface IMovement {
 
-        public IPlayer player { get; }
+        public IPlayer Player { get; }
         public ICell Source { get; }
         public ICell Target { get; }
-        public IPiece MovedPiece { get; }
-        public IPiece CapturedPiece { get; }
+        public BasePiece MovedPiece { get; set; }
+        public BasePiece CapturedPiece { get; set;  }
 
     }
 }
