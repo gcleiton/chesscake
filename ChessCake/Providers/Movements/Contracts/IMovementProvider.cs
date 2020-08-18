@@ -1,5 +1,6 @@
 ﻿using ChessCake.Engines.Contracts;
 using ChessCake.Models.Boards.Cells.Contracts;
+using ChessCake.Models.Players.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,8 @@ namespace ChessCake.Providers.Movements.Contracts {
 
 
         public void Update(IEngine engine);
+
+        public void UpdateCurrentPlayer(IPlayer player);
 
     }
 }

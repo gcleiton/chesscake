@@ -12,9 +12,11 @@ namespace ChessCake.Engines.Contracts {
     public interface IEngine {
         public IBoard Board { get; }
 
-        public IPlayer CurrentPlayer { get;  }
+        public IPlayer CurrentPlayer { get; set; }
 
         public bool InCheck { get; }
+
+        public bool IsCheckMate { get; }
 
         public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = false);
 

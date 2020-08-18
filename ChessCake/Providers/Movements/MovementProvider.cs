@@ -4,6 +4,7 @@ using ChessCake.Commons.Factories;
 using ChessCake.Engines.Contracts;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Pieces.Contracts;
+using ChessCake.Models.Players.Contracts;
 using ChessCake.Providers.Movements.Contracts;
 using ChessCake.Providers.Movements.Pieces.Contracts;
 using System;
@@ -103,6 +104,10 @@ namespace ChessCake.Providers.Movements {
 
         public void Update(IEngine engine) {
             Engine = engine;
+        }
+
+        public void UpdateCurrentPlayer(IPlayer player) {
+            Engine.CurrentPlayer = player;
         }
 
     }

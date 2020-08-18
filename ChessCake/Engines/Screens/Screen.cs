@@ -68,22 +68,36 @@ namespace ChessCake.Engines.Screens
 
         public static void PrintMatch(IEngine engine) {
             PrintCurrentPlayer(engine.CurrentPlayer);
+
             PrintTurn(engine.Turn);
             Console.WriteLine();
+
             PrintBoard(engine.Board);
             Console.WriteLine("\n");
-
-            if(engine.InCheck) {
-                PrintInCheck();
-            }
 
             PrintCapturedPieces(engine.CapturedPieces);
             Console.WriteLine();
 
+            HandleCheck(engine);
+
+        }
+
+        private static void HandleCheck(IEngine engine) {
+            if (!engine.IsCheckMate) {
+                if (engine.InCheck) {
+                    PrintInCheck();
+                }
+            } else {
+                PrintCheckMate(engine.CurrentPlayer);
+            }
         }
 
         private static void PrintInCheck() {
             PrintMessage("Pay Attention!", "Match in Check!");
+        }
+
+        private static void PrintCheckMate(IPlayer player) {
+            PrintMessage("CheckMate!", "Congratulations to Player " + player.Name + "!");
         }
 
         public static void PrintCurrentPlayer(IPlayer currentPlayer) {

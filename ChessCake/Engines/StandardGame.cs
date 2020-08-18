@@ -4,7 +4,6 @@ using ChessCake.Commons.Enumerations;
 using ChessCake.Engines.Contracts;
 using ChessCake.Engines.Screens;
 using ChessCake.Exceptions;
-using ChessCake.Models.Boards.Cells;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
 using ChessCake.Models.Movements.Contracts;
@@ -19,7 +18,6 @@ using ChessCake.Providers.Movements.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace ChessCake.Engines {
     class StandardGame : IEngine {
@@ -51,6 +49,8 @@ namespace ChessCake.Engines {
 
         public bool InCheck { get; private set; }
 
+        public bool IsCheckMate { get; private set; }
+
         public StandardGame(IDictionary<ChessColor, IPlayer> players) {
             Board = ChessFactory.CreateBoard();
 
@@ -70,7 +70,7 @@ namespace ChessCake.Engines {
         }
         
         public void Initialize() {
-            while (true) {
+            while (!IsCheckMate) {
                 try {
 
                     Common.ClearConsole();
@@ -95,10 +95,13 @@ namespace ChessCake.Engines {
                     Console.ReadLine();
                 }
             }
+
+            Common.ClearConsole();
+            Screen.PrintMatch(this);
+
         }
 
         private void PerformMove(IMovement move) {
-            Console.WriteLine(move.Source.Position);
             ValidateSource(move.Source);
             ValidateTarget(move.Source, move.Target);
 
@@ -108,10 +111,9 @@ namespace ChessCake.Engines {
 
             ValidateCheck(move);
 
-            Console.WriteLine("dps");
+            if(ValidateCheckMate(FindOpponentPlayer())) IsCheckMate = true;
 
-            NextTurn();
-
+            else NextTurn();
         }
 
         private IMovement MakeMove(IMovement move) {
@@ -180,6 +182,14 @@ namespace ChessCake.Engines {
             return player.Color == ChessColor.WHITE ? BlackPlayer : WhitePlayer;
         }
 
+        private IList<BasePiece> FetchPieces(IPlayer player) {
+            return Pieces[player];
+        }
+
+        private IList<BasePiece> FetchOpponentPieces(IPlayer player) {
+            return Pieces[FindOpponentPlayer(player)];
+        }
+
         private IList<BasePiece> FetchOpponentPieces() {
             return Pieces[FindOpponentPlayer()];
         }
@@ -206,13 +216,39 @@ namespace ChessCake.Engines {
 
         }
 
-        private bool IsPlayerInCheck(IPlayer player) {
+        private bool ValidateCheckMate(IPlayer player) {
+            if (!IsPlayerInCheck(player)) return false;
+
+            IList<BasePiece> playerPieces = FetchPieces(player);
+            movementProvider.UpdateCurrentPlayer(player);
+
+            foreach(BasePiece piece in playerPieces) {
+                IList<ICell> legalMoves = LegalMoves(piece.Position, false);
+
+                foreach(ICell target in legalMoves) {
+                    ICell source = Board.GetCell(piece.Position);
+                    IMovement possibleMove = MakeMove(ChessFactory.CreateMovement(source, target, player));
+                    bool inCheck = IsPlayerInCheck(player, true);
+
+                    UndoMove(possibleMove);
+
+                    if (!inCheck) return false;
+                }
+            }
+
+            return true;
+
+        }
+
+        private bool IsPlayerInCheck(IPlayer player, bool isCheckmateValidation = false) {
             ICell kingCell = FindKing(player.Color);
-            IList<BasePiece> opponentPieces = FetchOpponentPieces();
+            IList<BasePiece> opponentPieces = FetchOpponentPieces(player);
+
+            if (isCheckmateValidation) movementProvider.UpdateCurrentPlayer(FindOpponentPlayer(player));
 
             foreach(BasePiece piece in opponentPieces) {
-                IList<ICell> possibleMoves = LegalMoves(piece.Position, false);
-                if(possibleMoves.Contains(kingCell)) {
+                IList<ICell> legalMoves = LegalMoves(piece.Position, false);
+                if(legalMoves.Contains(kingCell)) {
                     return true;
                 }
             }
@@ -284,11 +320,27 @@ namespace ChessCake.Engines {
             Player firstPlayer = (Player)Players.Values.First();
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
-            AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
-            //AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+            BasePiece piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('h', 7).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 7));
 
-            AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
-            //AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
+            piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('d', 1).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('d', 1));
+
+            piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
+
+
+            piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('b', 8).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('b', 8));
+
+            piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('a', 8).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 8));
+
+            //AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
+            ////AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+
+            //AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
+            ////AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
 
         }
 
