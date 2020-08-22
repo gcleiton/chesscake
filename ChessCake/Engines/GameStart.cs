@@ -14,7 +14,7 @@ namespace ChessCake.Engines
     public class GameStart {
 
         public static void Start() {
-            try {
+            //try {
                 //bool canStartGame = InputProvider.ReadStartGame();
 
                 //Console.WriteLine(canStartGame);
@@ -33,9 +33,9 @@ namespace ChessCake.Engines
 
                 engine.Initialize();
 
-            } catch (Exception e) {
-                Console.WriteLine(e.Message);
-            }
+            //} catch (Exception e) {
+            //    Console.WriteLine(e.Message);
+            //}
 
         }
 

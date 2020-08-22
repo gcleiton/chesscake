@@ -89,7 +89,7 @@ namespace ChessCake.Providers.Movements {
             return queenMovement.GenerateLegalMoves(source);
         }
         public IList<ICell> GenerateKingMovements(ICell source) {
-            IPieceMovement kingMovement = MovementGeneratorFactory.CreateKingMovement(Engine);
+            IPieceMovement kingMovement = MovementGeneratorFactory.CreateKingMovement(Engine, source.Piece);
 
             return kingMovement.GenerateLegalMoves(source);
         }
@@ -99,6 +99,7 @@ namespace ChessCake.Providers.Movements {
         }
 
         public bool IsThereAnyLegalMove(ICell source) {
+
             return GenerateLegalMoves(source).Count != 0;
         }
 

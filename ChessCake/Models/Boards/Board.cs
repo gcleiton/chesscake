@@ -1,5 +1,6 @@
 ﻿using ChessCake.Commons;
 using ChessCake.Commons.Constants;
+using ChessCake.Commons.Enumerations;
 using ChessCake.Exceptions;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
@@ -43,15 +44,13 @@ namespace ChessCake.Models.Boards {
         }
 
         public ICell GetCell(IPosition position) {
-            if (!Position.IsValidCoordinates(position.Row, position.Column)) {
-                throw new BoardException("Coordenadas da posição inválida!");
-            }
+            return GetCell(position.Row, position.Column);
 
-            return Grid[position.Row, position.Column];
         }
 
         public ICell GetCell(int row, int column) {
             if (!Position.IsValidCoordinates(row, column)) {
+                return null;
                 throw new BoardException("Coordenadas da posição inválida!");
             }
 
@@ -78,6 +77,21 @@ namespace ChessCake.Models.Boards {
 
         public BasePiece RemovePiece(ICell cell) {
             return RemovePiece(cell.Position);
+
+        }
+
+        public ICell FindNeighbor(ICell referenceCell, int offset, GridCoordinate coordinate) {
+            IPosition position = ChessFactory.CreatePosition(0, 0);
+
+            if (coordinate == GridCoordinate.ROW) {
+                position.SetCoordinates(referenceCell.Position.Row + offset, referenceCell.Position.Column);
+                return GetCell(position);
+               
+            }
+
+            position.SetCoordinates(referenceCell.Position.Row, referenceCell.Position.Column + offset);
+
+            return GetCell(position);
 
         }
 

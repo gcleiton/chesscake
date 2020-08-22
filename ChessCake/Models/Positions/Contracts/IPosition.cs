@@ -6,5 +6,7 @@ namespace ChessCake.Models.Positions.Contracts {
     public interface IPosition {
         public int Row { get; }
         public int Column { get; }
+
+        public void SetCoordinates(int row, int column);
     }
 }

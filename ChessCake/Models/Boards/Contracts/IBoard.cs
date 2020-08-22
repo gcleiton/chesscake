@@ -1,4 +1,5 @@
-﻿using ChessCake.Models.Boards.Cells;
+﻿using ChessCake.Commons.Enumerations;
+using ChessCake.Models.Boards.Cells;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Positions;
@@ -24,6 +25,8 @@ namespace ChessCake.Models.Boards.Contracts {
         public ICell GetCell(int row, int column);
 
         public void PlacePiece(BasePiece piece, ICell cell);
+
+        public ICell FindNeighbor(ICell referenceCell, int offset, GridCoordinate coordinate);
 
         public BasePiece RemovePiece(IPosition position);
 

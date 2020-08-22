@@ -18,6 +18,7 @@ using ChessCake.Providers.Movements.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace ChessCake.Engines {
     class StandardGame : IEngine {
@@ -49,7 +50,7 @@ namespace ChessCake.Engines {
 
         public bool InCheck { get; private set; }
 
-        public bool IsCheckMate { get; private set; }
+        public bool InCheckmate { get; private set; }
 
         public StandardGame(IDictionary<ChessColor, IPlayer> players) {
             Board = ChessFactory.CreateBoard();
@@ -70,14 +71,15 @@ namespace ChessCake.Engines {
         }
         
         public void Initialize() {
-            while (!IsCheckMate) {
-                try {
+            while (!InCheckmate) {
+                //try {
 
                     Common.ClearConsole();
 
                     Screen.PrintMatch(this);
 
                     IPosition source = InputProvider.ReadChessPosition().ToPosition();
+
                     IList<ICell> legalMoves = LegalMoves(source);
 
                     Common.ClearConsole();
@@ -90,10 +92,11 @@ namespace ChessCake.Engines {
 
                     PerformMove(nextMove);
 
-                } catch (ChessException e) {
-                    Console.WriteLine(e.Message);
-                    Console.ReadLine();
-                }
+                
+                //} catch (ChessException e) {
+                //    Console.WriteLine(e.Message);
+                //    Console.ReadLine();
+                //}
             }
 
             Common.ClearConsole();
@@ -111,7 +114,7 @@ namespace ChessCake.Engines {
 
             ValidateCheck(move);
 
-            if(ValidateCheckMate(FindOpponentPlayer())) IsCheckMate = true;
+            if(ValidateCheckMate(FindOpponentPlayer())) InCheckmate = true;
 
             else NextTurn();
         }
@@ -132,7 +135,79 @@ namespace ChessCake.Engines {
 
             }
 
+            // Special Move - Castling:
+
+            if (IsCastlingMove(move)) {
+                HandleCastlingMove(move);
+            }
+
             return move;
+
+        }
+
+        private bool IsCastlingMove(IMovement move) {
+            return IsRightCastlingMove(move) || IsLeftCastlingMove(move);
+
+        }
+
+        private bool IsRightCastlingMove(IMovement move) {
+            return move.MovedPiece.Type == PieceType.KING && move.Target.Position.Column == move.Source.Position.Column + 2;
+
+        }
+
+        private bool IsLeftCastlingMove(IMovement move) {
+            return move.MovedPiece.Type == PieceType.KING && move.Target.Position.Column == move.Source.Position.Column -2;
+
+        }
+
+        private IMovement GenerateCastlingMove(CastlingDirection direction, IMovement kingMove) {
+            ICell source, target;
+
+            if (direction == CastlingDirection.RIGHT) {
+                source = Board.GetCell(kingMove.Source.Position.Row, kingMove.Source.Position.Column + 3);
+                target = Board.GetCell(kingMove.Source.Position.Row, kingMove.Source.Position.Column + 1);
+                return ChessFactory.CreateMovement(source, target, CurrentPlayer);
+
+            }
+
+            source = Board.GetCell(kingMove.Source.Position.Row, kingMove.Source.Position.Column - 4);
+            target = Board.GetCell(kingMove.Source.Position.Row, kingMove.Source.Position.Column - 1);
+
+            return ChessFactory.CreateMovement(source, target, CurrentPlayer);
+
+        }
+
+        private IMovement MakeCastlingMove(CastlingDirection direction, IMovement kingMove) { // Right Rook
+            IMovement move = GenerateCastlingMove(direction, kingMove);
+
+            BasePiece capturedPiece = Board.RemovePiece(move.Source.Position);
+            Board.PlacePiece(move.MovedPiece, move.Target);
+
+            move.CapturedPiece = capturedPiece;
+            move.MovedPiece.IncreaseMoveCount();
+
+            return move;
+
+        }
+
+        private IMovement UndoCastlingMove(CastlingDirection direction, IMovement kingMove) {
+            IMovement move = GenerateCastlingMove(direction, kingMove);
+
+            Board.PlacePiece(move.MovedPiece, move.Source);
+            move.MovedPiece.DecreaseMoveCount();
+
+            return move;
+        }
+
+        private IMovement HandleCastlingMove(IMovement kingMove, bool IsUndo = false) {
+            if(IsRightCastlingMove(kingMove)) {
+                if (IsUndo) return UndoCastlingMove(CastlingDirection.RIGHT, kingMove);
+                return MakeCastlingMove(CastlingDirection.RIGHT, kingMove);
+            }
+
+            if (IsUndo) return UndoCastlingMove(CastlingDirection.LEFT, kingMove);
+
+            return MakeCastlingMove(CastlingDirection.LEFT, kingMove);
 
         }
 
@@ -154,8 +229,12 @@ namespace ChessCake.Engines {
             if(!Common.IsObjectNull(capturedPiece)) {
                 Board.PlacePiece(capturedPiece, move.Target);
                 Pieces[move.Player].Add(capturedPiece);
-                CapturedPieces[move.Player].Remove(capturedPiece);
+                CapturedPieces[FindOpponentPlayer(move.Player)].Remove(capturedPiece);
             }
+
+            //if (IsCastlingMove(move)) {
+            //    HandleCastlingMove(move, true);
+            //}
 
             return move;
 
@@ -222,7 +301,7 @@ namespace ChessCake.Engines {
             IList<BasePiece> playerPieces = FetchPieces(player);
             movementProvider.UpdateCurrentPlayer(player);
 
-            foreach(BasePiece piece in playerPieces) {
+            foreach(BasePiece piece in playerPieces.ToList()) {
                 IList<ICell> legalMoves = LegalMoves(piece.Position, false);
 
                 foreach(ICell target in legalMoves) {
@@ -273,8 +352,15 @@ namespace ChessCake.Engines {
 
         public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = true) {
             ICell sourceCell = Board.GetCell(sourcePosition);
-            if(validateSource) ValidateSource(sourceCell);
+
+            //Console.WriteLine("Source King: " + sourceCell.Piece.Position);
+
+            if (validateSource) ValidateSource(sourceCell);
+
+            //Console.WriteLine("Source King 2: " + sourceCell.Piece.Position);
+
             IList<ICell> legalMoves = movementProvider.GenerateLegalMoves(sourceCell);
+
             return legalMoves;
         }
 
@@ -283,15 +369,22 @@ namespace ChessCake.Engines {
         }
 
         private void ValidateSource(ICell source) {
+
             if (!source.IsOccupied()) {
                 throw new ChessException("Não existe nenhuma peça na posição de origem informado.");
             }
+
             if (CurrentPlayer != FindPlayer(source.Piece.Color)) {
                 throw new ChessException("A peça selecionada não pertence a você.");
             }
+
+            // problema aqui
             if (!movementProvider.IsThereAnyLegalMove(source)) {
                 throw new ChessException("Não existe movimentos possíveis para a peça selecionada.");
             }
+
+            //Console.WriteLine("Source King 5: " + source.Piece.Position);
+
         }
 
         private void ValidateTarget(ICell source, ICell target) {
@@ -320,21 +413,23 @@ namespace ChessCake.Engines {
             Player firstPlayer = (Player)Players.Values.First();
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
-            BasePiece piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('h', 7).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 7));
+            BasePiece piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('a', 1).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 1));
 
-            piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('d', 1).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('d', 1));
+            piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('h', 1).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 1));
 
             piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
             PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
 
-
-            piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('b', 8).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('b', 8));
-
-            piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('a', 8).ToPosition());
+            piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('a', 8).ToPosition());
             PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 8));
+
+            piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('h', 8).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 8));
+
+            piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('e', 8).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 8));
 
             //AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
             ////AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
@@ -383,5 +478,20 @@ namespace ChessCake.Engines {
         //        players[Color.BLACK] = blackPlayer;
         //    }
 
+    }
+
+    [Serializable]
+    internal class IllegalStateException : Exception {
+        public IllegalStateException() {
+        }
+
+        public IllegalStateException(string message) : base(message) {
+        }
+
+        public IllegalStateException(string message, Exception innerException) : base(message, innerException) {
+        }
+
+        protected IllegalStateException(SerializationInfo info, StreamingContext context) : base(info, context) {
+        }
     }
 }

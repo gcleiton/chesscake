@@ -1,4 +1,5 @@
 ﻿using ChessCake.Engines.Contracts;
+using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Providers.Movements.Pieces;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,8 @@ namespace ChessCake.Commons.Factories {
             return new QueenMovement(engine);
         }
 
-        public static KingMovement CreateKingMovement(IEngine engine) {
-            return new KingMovement(engine);
+        public static KingMovement CreateKingMovement(IEngine engine, IPiece piece) {
+            return new KingMovement(engine, piece);
         }
 
     }

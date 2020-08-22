@@ -16,7 +16,7 @@ namespace ChessCake.Engines.Contracts {
 
         public bool InCheck { get; }
 
-        public bool IsCheckMate { get; }
+        public bool InCheckmate { get; }
 
         public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = false);
 

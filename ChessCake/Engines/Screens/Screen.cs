@@ -2,18 +2,14 @@
 using ChessCake.Exceptions;
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
-using ChessCake.Models.ChessPositions.Contracts;
 using ChessCake.Models.Pieces.Contracts;
-using ChessCake.Models.Positions.Chess;
 using ConsoleColor = System.Drawing.Color;
 using FigletFont = Colorful.FigletFont;
 using Figlet = Colorful.Figlet;
 using Console = Colorful.Console;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Drawing;
-using ChessCake.Commons;
 using ChessCake.Commons.Constants;
 using ChessCake.Engines.Contracts;
 using ChessCake.Models.Players.Contracts;
@@ -83,7 +79,7 @@ namespace ChessCake.Engines.Screens
         }
 
         private static void HandleCheck(IEngine engine) {
-            if (!engine.IsCheckMate) {
+            if (!engine.InCheckmate) {
                 if (engine.InCheck) {
                     PrintInCheck();
                 }

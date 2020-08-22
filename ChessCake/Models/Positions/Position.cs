@@ -3,6 +3,7 @@ using ChessCake.Commons;
 using ChessCake.Commons.Constants;
 using ChessCake.Exceptions;
 using ChessCake.Models.Positions.Contracts;
+using Colorful;
 using System.Text;
 
 namespace ChessCake.Models.Positions {
@@ -19,14 +20,19 @@ namespace ChessCake.Models.Positions {
             this.Column = column;
         }
 
+        public void SetCoordinates(int row, int column) {
+            Row = row;
+            Column = column;
+        }
+
         public static bool IsValidPosition(IPosition position) {
-            return (position.Row >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && position.Row <= GlobalConstants.MAX_ROW_VALUE_ON_GRID
-                && position.Column >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && position.Column <= GlobalConstants.MAX_ROW_VALUE_ON_GRID);
+
+            return IsValidCoordinates(position.Row, position.Column);
         }
 
         public static bool IsValidCoordinates(int row, int column) {
-            return (row >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && row <= GlobalConstants.MAX_ROW_VALUE_ON_GRID
-                && column >= GlobalConstants.MIN_COLUMN_VALUE_ON_GRID && column <= GlobalConstants.MAX_COLUMN_VALUE_ON_GRID);
+            return row >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && row <= GlobalConstants.MAX_ROW_VALUE_ON_GRID
+                && column >= GlobalConstants.MIN_COLUMN_VALUE_ON_GRID && column <= GlobalConstants.MAX_COLUMN_VALUE_ON_GRID;
         }
 
         public override string ToString() {
