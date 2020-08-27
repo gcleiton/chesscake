@@ -26,6 +26,8 @@ namespace ChessCake.Models.Boards.Contracts {
 
         public void PlacePiece(BasePiece piece, ICell cell);
 
+        public ICell FindNeighbor(BasePiece referencePiece, int offset, GridCoordinate coordinate);
+
         public ICell FindNeighbor(ICell referenceCell, int offset, GridCoordinate coordinate);
 
         public BasePiece RemovePiece(IPosition position);

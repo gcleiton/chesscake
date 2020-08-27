@@ -17,70 +17,99 @@ namespace ChessCake.Providers.Movements.Pieces {
 
         public override IList<ICell> GenerateLegalMoves(ICell source) {
             IList<ICell> legalMoves = new List<ICell>();
-            ICell firstCell, secondCell, diagonalCell;
-            IPiece selectedPiece = source.Piece;
+            ICell referenceCell;
+            BasePiece selectedPiece = source.Piece;
 
             if (selectedPiece.Color == ChessColor.WHITE) {
-                firstCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column);
-                if (ValidateReferenceCell(firstCell)) {
-                    legalMoves.Add(firstCell);
+                referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column);
+                if (ValidateReferenceCell(referenceCell)) {
+                    legalMoves.Add(referenceCell);
                 }
 
-                secondCell = LoadReferenceCell(source.Position.Row - 2, source.Position.Column);
-                if (ValidateReferenceCell(secondCell) && ValidateReferenceCell(firstCell) && selectedPiece.MoveCount == 0) {
-                    legalMoves.Add(secondCell);
+                referenceCell = LoadReferenceCell(source.Position.Row - 2, source.Position.Column);
+                if (ValidateReferenceCell(referenceCell) && ValidateReferenceCell(referenceCell) && selectedPiece.MoveCount == 0) {
+                    legalMoves.Add(referenceCell);
                 }
 
                 // Northeast Direction
-                diagonalCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 1);
-                if (ValidateBreakCell(diagonalCell)) {
-                    legalMoves.Add(diagonalCell);
+                referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 1);
+                if (ValidateBreakCell(referenceCell)) {
+                    legalMoves.Add(referenceCell);
 
                 }
 
                 // Northwest Direction
-                diagonalCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 1);
-                if(ValidateBreakCell(diagonalCell)) {
-                    legalMoves.Add(diagonalCell);
+                referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 1);
+                if(ValidateBreakCell(referenceCell)) {
+                    legalMoves.Add(referenceCell);
 
                 }
+
+                // Special move - enPassant
+
+                if(selectedPiece.Position.Row == 3) {
+                    ICell leftPiece = Engine.Board.FindNeighbor(selectedPiece, -1, GridCoordinate.COLUMN);
+
+                    ICell rightPiece = Engine.Board.FindNeighbor(selectedPiece, 1, GridCoordinate.COLUMN);
+                     
+                    if (Engine.IsThereOpponentPiece(leftPiece) && leftPiece.Piece == Engine.EnPassant) {
+                        referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 1);
+                        legalMoves.Add(referenceCell);
+                    }
+
+                    if (Engine.IsThereOpponentPiece(rightPiece) && rightPiece.Piece == Engine.EnPassant) {
+                        referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 1);
+
+                        legalMoves.Add(referenceCell);
+                    }
+
+                }
+
 
             } else {
-                firstCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column);
-                if (ValidateReferenceCell(firstCell)) {
-                    legalMoves.Add(firstCell);
+                referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column);
+                if (ValidateReferenceCell(referenceCell)) {
+                    legalMoves.Add(referenceCell);
                 }
 
-                secondCell = LoadReferenceCell(source.Position.Row + 2, source.Position.Column);
-                if (ValidateReferenceCell(secondCell) && ValidateReferenceCell(firstCell) && selectedPiece.MoveCount == 0) {
-                    legalMoves.Add(secondCell);
+                referenceCell = LoadReferenceCell(source.Position.Row + 2, source.Position.Column);
+                if (ValidateReferenceCell(referenceCell) && ValidateReferenceCell(referenceCell) && selectedPiece.MoveCount == 0) {
+
+                    legalMoves.Add(referenceCell);
                 }
 
                 // Northeast Direction
-                diagonalCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 1);
-                if (ValidateBreakCell(diagonalCell)) {
-                    legalMoves.Add(diagonalCell);
+                referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 1);
+                if (ValidateBreakCell(referenceCell)) {
+                    legalMoves.Add(referenceCell);
 
                 }
 
                 // Northwest Direction
-                diagonalCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 1);
-                if (ValidateBreakCell(diagonalCell)) {
-                    legalMoves.Add(diagonalCell);
+                referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 1);
+                if (ValidateBreakCell(referenceCell)) {
+                    legalMoves.Add(referenceCell);
+
+                }
+
+                if (selectedPiece.Position.Row == 4) {
+                    ICell leftPiece = Engine.Board.FindNeighbor(selectedPiece, -1, GridCoordinate.COLUMN);
+                    ICell rightPiece = Engine.Board.FindNeighbor(selectedPiece, 1, GridCoordinate.COLUMN);
+
+                    if (Engine.IsThereOpponentPiece(leftPiece) && leftPiece.Piece == Engine.EnPassant) {
+                        referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 1);
+
+                        legalMoves.Add(referenceCell);
+                    }
+
+                    if (Engine.IsThereOpponentPiece(rightPiece) && rightPiece.Piece == Engine.EnPassant) {
+                        referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 1);
+
+                        legalMoves.Add(referenceCell);
+                    }
 
                 }
             }
-            //} else {
-            //    firstCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column);
-            //    if (ValidateReferenceCell(firstCell)) {
-            //        legalMoves.Add(firstCell);
-            //    }
-
-            //    secondCell = LoadReferenceCell(source.Position.Row + 2, source.Position.Column);
-            //    if (selectedPiece.MoveCount == 0 && ValidateReferenceCell(secondCell)) {
-            //        legalMoves.Add(secondCell);
-            //    }
-            //}
 
             return legalMoves;
 

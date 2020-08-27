@@ -23,10 +23,10 @@ namespace ChessCake.Providers.Movements {
         public IList<ICell> GenerateLegalMoves(ICell source) {
             BasePiece piece = source.Piece;
 
-            if (Common.IsObjectNull(piece)) return null;
-
             IList<ICell> legalMoves = new List<ICell>();
-            
+
+            if (Common.IsObjectNull(piece)) return legalMoves;
+
             switch (piece.Type) {
                 case PieceType.PAWN:
                     legalMoves = GeneratePawnMovements(source);
@@ -53,7 +53,8 @@ namespace ChessCake.Providers.Movements {
                     break;
 
                 default:
-                    break;
+                    return legalMoves;
+
             }
 
             return legalMoves;

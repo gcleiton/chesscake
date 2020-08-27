@@ -80,18 +80,23 @@ namespace ChessCake.Models.Boards {
 
         }
 
-        public ICell FindNeighbor(ICell referenceCell, int offset, GridCoordinate coordinate) {
+        public ICell FindNeighbor(BasePiece referencePiece, int offset, GridCoordinate coordinate) {
             IPosition position = ChessFactory.CreatePosition(0, 0);
 
             if (coordinate == GridCoordinate.ROW) {
-                position.SetCoordinates(referenceCell.Position.Row + offset, referenceCell.Position.Column);
+                position.SetCoordinates(referencePiece.Position.Row + offset, referencePiece.Position.Column);
                 return GetCell(position);
-               
+
             }
 
-            position.SetCoordinates(referenceCell.Position.Row, referenceCell.Position.Column + offset);
+            position.SetCoordinates(referencePiece.Position.Row, referencePiece.Position.Column + offset);
 
             return GetCell(position);
+
+        }
+
+        public ICell FindNeighbor(ICell referenceCell, int offset, GridCoordinate coordinate) {
+            return FindNeighbor(referenceCell.Piece, offset, coordinate);
 
         }
 
