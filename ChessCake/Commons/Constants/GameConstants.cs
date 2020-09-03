@@ -17,6 +17,13 @@ namespace ChessCake.Commons.Constants {
                 PieceType.ROOK,
             };
 
+        public static readonly IList<PieceType> AVAILABLE_PIECES_FOR_PROMOTION = new List<PieceType> {
+            PieceType.QUEEN,
+            PieceType.ROOK,
+            PieceType.BISHOP,
+            PieceType.KNIGHT
+        };
+
         public const int INITIAL_MAJOR_ROW_OF_FIRST_PLAYER = 8;
         public const int INITIAL_PAWNS_ROW_OF_FIRST_PLAYER = 7;
 

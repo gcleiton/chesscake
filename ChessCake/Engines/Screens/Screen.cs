@@ -196,5 +196,16 @@ namespace ChessCake.Engines.Screens
             Console.WriteLine(string.Join(", ", capturedPieces[blackPlayer]));
 
         }
+
+        public static void PrintPromotedPiece() {
+            Console.WriteLine();
+            Console.WriteLine("Pieces available for promotion:");
+            Console.WriteLine("- [Q]: Queen");
+            Console.WriteLine("- [R]: Rook");
+            Console.WriteLine("- [B]: Bishop");
+            Console.WriteLine("- [N]: Knight");
+            Console.WriteLine();
+            Console.Write("Choose the piece you want to promote: ");
+        }
     }
 }

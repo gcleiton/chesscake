@@ -8,6 +8,7 @@ using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Boards.Contracts;
 using ChessCake.Models.ChessPositions.Contracts;
 using ChessCake.Models.Movements.Contracts;
+using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Players.Contracts;
 using ChessCake.Models.Positions.Contracts;
 using System;
@@ -70,6 +71,20 @@ namespace ChessCake.Providers.Inputs
             }
 
             return players;
+
+        }
+
+        public static PieceType ReadPromotedPiece() {
+
+            Screen.PrintPromotedPiece();
+
+            char typeChar = Console.ReadKey().KeyChar;
+
+            PieceType type = (PieceType) typeChar;
+
+            if (GameConstants.AVAILABLE_PIECES_FOR_PROMOTION.Contains(type)) return type;
+
+            throw new ChessException("Error reading character of the piece to be promoted! Try again.");
 
         }
 

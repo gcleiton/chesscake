@@ -20,6 +20,8 @@ namespace ChessCake.Engines.Contracts {
 
         public BasePiece EnPassant { get; }
 
+        public BasePiece Promoted { get; }
+
         public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = false);
 
         public IDictionary<IPlayer, IList<BasePiece>> CapturedPieces { get; }

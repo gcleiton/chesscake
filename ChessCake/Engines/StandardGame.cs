@@ -96,6 +96,9 @@ namespace ChessCake.Engines {
 
                     PerformMove(nextMove);
 
+                    HandlePromotedPiece();
+
+                    movementProvider.Update(this);
                 
                 //} catch (ChessException e) {
                 //    Console.WriteLine(e.Message);
@@ -108,8 +111,14 @@ namespace ChessCake.Engines {
 
         }
 
+        private void HandlePromotedPiece() { // Verificar o motivo dele não perguntar antes para qual posição a peça deseja mover
+            if(!Common.IsObjectNull(Promoted)) {
+                PieceType type = InputProvider.ReadPromotedPiece();
+                ReplacePromotedPiece(type);
+            }
+        }
+
         private void PerformMove(IMovement move) {
-            BasePiece movedPiece = move.MovedPiece;
             ICell source = move.Source;
             ICell target = move.Target;
 
@@ -119,6 +128,16 @@ namespace ChessCake.Engines {
             move = MakeMove(move);
 
             movementProvider.Update(this);
+
+            Promoted = null;
+            if (move.MovedPiece.Type == PieceType.PAWN) {
+                if(move.MovedPiece.Color == ChessColor.WHITE && move.Target.Position.Row == 0 ||
+                    move.MovedPiece.Color == ChessColor.BLACK && move.Target.Position.Row == 7) {
+
+                    Promoted = Board.FindPiece(move.Target);
+                    Promoted = ReplacePromotedPiece(PieceType.QUEEN);
+                }
+            }
 
             ValidateCheck(move);
 
@@ -135,6 +154,30 @@ namespace ChessCake.Engines {
             //movementProvider.Update(this);
 
         }
+
+        private BasePiece ReplacePromotedPiece(PieceType type) {
+            if (Promoted == null) {
+                throw new ChessException("There is no piece to be promoted");
+            
+            }
+            if (type != PieceType.BISHOP && type != PieceType.KNIGHT && type != PieceType.ROOK && type != PieceType.QUEEN) {
+                throw new ChessException("Invalid type for promotion");
+
+            }
+
+            ICell cell = Board.GetCell(Promoted.Position);
+            BasePiece piece = Board.RemovePiece(cell.Position);
+            Pieces[CurrentPlayer].Remove(piece);
+
+            BasePiece replacedPiece = ChessFactory.CreatePiece(type, piece.Color, cell.Position);
+            Board.PlacePiece(replacedPiece, cell);
+            Pieces[CurrentPlayer].Add(replacedPiece);
+
+            return replacedPiece;
+
+        }
+
+        
 
         private bool IsEnPassantVulnerable(IMovement move) {
             return move.MovedPiece.Type == PieceType.PAWN && (move.Target.Position.Row == move.Source.Position.Row - 2 || move.Target.Position.Row == move.Source.Position.Row + 2);
@@ -470,7 +513,6 @@ namespace ChessCake.Engines {
                 throw new ChessException("A peça selecionada não pertence a você.");
             }
 
-            // problema aqui
             if (!movementProvider.IsThereAnyLegalMove(source)) {
                 throw new ChessException("Não existe movimentos possíveis para a peça selecionada.");
             }
@@ -503,8 +545,11 @@ namespace ChessCake.Engines {
             Player firstPlayer = (Player)Players.Values.First();
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
-            BasePiece piece = ChessFactory.CreatePiece(PieceType.PAWN, firstPlayer.Color, ChessFactory.CreateChessPosition('d', 4).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('d', 4));
+            BasePiece piece = ChessFactory.CreatePiece(PieceType.PAWN, firstPlayer.Color, ChessFactory.CreateChessPosition('b', 2).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('b', 2));
+
+            piece = ChessFactory.CreatePiece(PieceType.PAWN, secondPlayer.Color, ChessFactory.CreateChessPosition('f', 7).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('f', 7));
 
             //BasePiece piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('a', 1).ToPosition());
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 1));
@@ -512,8 +557,8 @@ namespace ChessCake.Engines {
             //piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('h', 1).ToPosition());
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 1));
 
-            //piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
+            piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
 
             //piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('a', 8).ToPosition());
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 8));
@@ -521,14 +566,14 @@ namespace ChessCake.Engines {
             //piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('h', 8).ToPosition());
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 8));
 
-            //piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('e', 8).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 8));
+            piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('e', 8).ToPosition());
+            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 8));
 
-            AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
-            AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+            //AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
+            //AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
 
-            AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
-            AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
+            //AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
+            //AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
 
         }
 
