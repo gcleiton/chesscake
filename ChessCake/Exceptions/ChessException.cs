@@ -4,7 +4,17 @@ using System.Text;
 
 namespace ChessCake.Exceptions {
     class ChessException : Exception {
-        public ChessException(string msg) : base(msg) { }
+        private string ErrorMessage;
+
+        public ChessException(string msg) : base(msg) {
+            this.ErrorMessage = msg;
+        }
+
+        public override string Message {
+            get {
+                return "| CHESSCAKE CONSOLE | " + ErrorMessage;
+            }
+        }
 
     }
 }
