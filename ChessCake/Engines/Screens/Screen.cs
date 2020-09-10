@@ -155,12 +155,11 @@ namespace ChessCake.Engines.Screens
         }
 
         public static void PrintSourceInput() {
-            Console.WriteLine();
             Console.Write("Source: ");
         }
 
         public static void PrintTargetInput() {
-            Console.WriteLine();
+            Console.WriteLine("\n");
             Console.Write("Target: ");
         }
 

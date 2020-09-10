@@ -50,6 +50,7 @@ namespace ChessCake.Models.Boards {
 
         public ICell GetCell(int row, int column) {
             if (!Position.IsValidCoordinates(row, column)) {
+                Console.WriteLine("getcell invalido");
                 return null;
                 throw new BoardException("Coordenadas da posição inválida!");
             }
@@ -81,15 +82,18 @@ namespace ChessCake.Models.Boards {
         }
 
         public ICell FindNeighbor(BasePiece referencePiece, int offset, GridCoordinate coordinate) {
+
             IPosition position = ChessFactory.CreatePosition(0, 0);
 
             if (coordinate == GridCoordinate.ROW) {
                 position.SetCoordinates(referencePiece.Position.Row + offset, referencePiece.Position.Column);
+
                 return GetCell(position);
 
             }
 
             position.SetCoordinates(referencePiece.Position.Row, referencePiece.Position.Column + offset);
+
 
             return GetCell(position);
 

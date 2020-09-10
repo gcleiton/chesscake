@@ -12,7 +12,7 @@ namespace ChessCake.Exceptions {
 
         public override string Message {
             get {
-                return "| CHESSCAKE CONSOLE | " + ErrorMessage;
+                return "\n| CHESSCAKE CONSOLE | " + ErrorMessage;
             }
         }
 

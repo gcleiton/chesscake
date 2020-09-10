@@ -15,11 +15,9 @@ using ChessCake.Models.Positions.Chess;
 using ChessCake.Models.Positions.Contracts;
 using ChessCake.Providers.Inputs;
 using ChessCake.Providers.Movements.Contracts;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace ChessCake.Engines {
     class StandardGame : IEngine {
@@ -96,9 +94,9 @@ namespace ChessCake.Engines {
         public void Initialize() {
             while (!InCheckmate) { // if InCheckmate == false end game
 
-                //try {
+                try {
 
-                Common.ClearConsole();
+                    Common.ClearConsole();
 
                     Screen.PrintMatch(this);
 
@@ -119,16 +117,21 @@ namespace ChessCake.Engines {
                     HandlePromotedPiece();
 
                     movementProvider.Update(this);
-                
-                //} catch (ChessException e) {
-                //    Console.WriteLine(e.Message);
-                //    Console.ReadLine();
-                //}
-            }
+
+                } catch (ChessException e) {
+                    HandleException(e);
+                }
+        }
 
             Common.ClearConsole();
             Screen.PrintMatch(this);
 
+        }
+
+        private void HandleException(ChessException e) {
+            Console.WriteLine(e.Message);
+            Console.WriteLine("\nEnter any key to continue ...");
+            Console.ReadKey();
         }
 
         private void NextTurn() {
@@ -145,6 +148,8 @@ namespace ChessCake.Engines {
             ValidateSource(source);
             ValidateTarget(source, target);
 
+            Console.WriteLine("chega aqui");
+
             move = MakeMove(move);
 
             movementProvider.Update(this);
@@ -160,6 +165,8 @@ namespace ChessCake.Engines {
             }
 
             ValidateCheck(move);
+
+            Console.WriteLine("Passou");
 
             if (ValidateCheckMate(FindOpponentPlayer())) InCheckmate = true;
 
@@ -347,22 +354,22 @@ namespace ChessCake.Engines {
                 throw new ChessException("Standard game needs two human players to start.");
             }
             if (Board.Rows != GlobalConstants.STANDARD_BOARD_ROWS || Board.Columns != GlobalConstants.STANDARD_BOARD_COLUMNS) {
-                throw new BoardException("Standard game needs a 8x8 board.");
+                throw new ChessException("Standard game needs a 8x8 board.");
             }
         }
 
         private void ValidateSource(ICell source) {
 
             if (!source.IsOccupied()) {
-                throw new ChessException("Não existe nenhuma peça na posição de origem informado.");
+                throw new ChessException("There is no piece in the originating position informed.");
             }
 
             if (CurrentPlayer != FindPlayer(source.Piece.Color)) {
-                throw new ChessException("A peça selecionada não pertence a você.");
+                throw new ChessException("The selected piece does not belong to you.");
             }
 
             if (!movementProvider.IsThereAnyLegalMove(source)) {
-                throw new ChessException("Não existe movimentos possíveis para a peça selecionada.");
+                throw new ChessException("There are no possible movements for the selected piece.");
             }
 
         }
@@ -428,6 +435,7 @@ namespace ChessCake.Engines {
         // Legal movements generator methods
 
         public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = true) {
+            Console.WriteLine("Legal Moves");
             ICell sourceCell = Board.GetCell(sourcePosition);
 
             if (validateSource) ValidateSource(sourceCell);
@@ -477,20 +485,14 @@ namespace ChessCake.Engines {
             Player firstPlayer = (Player)Players.Values.First();
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
-            BasePiece piece = ChessFactory.CreatePiece(PieceType.PAWN, firstPlayer.Color, ChessFactory.CreateChessPosition('b', 2).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('b', 2));
-
-            piece = ChessFactory.CreatePiece(PieceType.PAWN, secondPlayer.Color, ChessFactory.CreateChessPosition('f', 7).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('f', 7));
-
             //BasePiece piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('a', 1).ToPosition());
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 1));
 
             //piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('h', 1).ToPosition());
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 1));
 
-            piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
+            //piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
 
             //piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('a', 8).ToPosition());
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 8));
@@ -498,14 +500,38 @@ namespace ChessCake.Engines {
             //piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('h', 8).ToPosition());
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 8));
 
-            piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('e', 8).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 8));
+            //piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('e', 8).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 8));
 
-            //AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
-            //AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+            //BasePiece piece = ChessFactory.CreatePiece(PieceType.PAWN, firstPlayer.Color, ChessFactory.CreateChessPosition('b', 2).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('b', 2));
 
-            //AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
-            //AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
+            //piece = ChessFactory.CreatePiece(PieceType.PAWN, secondPlayer.Color, ChessFactory.CreateChessPosition('f', 7).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('f', 7));
+
+            //BasePiece piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('a', 1).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 1));
+
+            //piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('h', 1).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 1));
+
+            //piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
+
+            //piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('a', 8).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 8));
+
+            //piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('h', 8).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 8));
+
+            //piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('e', 8).ToPosition());
+            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 8));
+
+            AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
+            AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+
+            AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
+            AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
 
         }
 

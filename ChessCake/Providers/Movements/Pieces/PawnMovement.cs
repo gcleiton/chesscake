@@ -48,16 +48,16 @@ namespace ChessCake.Providers.Movements.Pieces {
                 // Special move - enPassant
 
                 if(selectedPiece.Position.Row == 3) {
-                    ICell leftPiece = Engine.Board.FindNeighbor(selectedPiece, -1, GridCoordinate.COLUMN);
+                    ICell leftCell = Engine.Board.FindNeighbor(selectedPiece, -1, GridCoordinate.COLUMN);
 
-                    ICell rightPiece = Engine.Board.FindNeighbor(selectedPiece, 1, GridCoordinate.COLUMN);
+                    ICell rightCell = Engine.Board.FindNeighbor(selectedPiece, 1, GridCoordinate.COLUMN);
                      
-                    if (Engine.IsThereOpponentPiece(leftPiece) && leftPiece.Piece == Engine.EnPassant) {
+                    if (IsEnPassantMove(leftCell)) {
                         referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 1);
                         legalMoves.Add(referenceCell);
                     }
 
-                    if (Engine.IsThereOpponentPiece(rightPiece) && rightPiece.Piece == Engine.EnPassant) {
+                    if (IsEnPassantMove(rightCell)) {
                         referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 1);
 
                         legalMoves.Add(referenceCell);
@@ -93,16 +93,16 @@ namespace ChessCake.Providers.Movements.Pieces {
                 }
 
                 if (selectedPiece.Position.Row == 4) {
-                    ICell leftPiece = Engine.Board.FindNeighbor(selectedPiece, -1, GridCoordinate.COLUMN);
-                    ICell rightPiece = Engine.Board.FindNeighbor(selectedPiece, 1, GridCoordinate.COLUMN);
+                    ICell leftCell = Engine.Board.FindNeighbor(selectedPiece, -1, GridCoordinate.COLUMN);
+                    ICell rightCell = Engine.Board.FindNeighbor(selectedPiece, 1, GridCoordinate.COLUMN);
 
-                    if (Engine.IsThereOpponentPiece(leftPiece) && leftPiece.Piece == Engine.EnPassant) {
+                    if (IsEnPassantMove(leftCell)) {
                         referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 1);
 
                         legalMoves.Add(referenceCell);
                     }
 
-                    if (Engine.IsThereOpponentPiece(rightPiece) && rightPiece.Piece == Engine.EnPassant) {
+                    if (IsEnPassantMove(rightCell)) {
                         referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 1);
 
                         legalMoves.Add(referenceCell);
@@ -121,6 +121,11 @@ namespace ChessCake.Providers.Movements.Pieces {
             ICell referenceCell = Engine.Board.GetCell(referenceRow, referenceColumn);
 
             return referenceCell;
+
+        }
+
+        private bool IsEnPassantMove(ICell cell) {
+            return !Common.IsObjectNull(cell) && Engine.IsThereOpponentPiece(cell) && cell.Piece == Engine.EnPassant;
 
         }
 
