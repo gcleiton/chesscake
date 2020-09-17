@@ -118,6 +118,8 @@ namespace ChessCake.Engines {
 
                     movementProvider.Update(this);
 
+                    Console.WriteLine("Checkmate: " + InCheckmate);
+
                 } catch (ChessException e) {
                     HandleException(e);
                 }
@@ -148,9 +150,13 @@ namespace ChessCake.Engines {
             ValidateSource(source);
             ValidateTarget(source, target);
 
-            Console.WriteLine("chega aqui");
-
             move = MakeMove(move);
+
+            //if(IsPlayerInCheck(CurrentPlayer)) {
+            //    UndoMove(move);
+            //    throw new ChessException("You can't put yourself in check");
+
+            //}
 
             movementProvider.Update(this);
 
@@ -166,11 +172,12 @@ namespace ChessCake.Engines {
 
             ValidateCheck(move);
 
-            Console.WriteLine("Passou");
+            //if (ValidateCheckMate(FindOpponentPlayer())) InCheckmate = true; // problema do rei sendo capturado
 
-            if (ValidateCheckMate(FindOpponentPlayer())) InCheckmate = true;
+            //if (ValidateCheckMate(CurrentPlayer)) InCheckmate = true; // problema do rei sendo capturado
+            //else NextTurn();
 
-            else NextTurn();
+            NextTurn();
 
             // Special move - En Passant
 
@@ -189,6 +196,8 @@ namespace ChessCake.Engines {
 
             BasePiece capturedPiece = Board.RemovePiece(move.Target.Position);
             move.CapturedPiece = capturedPiece;
+
+            
 
             Board.PlacePiece(movedPiece, move.Target);
 
@@ -391,11 +400,9 @@ namespace ChessCake.Engines {
 
         }
 
-        private bool IsPlayerInCheck(IPlayer player, bool isCheckmateValidation = false) {
+        private bool IsPlayerInCheck(IPlayer player) {
             ICell kingCell = FindKing(player.Color);
             IList<BasePiece> opponentPieces = FetchOpponentPieces(player);
-
-            if (isCheckmateValidation) movementProvider.UpdateCurrentPlayer(FindOpponentPlayer(player));
 
             foreach (BasePiece piece in opponentPieces) {
                 IList<ICell> legalMoves = LegalMoves(piece.Position, false);
@@ -407,30 +414,31 @@ namespace ChessCake.Engines {
             return false;
         }
 
-        private bool ValidateCheckMate(IPlayer player) {
-            if (!IsPlayerInCheck(player)) return false;
+        //private bool ValidateCheckMate(IPlayer player) {
+        //    if (!IsPlayerInCheck(player)) {
+        //        return false;
+        //    }
 
-            IList<BasePiece> playerPieces = FetchPieces(player);
-            movementProvider.UpdateCurrentPlayer(player);
+        //    IList<BasePiece> playerPieces = FetchPieces(player);
 
-            foreach(BasePiece piece in playerPieces.ToList()) {
-                IList<ICell> legalMoves = LegalMoves(piece.Position, false);
+        //    foreach (BasePiece piece in playerPieces.ToList()) {
+        //        IList<ICell> legalMoves = LegalMoves(piece.Position, false);
 
-                foreach(ICell target in legalMoves) {
-                    ICell source = Board.GetCell(piece.Position);
-                    IMovement possibleMove = MakeMove(ChessFactory.CreateMovement(source, target, player));
-                    bool inCheck = IsPlayerInCheck(player, true);
+        //        foreach (ICell target in legalMoves) {
+        //            ICell source = Board.GetCell(piece.Position);
+        //            IMovement possibleMove = MakeMove(ChessFactory.CreateMovement(source, target, player));
+        //            bool inCheck = IsPlayerInCheck(player);
 
-                    UndoMove(possibleMove);
+        //            UndoMove(possibleMove);
 
-                    if (!inCheck) return false;
-                }
-            }
+        //            if (!inCheck) return false;
 
-            return true;
+        //        }
+        //    }
 
-        }
+        //    return true;
 
+        //}
 
         // Legal movements generator methods
 
@@ -528,10 +536,10 @@ namespace ChessCake.Engines {
             //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 8));
 
             AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
-            AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
+            //AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
 
             AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
-            AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
+            //AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
 
         }
 

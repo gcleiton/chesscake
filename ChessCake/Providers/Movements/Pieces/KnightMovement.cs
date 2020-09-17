@@ -19,45 +19,45 @@ namespace ChessCake.Providers.Movements.Pieces {
 
             // Northeast Direction:
             referenceCell = LoadReferenceCell(source.Position.Row - 2, source.Position.Column + 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 2);
-            if (ValidateReferenceCell(referenceCell)) {
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // Southeast Direction:
             referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 2);
-            if (ValidateReferenceCell(referenceCell)) {
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             referenceCell = LoadReferenceCell(source.Position.Row + 2, source.Position.Column + 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // Southwest Direction:
             referenceCell = LoadReferenceCell(source.Position.Row + 2, source.Position.Column - 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 2);
-            if (ValidateReferenceCell(referenceCell)) {
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // Northwest Direction:
             referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 2);
-            if (ValidateReferenceCell(referenceCell)) {
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             referenceCell = LoadReferenceCell(source.Position.Row - 2, source.Position.Column - 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
