@@ -14,68 +14,64 @@ using System.Text;
 namespace ChessCake.Providers.Movements.Pieces {
     public class KingMovement : BasePieceMovement {
 
-        private IPiece Piece; // King reference
+        public KingMovement(IEngine engine, ICell source) : base(engine, source) { }
 
-        public KingMovement(IEngine engine, IPiece piece) : base(engine) {
-            Piece = piece;
-        }
-
-        public override IList<ICell> GenerateLegalMoves(ICell source) {
+        public override IList<ICell> GenerateLegalMoves() {
             IList<ICell> legalMoves = new List<ICell>();
             ICell referenceCell;
 
             // North Direction
-            referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column);
-            if (ValidateReferenceCell(referenceCell)) {
+            referenceCell = LoadReferenceCell(Source.Position.Row - 1, Source.Position.Column);
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // Northeast Direction
-            referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            referenceCell = LoadReferenceCell(Source.Position.Row + 1, Source.Position.Column + 1);
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // East Direction
-            referenceCell = LoadReferenceCell(source.Position.Row, source.Position.Column + 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            referenceCell = LoadReferenceCell(Source.Position.Row, Source.Position.Column + 1);
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // Southeast Direction
-            referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            referenceCell = LoadReferenceCell(Source.Position.Row - 1, Source.Position.Column + 1);
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // South Direction
-            referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column);
-            if (ValidateReferenceCell(referenceCell)) {
+            referenceCell = LoadReferenceCell(Source.Position.Row + 1, Source.Position.Column);
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // Southwest Direction
-            referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            referenceCell = LoadReferenceCell(Source.Position.Row + 1, Source.Position.Column - 1);
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // West Direction
-            referenceCell = LoadReferenceCell(source.Position.Row, source.Position.Column - 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            referenceCell = LoadReferenceCell(Source.Position.Row, Source.Position.Column - 1);
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // Northwest Direction
-            referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 1);
-            if (ValidateReferenceCell(referenceCell)) {
+            referenceCell = LoadReferenceCell(Source.Position.Row - 1, Source.Position.Column - 1);
+            if (ValidateReferenceCell(referenceCell) || ValidateBreakCell(referenceCell)) {
                 legalMoves.Add(referenceCell);
             }
 
             // Special Move - Castling:
-            referenceCell = source;
+            referenceCell = Source;
 
-            if (referenceCell.Piece.Type == PieceType.KING && Piece.MoveCount == 0 && !Engine.InCheck) {
+            if (referenceCell.Piece.Type == PieceType.KING && Source.Piece.MoveCount == 0 && !Engine.InCheck) {
                 // Right rook:
 
                 if (CanRightCastling(referenceCell)) {
@@ -116,7 +112,7 @@ namespace ChessCake.Providers.Movements.Pieces {
             ICell secondNeighbor = Engine.Board.FindNeighbor(kingCell, 2, GridCoordinate.COLUMN);
 
             return !Common.IsObjectNull(rook) && rook.Type == PieceType.ROOK &&
-                     rook.Color == Piece.Color && Piece.MoveCount == 0 &&
+                     rook.Color == Source.Piece.Color && Source.Piece.MoveCount == 0 &&
                      Common.IsObjectNull(firstNeighbor.Piece) && Common.IsObjectNull(secondNeighbor.Piece);
         
         }
@@ -128,7 +124,7 @@ namespace ChessCake.Providers.Movements.Pieces {
             ICell secondNeighbor = Engine.Board.FindNeighbor(kingCell, -2, GridCoordinate.COLUMN);
             ICell thirdNeighbor = Engine.Board.FindNeighbor(kingCell, -3, GridCoordinate.COLUMN);
 
-            return !Common.IsObjectNull(rook) && rook.Type == PieceType.ROOK && rook.Color == Piece.Color && Piece.MoveCount == 0 &&
+            return !Common.IsObjectNull(rook) && rook.Type == PieceType.ROOK && rook.Color == Source.Piece.Color && Source.Piece.MoveCount == 0 &&
                      Common.IsObjectNull(firstNeighbor.Piece) && Common.IsObjectNull(secondNeighbor.Piece) && Common.IsObjectNull(thirdNeighbor.Piece);
 
         }

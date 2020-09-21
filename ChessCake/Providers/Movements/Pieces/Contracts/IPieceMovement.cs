@@ -9,7 +9,9 @@ namespace ChessCake.Providers.Movements.Pieces.Contracts {
 
         public IEngine Engine { get; }
 
-        public IList<ICell> GenerateLegalMoves(ICell source);
+        public ICell Source { get; }
+
+        public IList<ICell> GenerateLegalMoves();
 
     }
 

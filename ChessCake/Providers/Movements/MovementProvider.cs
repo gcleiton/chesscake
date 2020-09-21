@@ -62,37 +62,37 @@ namespace ChessCake.Providers.Movements {
         }
 
         public IList<ICell> GeneratePawnMovements(ICell source) {
-            IPieceMovement pawnMovement = MovementGeneratorFactory.CreatePawnMovement(Engine);
+            IPieceMovement pawnMovement = MovementGeneratorFactory.CreatePawnMovement(Engine, source);
 
-            return pawnMovement.GenerateLegalMoves(source);
+            return pawnMovement.GenerateLegalMoves();
         }
         public IList<ICell> GenerateKnightMovements(ICell source) {
-            IPieceMovement knightMovement = MovementGeneratorFactory.CreateKnightMovement(Engine);
+            IPieceMovement knightMovement = MovementGeneratorFactory.CreateKnightMovement(Engine, source);
 
-            return knightMovement.GenerateLegalMoves(source);
+            return knightMovement.GenerateLegalMoves();
         }
 
         public IList<ICell> GenerateBishopMovements(ICell source) {
-            IPieceMovement bishopMovement = MovementGeneratorFactory.CreateBishopMovement(Engine);
+            IPieceMovement bishopMovement = MovementGeneratorFactory.CreateBishopMovement(Engine, source);
 
-            return bishopMovement.GenerateLegalMoves(source);
+            return bishopMovement.GenerateLegalMoves();
 
         }
 
         public IList<ICell> GenerateRookMovements(ICell source) {
-            IPieceMovement rookMovements = MovementGeneratorFactory.CreateRookMovement(Engine);
+            IPieceMovement rookMovements = MovementGeneratorFactory.CreateRookMovement(Engine, source);
 
-            return rookMovements.GenerateLegalMoves(source);
+            return rookMovements.GenerateLegalMoves();
         }
         public IList<ICell> GenerateQueenMovements(ICell source) {
-            IPieceMovement queenMovement = MovementGeneratorFactory.CreateQueenMovement(Engine);
+            IPieceMovement queenMovement = MovementGeneratorFactory.CreateQueenMovement(Engine, source);
 
-            return queenMovement.GenerateLegalMoves(source);
+            return queenMovement.GenerateLegalMoves();
         }
         public IList<ICell> GenerateKingMovements(ICell source) {
-            IPieceMovement kingMovement = MovementGeneratorFactory.CreateKingMovement(Engine, source.Piece);
+            IPieceMovement kingMovement = MovementGeneratorFactory.CreateKingMovement(Engine, source);
 
-            return kingMovement.GenerateLegalMoves(source);
+            return kingMovement.GenerateLegalMoves();
         }
 
         public bool IsLegalMovement(ICell source, ICell target) {

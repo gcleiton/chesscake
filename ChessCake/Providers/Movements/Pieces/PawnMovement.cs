@@ -13,33 +13,33 @@ using System.Text;
 namespace ChessCake.Providers.Movements.Pieces {
     public class PawnMovement : BasePieceMovement {
 
-        public PawnMovement(IEngine engine) : base(engine) { }
+        public PawnMovement(IEngine engine, ICell source) : base(engine, source) { }
 
-        public override IList<ICell> GenerateLegalMoves(ICell source) {
+        public override IList<ICell> GenerateLegalMoves() {
             IList<ICell> legalMoves = new List<ICell>();
             ICell referenceCell;
-            BasePiece selectedPiece = source.Piece;
+            BasePiece selectedPiece = Source.Piece;
 
             if (selectedPiece.Color == ChessColor.WHITE) {
-                referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column);
+                referenceCell = LoadReferenceCell(Source.Position.Row - 1, Source.Position.Column);
                 if (ValidateReferenceCell(referenceCell)) {
                     legalMoves.Add(referenceCell);
                 }
 
-                referenceCell = LoadReferenceCell(source.Position.Row - 2, source.Position.Column);
+                referenceCell = LoadReferenceCell(Source.Position.Row - 2, Source.Position.Column);
                 if (ValidateReferenceCell(referenceCell) && ValidateReferenceCell(referenceCell) && selectedPiece.MoveCount == 0) {
                     legalMoves.Add(referenceCell);
                 }
 
                 // Northeast Direction
-                referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 1);
+                referenceCell = LoadReferenceCell(Source.Position.Row - 1, Source.Position.Column + 1);
                 if (ValidateBreakCell(referenceCell)) {
                     legalMoves.Add(referenceCell);
 
                 }
 
                 // Northwest Direction
-                referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 1);
+                referenceCell = LoadReferenceCell(Source.Position.Row - 1, Source.Position.Column - 1);
                 if(ValidateBreakCell(referenceCell)) {
                     legalMoves.Add(referenceCell);
 
@@ -53,12 +53,12 @@ namespace ChessCake.Providers.Movements.Pieces {
                     ICell rightCell = Engine.Board.FindNeighbor(selectedPiece, 1, GridCoordinate.COLUMN);
                      
                     if (IsEnPassantMove(leftCell)) {
-                        referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column - 1);
+                        referenceCell = LoadReferenceCell(Source.Position.Row - 1, Source.Position.Column - 1);
                         legalMoves.Add(referenceCell);
                     }
 
                     if (IsEnPassantMove(rightCell)) {
-                        referenceCell = LoadReferenceCell(source.Position.Row - 1, source.Position.Column + 1);
+                        referenceCell = LoadReferenceCell(Source.Position.Row - 1, Source.Position.Column + 1);
 
                         legalMoves.Add(referenceCell);
                     }
@@ -67,26 +67,26 @@ namespace ChessCake.Providers.Movements.Pieces {
 
 
             } else {
-                referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column);
+                referenceCell = LoadReferenceCell(Source.Position.Row + 1, Source.Position.Column);
                 if (ValidateReferenceCell(referenceCell)) {
                     legalMoves.Add(referenceCell);
                 }
 
-                referenceCell = LoadReferenceCell(source.Position.Row + 2, source.Position.Column);
+                referenceCell = LoadReferenceCell(Source.Position.Row + 2, Source.Position.Column);
                 if (ValidateReferenceCell(referenceCell) && ValidateReferenceCell(referenceCell) && selectedPiece.MoveCount == 0) {
 
                     legalMoves.Add(referenceCell);
                 }
 
                 // Northeast Direction
-                referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 1);
+                referenceCell = LoadReferenceCell(Source.Position.Row + 1, Source.Position.Column + 1);
                 if (ValidateBreakCell(referenceCell)) {
                     legalMoves.Add(referenceCell);
 
                 }
 
                 // Northwest Direction
-                referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 1);
+                referenceCell = LoadReferenceCell(Source.Position.Row + 1, Source.Position.Column - 1);
                 if (ValidateBreakCell(referenceCell)) {
                     legalMoves.Add(referenceCell);
 
@@ -97,13 +97,13 @@ namespace ChessCake.Providers.Movements.Pieces {
                     ICell rightCell = Engine.Board.FindNeighbor(selectedPiece, 1, GridCoordinate.COLUMN);
 
                     if (IsEnPassantMove(leftCell)) {
-                        referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column - 1);
+                        referenceCell = LoadReferenceCell(Source.Position.Row + 1, Source.Position.Column - 1);
 
                         legalMoves.Add(referenceCell);
                     }
 
                     if (IsEnPassantMove(rightCell)) {
-                        referenceCell = LoadReferenceCell(source.Position.Row + 1, source.Position.Column + 1);
+                        referenceCell = LoadReferenceCell(Source.Position.Row + 1, Source.Position.Column + 1);
 
                         legalMoves.Add(referenceCell);
                     }
@@ -125,7 +125,7 @@ namespace ChessCake.Providers.Movements.Pieces {
         }
 
         private bool IsEnPassantMove(ICell cell) {
-            return !Common.IsObjectNull(cell) && Engine.IsThereOpponentPiece(cell) && cell.Piece == Engine.EnPassant;
+            return !Common.IsObjectNull(cell) && IsThereOpponentPiece(cell) && cell.Piece == Engine.EnPassant;
 
         }
 

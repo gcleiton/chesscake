@@ -33,8 +33,6 @@ namespace ChessCake.Engines.Contracts {
 
         public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = false);
 
-        public bool IsThereOpponentPiece(ICell cell);
-
         public IMovementProvider movementProvider { get; }
 
     }

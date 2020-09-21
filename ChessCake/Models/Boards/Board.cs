@@ -50,9 +50,7 @@ namespace ChessCake.Models.Boards {
 
         public ICell GetCell(int row, int column) {
             if (!Position.IsValidCoordinates(row, column)) {
-                Console.WriteLine("getcell invalido");
                 return null;
-                throw new BoardException("Coordenadas da posição inválida!");
             }
 
             return Grid[row, column];

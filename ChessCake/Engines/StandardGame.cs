@@ -116,9 +116,7 @@ namespace ChessCake.Engines {
 
                     HandlePromotedPiece();
 
-                    movementProvider.Update(this);
-
-                    Console.WriteLine("Checkmate: " + InCheckmate);
+                    //movementProvider.Update(this);
 
                 } catch (ChessException e) {
                     HandleException(e);
@@ -152,13 +150,14 @@ namespace ChessCake.Engines {
 
             move = MakeMove(move);
 
-            //if(IsPlayerInCheck(CurrentPlayer)) {
-            //    UndoMove(move);
-            //    throw new ChessException("You can't put yourself in check");
+            //movementProvider.Update(this);
 
-            //}
+            if (IsPlayerInCheck(CurrentPlayer)) {
+                
+                UndoMove(move);
+                throw new ChessException("You can't put yourself in check");
 
-            movementProvider.Update(this);
+            }
 
             Promoted = null;
             if (move.MovedPiece.Type == PieceType.PAWN) {
@@ -196,8 +195,6 @@ namespace ChessCake.Engines {
 
             BasePiece capturedPiece = Board.RemovePiece(move.Target.Position);
             move.CapturedPiece = capturedPiece;
-
-            
 
             Board.PlacePiece(movedPiece, move.Target);
 
@@ -405,7 +402,9 @@ namespace ChessCake.Engines {
             IList<BasePiece> opponentPieces = FetchOpponentPieces(player);
 
             foreach (BasePiece piece in opponentPieces) {
-                IList<ICell> legalMoves = LegalMoves(piece.Position, false);
+               
+                IList<ICell> legalMoves = LegalMoves(piece.Position, true);
+                
                 if (legalMoves.Contains(kingCell)) {
                     return true;
                 }
@@ -442,11 +441,12 @@ namespace ChessCake.Engines {
 
         // Legal movements generator methods
 
-        public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = true) {
-            Console.WriteLine("Legal Moves");
+        public IList<ICell> LegalMoves(IPosition sourcePosition, bool isTestCheck = false) {
+
             ICell sourceCell = Board.GetCell(sourcePosition);
 
-            if (validateSource) ValidateSource(sourceCell);
+            if (!isTestCheck) ValidateSource(sourceCell);
+            //else movementProvider.UpdateCurrentPlayer(); // att player
 
             IList<ICell> legalMoves = movementProvider.GenerateLegalMoves(sourceCell);
 
@@ -605,10 +605,11 @@ namespace ChessCake.Engines {
             AddPieceOnPlayer(piece);
         }
 
-        public bool IsThereOpponentPiece(ICell cell) {
-            BasePiece piece = Board.FindPiece(cell.Position);
-            return piece != null && piece.Color != CurrentPlayer.Color;
-        }
+        //public bool IsThereOpponentPiece(ICell cell) {
+        //    BasePiece piece = Board.FindPiece(cell.Position);
+            
+        //    return piece != null && piece.Color != CurrentPlayer.Color;
+        //}
 
         private bool CheckEnPassant(IMovement move) {
             return move.MovedPiece.Type == PieceType.PAWN;
@@ -654,7 +655,6 @@ namespace ChessCake.Engines {
             return replacedPiece;
 
         }
-
-
+ 
     }
 }

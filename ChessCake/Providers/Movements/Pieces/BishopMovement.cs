@@ -12,9 +12,9 @@ using System.Text;
 namespace ChessCake.Providers.Movements.Pieces {
     public class BishopMovement : BasePieceMovement {
 
-        public BishopMovement(IEngine engine) : base(engine) { }
+        public BishopMovement(IEngine engine, ICell source) : base(engine, source) { }
 
-        public override IList<ICell> GenerateLegalMoves(ICell source) {
+        public override IList<ICell> GenerateLegalMoves() {
             IList<ICell> legalMoves = new List<ICell>();
             ICell referenceCell;
 
@@ -22,8 +22,8 @@ namespace ChessCake.Providers.Movements.Pieces {
             int referenceColumn;
 
             // Northeast Direction:
-            referenceRow = source.Position.Row - 1;
-            referenceColumn = source.Position.Column + 1;
+            referenceRow = Source.Position.Row - 1;
+            referenceColumn = Source.Position.Column + 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
             while (ValidateReferenceCell(referenceCell)) {
                 if (!referenceCell.IsOccupied()) {
@@ -42,8 +42,8 @@ namespace ChessCake.Providers.Movements.Pieces {
             }
 
             // Southeast Direction:
-            referenceRow = source.Position.Row + 1;
-            referenceColumn = source.Position.Column + 1;
+            referenceRow = Source.Position.Row + 1;
+            referenceColumn = Source.Position.Column + 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
             while (ValidateReferenceCell(referenceCell)) {
                 if (!referenceCell.IsOccupied()) {
@@ -62,8 +62,8 @@ namespace ChessCake.Providers.Movements.Pieces {
             }
 
             // Southwest Direction:
-            referenceRow = source.Position.Row + 1;
-            referenceColumn = source.Position.Column - 1;
+            referenceRow = Source.Position.Row + 1;
+            referenceColumn = Source.Position.Column - 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
             while (ValidateReferenceCell(referenceCell)) {
                 if (!referenceCell.IsOccupied()) {
@@ -83,8 +83,8 @@ namespace ChessCake.Providers.Movements.Pieces {
             }
 
             // Northwest Direction:
-            referenceRow = source.Position.Row - 1;
-            referenceColumn = source.Position.Column - 1;
+            referenceRow = Source.Position.Row - 1;
+            referenceColumn = Source.Position.Column - 1;
             referenceCell = LoadReferenceCell(referenceRow, referenceColumn);
 
             while (ValidateReferenceCell(referenceCell)) {
