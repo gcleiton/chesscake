@@ -17,9 +17,7 @@ namespace ChessCake.Engines.Contracts {
 
         public int Turn { get; }
 
-        public bool InCheck { get; }
-
-        public bool InCheckmate { get; }
+        public GameStatus Status { get; }
 
         public BasePiece EnPassant { get; }
 

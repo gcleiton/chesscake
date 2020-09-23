@@ -79,8 +79,8 @@ namespace ChessCake.Engines.Screens
         }
 
         private static void HandleCheck(IEngine engine) {
-            if (!engine.InCheckmate) {
-                if (engine.InCheck) {
+            if (!(engine.Status == GameStatus.FINISHED)) {
+                if (engine.Status == GameStatus.CHECK) {
                     PrintInCheck();
                 }
             } else {
@@ -93,7 +93,7 @@ namespace ChessCake.Engines.Screens
         }
 
         private static void PrintCheckMate(IPlayer player) {
-            PrintMessage("CheckMate!", "Congratulations to Player " + player.Name + "!");
+            PrintMessage("CheckMate !!", "Congratulations to Player " + player.Name + "!");
         }
 
         public static void PrintCurrentPlayer(IPlayer currentPlayer) {

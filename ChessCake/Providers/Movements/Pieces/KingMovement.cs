@@ -71,7 +71,7 @@ namespace ChessCake.Providers.Movements.Pieces {
             // Special Move - Castling:
             referenceCell = Source;
 
-            if (referenceCell.Piece.Type == PieceType.KING && Source.Piece.MoveCount == 0 && !Engine.InCheck) {
+            if (CheckCastlingConditions(referenceCell)) {
                 // Right rook:
 
                 if (CanRightCastling(referenceCell)) {
@@ -93,6 +93,12 @@ namespace ChessCake.Providers.Movements.Pieces {
 
         }
 
+        private bool CheckCastlingConditions(ICell referenceCell) {
+
+            return referenceCell.Piece.Type == PieceType.KING && Source.Piece.MoveCount == 0 && !(Engine.Status == GameStatus.CHECK);
+
+        }
+
         private ICell LoadReferenceCell(int referenceRow, int referenceColumn) {
             if (!Position.IsValidCoordinates(referenceRow, referenceColumn)) return null;
 
@@ -104,27 +110,30 @@ namespace ChessCake.Providers.Movements.Pieces {
 
         private bool CanRightCastling(ICell kingCell) {
 
-            // Rei pegando a posição (7, 7)
-            IPiece rook = Engine.Board.GetCell(kingCell.Piece.Position.Row, kingCell.Piece.Position.Column + 3).Piece; // problema aqui
+            ICell rookCell = Engine.Board.GetCell(kingCell.Piece.Position.Row, kingCell.Piece.Position.Column + 3); // problema aqui
+
+            if (Common.IsObjectNull(rookCell)) return false;
 
             ICell firstNeighbor = Engine.Board.FindNeighbor(kingCell, 1, GridCoordinate.COLUMN);
 
             ICell secondNeighbor = Engine.Board.FindNeighbor(kingCell, 2, GridCoordinate.COLUMN);
 
-            return !Common.IsObjectNull(rook) && rook.Type == PieceType.ROOK &&
-                     rook.Color == Source.Piece.Color && Source.Piece.MoveCount == 0 &&
+            return !Common.IsObjectNull(rookCell.Piece) && rookCell.Piece.Type == PieceType.ROOK &&
+                     rookCell.Piece.Color == Source.Piece.Color && Source.Piece.MoveCount == 0 &&
                      Common.IsObjectNull(firstNeighbor.Piece) && Common.IsObjectNull(secondNeighbor.Piece);
         
         }
 
         private bool CanLeftCastling(ICell kingCell) {
-            IPiece rook = Engine.Board.GetCell(kingCell.Piece.Position.Row, kingCell.Piece.Position.Column - 4).Piece;
+            ICell rookCell = Engine.Board.GetCell(kingCell.Piece.Position.Row, kingCell.Piece.Position.Column - 4);
+
+            if (Common.IsObjectNull(rookCell)) return false;
 
             ICell firstNeighbor = Engine.Board.FindNeighbor(kingCell, -1, GridCoordinate.COLUMN);
             ICell secondNeighbor = Engine.Board.FindNeighbor(kingCell, -2, GridCoordinate.COLUMN);
             ICell thirdNeighbor = Engine.Board.FindNeighbor(kingCell, -3, GridCoordinate.COLUMN);
 
-            return !Common.IsObjectNull(rook) && rook.Type == PieceType.ROOK && rook.Color == Source.Piece.Color && Source.Piece.MoveCount == 0 &&
+            return !Common.IsObjectNull(rookCell.Piece) && rookCell.Piece.Type == PieceType.ROOK && rookCell.Piece.Color == Source.Piece.Color && Source.Piece.MoveCount == 0 &&
                      Common.IsObjectNull(firstNeighbor.Piece) && Common.IsObjectNull(secondNeighbor.Piece) && Common.IsObjectNull(thirdNeighbor.Piece);
 
         }
