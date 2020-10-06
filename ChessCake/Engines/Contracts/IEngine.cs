@@ -29,9 +29,7 @@ namespace ChessCake.Engines.Contracts {
 
         public IDictionary<ChessColor, IPlayer> Players { get; }
 
-        public IList<ICell> LegalMoves(IPosition sourcePosition, bool validateSource = false);
-
-        public IMovementProvider movementProvider { get; }
+        public void Initialize();
 
     }
 }

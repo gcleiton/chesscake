@@ -14,23 +14,25 @@ using ChessCake.Commons.Constants;
 using ChessCake.Engines.Contracts;
 using ChessCake.Models.Players.Contracts;
 using System.Linq;
+using ChessCake.Commons;
 
 namespace ChessCake.Engines.Screens
 {
     class Screen {
 
         public static void PrintHome() {
-            Console.Clear();
+            Common.ClearConsole();
             FigletFont font = FigletFont.Load("../../../Assets/Fonts/standard.flf");
             Figlet figlet = new Figlet(font);
 
             Console.WriteLine();
             PrintDivider(figlet);
-            Console.WriteLine(figlet.ToAscii(GetTitle()), ColorTranslator.FromHtml("#FFD700"));
+            Console.WriteLine(figlet.ToAscii(GetTitle()), ConsoleColor.Gold);
             PrintDivider(figlet);
+
         }
 
-        private static String GetTitle() {
+        public static String GetTitle() {
             return "  " + GlobalConstants.APP_NAME + "_";
         }
 
@@ -42,8 +44,8 @@ namespace ChessCake.Engines.Screens
         }
 
         public static void PrintMessage(string msg1, string msg2) {
-            Console.WriteLine(String.Format(GlobalConstants.FIRST_MESSAGE_ON_CHARACTER, msg1), Color.Gold);
-            Console.WriteLine(String.Format(GlobalConstants.SECOND_MESSAGE_ON_CHARACTER, msg2), Color.Gold);
+            Console.WriteLine(String.Format(ScreenConstants.FIRST_MESSAGE_ON_CHARACTER, msg1), Color.Gold);
+            Console.WriteLine(String.Format(ScreenConstants.SECOND_MESSAGE_ON_CHARACTER, msg2), Color.Gold);
             PrintCharacter();
 
         }
@@ -58,7 +60,7 @@ namespace ChessCake.Engines.Screens
         }
 
         public static void PrintDivider(Figlet figlet) {
-            Console.WriteLine(figlet.ToAscii(GlobalConstants.DEFAULT_ASTERISKS_DIVIDER), ColorTranslator.FromHtml("#8AFFEF"));
+            Console.WriteLine(figlet.ToAscii(ScreenConstants.DEFAULT_ASTERISKS_DIVIDER), ColorTranslator.FromHtml("#8AFFEF"));
 
         }
 
@@ -78,7 +80,7 @@ namespace ChessCake.Engines.Screens
 
         }
 
-        private static void HandleCheck(IEngine engine) {
+        public static void HandleCheck(IEngine engine) {
             if (!(engine.Status == GameStatus.FINISHED)) {
                 if (engine.Status == GameStatus.CHECK) {
                     PrintInCheck();
@@ -88,16 +90,16 @@ namespace ChessCake.Engines.Screens
             }
         }
 
-        private static void PrintInCheck() {
+        public static void PrintInCheck() {
             PrintMessage("Pay Attention!", "Match in Check!");
         }
 
-        private static void PrintCheckMate(IPlayer player) {
+        public static void PrintCheckMate(IPlayer player) {
             PrintMessage("CheckMate !!", "Congratulations to Player " + player.Name + "!");
         }
 
         public static void PrintCurrentPlayer(IPlayer currentPlayer) {
-            Console.WriteLine(String.Format(GlobalConstants.CURRENT_PLAYER_FORMATTER, currentPlayer.Name, currentPlayer.Color));
+            Console.WriteLine(String.Format(ScreenConstants.CURRENT_PLAYER_FORMATTER, currentPlayer.Name, currentPlayer.Color));
         }
 
         public static void PrintTurn(int turn) {
@@ -125,10 +127,11 @@ namespace ChessCake.Engines.Screens
             IBoard board = engine.Board;
             IPlayer currentPlayer = engine.CurrentPlayer;
 
+            //Console.BackgroundColor = ConsoleColor.Transparent;
             ConsoleColor fundoOriginal = Console.BackgroundColor;
             ConsoleColor fundoAlterado = ConsoleColor.DarkGray;
 
-            Console.WriteLine(String.Format(GlobalConstants.CURRENT_PLAYER_FORMATTER, currentPlayer.Name, currentPlayer.Color));
+            Console.WriteLine(String.Format(ScreenConstants.CURRENT_PLAYER_FORMATTER, currentPlayer.Name, currentPlayer.Color));
 
             for (int i = 0; i < board.Rows; i++)
             {
@@ -136,14 +139,14 @@ namespace ChessCake.Engines.Screens
                 for (int j = 0; j < board.Columns; j++)
                 {
                     Console.Write("║");
-                    if (possibleMoves.Contains(board.GetCell(i, j)))
-                    {
+
+                    if (possibleMoves.Contains(board.GetCell(i, j))) {
                         Console.BackgroundColor = fundoAlterado;
-                    }
-                    else
-                    {
+
+                    } else {
                         Console.BackgroundColor = fundoOriginal;
                     }
+
                     PrintPiece(board.FindPiece(i, j));
                     Console.BackgroundColor = fundoOriginal;
                     Console.Write("║");
@@ -151,6 +154,7 @@ namespace ChessCake.Engines.Screens
                 }
                 Console.WriteLine();
             }
+
             Console.Write("    (A)(B)(C)(D)(E)(F)(G)(H)");
         }
 
@@ -183,7 +187,7 @@ namespace ChessCake.Engines.Screens
 
         }
 
-        private static void PrintCapturedPieces(IDictionary<IPlayer, IList<BasePiece>> capturedPieces) {
+        public static void PrintCapturedPieces(IDictionary<IPlayer, IList<BasePiece>> capturedPieces) {
             IPlayer whitePlayer = capturedPieces.FirstOrDefault(x => x.Key.Color == ChessColor.WHITE).Key;
             IPlayer blackPlayer = capturedPieces.FirstOrDefault(x => x.Key.Color == ChessColor.BLACK).Key;
 

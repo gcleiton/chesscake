@@ -89,12 +89,10 @@ namespace ChessCake.Engines {
 
         }
 
-        public void Initialize() {
+        public void Initialize() { // method to initialize engine match
             Status = GameStatus.RUNNING;
 
             while (Status != GameStatus.CHECKMATE) { // if InCheckmate == false end game
-
-                Console.WriteLine("Status:" + Status);
 
                 try {
 
@@ -353,15 +351,15 @@ namespace ChessCake.Engines {
 
         // Validation methods
         private void ValidateStandardGame() {
-            if (Players.Count != GlobalConstants.STANDARD_NUMBER_OF_PLAYERS_GAME) {
+            if (Players.Count != GameConstants.STANDARD_NUMBER_OF_PLAYERS_GAME) {
                 throw new ChessException("Standard game needs two human players to start.");
             }
-            if (Board.Rows != GlobalConstants.STANDARD_BOARD_ROWS || Board.Columns != GlobalConstants.STANDARD_BOARD_COLUMNS) {
+            if (Board.Rows != BoardConstants.STANDARD_BOARD_ROWS || Board.Columns != BoardConstants.STANDARD_BOARD_COLUMNS) {
                 throw new ChessException("Standard game needs a 8x8 board.");
             }
         }
 
-        private void ValidateSource(ICell source) {
+        private void ValidateSource(ICell source) { // validate source move
 
             if (!source.IsOccupied()) {
                 throw new ChessException("There is no piece in the originating position informed.");
@@ -377,13 +375,13 @@ namespace ChessCake.Engines {
 
         }
 
-        private void ValidateTarget(ICell source, ICell target) {
+        private void ValidateTarget(ICell source, ICell target) { // validate target move
             if (!movementProvider.IsLegalMovement(source, target)) {
                 throw new ChessException("A peça selecionada não pode mover para essa posição.");
             }
         }
 
-        private void ValidateCheck(IMovement move) {
+        private void ValidateCheck(IMovement move) { // check if the player's movement puts himself in check
             if (IsPlayerInCheck(CurrentPlayer)) {
                 UndoMove(move);
                 throw new ChessException("You can't put yourself in check!");
@@ -438,7 +436,7 @@ namespace ChessCake.Engines {
 
         // Legal movements generator methods
 
-        public IList<ICell> LegalMoves(IPosition sourcePosition, bool isTestCheck = false) {
+        private IList<ICell> LegalMoves(IPosition sourcePosition, bool isTestCheck = false) { // generate possible moves of a piece
 
             ICell sourceCell = Board.GetCell(sourcePosition);
 
@@ -485,66 +483,27 @@ namespace ChessCake.Engines {
 
 
         // Board initialization methods
-        private void InitBoard() {
+        private void InitBoard() { // method to allocate pieces on the board
             Player firstPlayer = (Player)Players.Values.First();
             Player secondPlayer = (Player)Players.Values.ElementAt(1);
 
-            //BasePiece piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('a', 1).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 1));
+            AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
+            AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
 
-            //piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('h', 1).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 1));
-
-            //piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
-
-            //piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('a', 8).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 8));
-
-            //piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('h', 8).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 8));
-
-            //BasePiece piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('a', 8).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 8));
-
-            //BasePiece piece = ChessFactory.CreatePiece(PieceType.PAWN, firstPlayer.Color, ChessFactory.CreateChessPosition('b', 2).ToPosition());
-            //PlaceNewPiece(piece, ChessFactory.CreateChessPosition('b', 2));
-
-
-            BasePiece piece = ChessFactory.CreatePiece(PieceType.ROOK, firstPlayer.Color, ChessFactory.CreateChessPosition('b', 8).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('b', 8));
-
-            piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('d', 1).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('d', 1));
-
-            piece = ChessFactory.CreatePiece(PieceType.KING, secondPlayer.Color, ChessFactory.CreateChessPosition('e', 1).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('e', 1));
-
-            piece = ChessFactory.CreatePiece(PieceType.ROOK, secondPlayer.Color, ChessFactory.CreateChessPosition('h', 7).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('h', 7));
-
-            piece = ChessFactory.CreatePiece(PieceType.KING, firstPlayer.Color, ChessFactory.CreateChessPosition('e', 8).ToPosition());
-            PlaceNewPiece(piece, ChessFactory.CreateChessPosition('a', 8));
-
-            CurrentPlayer = Players[ChessColor.WHITE];
-
-            //AddMajorPiecesOnBoard(firstPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_FIRST_PLAYER);
-            //AddPawnsOnBoard(firstPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_FIRST_PLAYER);
-
-            //AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
-            //AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
+            AddMajorPiecesOnBoard(secondPlayer.Color, GameConstants.INITIAL_MAJOR_ROW_OF_SECOND_PLAYER);
+            AddPawnsOnBoard(secondPlayer.Color, GameConstants.INITIAL_PAWNS_ROW_OF_SECOND_PLAYER);
 
         }
 
         private void AddPawnsOnBoard(ChessColor color, int row) {
-            for (int i = 0; i < GlobalConstants.STANDARD_BOARD_ROWS; i++) {
+            for (int i = 0; i < BoardConstants.STANDARD_BOARD_ROWS; i++) {
                 Pawn pawn = (Pawn)ChessFactory.CreatePiece(PieceType.PAWN, color, ChessFactory.CreatePosition(row, i));
                 PlaceNewPiece(pawn, ChessFactory.CreateChessPosition((char)(i + 'A'), row));
             }
         }
 
         private void AddMajorPiecesOnBoard(ChessColor color, int row) {
-            for (int i = 0; i < GlobalConstants.STANDARD_BOARD_ROWS; i++) {
+            for (int i = 0; i < BoardConstants.STANDARD_BOARD_ROWS; i++) {
                 PieceType type = GameConstants.MAJOR_PIECES_SEQUENCE.ElementAt(i);
                 BasePiece piece = ChessFactory.CreatePiece(type, color, ChessFactory.CreatePosition(row, i));
                 PlaceNewPiece(piece, ChessFactory.CreateChessPosition((char)(i + 'A'), row));

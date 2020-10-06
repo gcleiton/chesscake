@@ -31,8 +31,8 @@ namespace ChessCake.Models.Positions {
         }
 
         public static bool IsValidCoordinates(int row, int column) {
-            return row >= GlobalConstants.MIN_ROW_VALUE_ON_GRID && row <= GlobalConstants.MAX_ROW_VALUE_ON_GRID
-                && column >= GlobalConstants.MIN_COLUMN_VALUE_ON_GRID && column <= GlobalConstants.MAX_COLUMN_VALUE_ON_GRID;
+            return row >= BoardConstants.MIN_ROW_VALUE_ON_GRID && row <= BoardConstants.MAX_ROW_VALUE_ON_GRID
+                && column >= BoardConstants.MIN_COLUMN_VALUE_ON_GRID && column <= BoardConstants.MAX_COLUMN_VALUE_ON_GRID;
         }
 
         public override string ToString() {

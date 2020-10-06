@@ -8,14 +8,14 @@ using System.Text;
 namespace ChessCake.Commons {
     class Common {
 
-        public static TextInfo StringFormatter = new CultureInfo("en-US", false).TextInfo;
+        //public static TextInfo StringFormatter = new CultureInfo("en-US", false).TextInfo;
 
         public static bool IsObjectNull(object obj) {
             if (obj == null) return true;
             return false;
         }
 
-        public static IList<ChessColor> GenerateOrderPlayers() {
+        public static IList<ChessColor> GenerateOrderPlayers() { // sorts players randomly
             Random random = new Random();
             IList<ChessColor> order = Enum.GetValues(typeof(ChessColor)).Cast<ChessColor>().ToList();
             order.Remove(ChessColor.UNDEFINED);
@@ -27,10 +27,11 @@ namespace ChessCake.Commons {
         }
 
         public static void ClearConsole() {
-            // Console.Clear();
+            Console.Clear();
         }
 
-        public static void QuitGame() {
+        public static void QuitGame() { // stop execution program
+            ClearConsole();
             Environment.Exit(1);
         }
 

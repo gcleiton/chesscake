@@ -20,13 +20,13 @@ namespace ChessCake.Models.Positions.Chess {
         }
 
         public static bool isValidChessPosition(ChessPosition chessPosition) {
-            return (chessPosition.Column >= GlobalConstants.MIN_COLUMN_VALUE_ON_BOARD && chessPosition.Column <= GlobalConstants.MAX_COLUMN_VALUE_ON_BOARD
-                 && chessPosition.Row >= GlobalConstants.MIN_ROW_VALUE_ON_BOARD && chessPosition.Row <= GlobalConstants.MAX_ROW_VALUE_ON_BOARD);
+            return (chessPosition.Column >= BoardConstants.MIN_COLUMN_VALUE_ON_BOARD && chessPosition.Column <= BoardConstants.MAX_COLUMN_VALUE_ON_BOARD
+                 && chessPosition.Row >= BoardConstants.MIN_ROW_VALUE_ON_BOARD && chessPosition.Row <= BoardConstants.MAX_ROW_VALUE_ON_BOARD);
         }
 
         public static bool isValidCoordinates(char column, int row) {
-            return (column >= GlobalConstants.MIN_COLUMN_VALUE_ON_BOARD && column <= GlobalConstants.MAX_COLUMN_VALUE_ON_BOARD
-                && row >= GlobalConstants.MIN_ROW_VALUE_ON_BOARD && row <= GlobalConstants.MAX_ROW_VALUE_ON_BOARD);
+            return (column >= BoardConstants.MIN_COLUMN_VALUE_ON_BOARD && column <= BoardConstants.MAX_COLUMN_VALUE_ON_BOARD
+                && row >= BoardConstants.MIN_ROW_VALUE_ON_BOARD && row <= BoardConstants.MAX_ROW_VALUE_ON_BOARD);
         }
 
         public override string ToString() {

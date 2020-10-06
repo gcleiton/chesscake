@@ -16,8 +16,8 @@ namespace ChessCake.Models.Boards {
         public int Columns { get; private set; }
 
         public Board() {
-            this.Rows = GlobalConstants.STANDARD_BOARD_ROWS;
-            this.Columns = GlobalConstants.STANDARD_BOARD_COLUMNS;
+            this.Rows = BoardConstants.STANDARD_BOARD_ROWS;
+            this.Columns = BoardConstants.STANDARD_BOARD_COLUMNS;
 
             Grid = ChessFactory.CreateCellMatrix(this.Rows, this.Columns);
             for (int i = 0; i < this.Rows; i++) {
@@ -104,14 +104,14 @@ namespace ChessCake.Models.Boards {
 
         public bool ThereIsAPiece(IPosition position) {
             if (!Position.IsValidPosition(position)) {
-                throw new BoardException("Invalid Position");
+                throw new ChessException("Invalid Position");
             }
             return !Common.IsObjectNull(FindPiece(position));
         }
 
         public bool ThereIsAPiece(ICell cell) {
             if (!Position.IsValidPosition(cell.Position)) {
-                throw new BoardException("Invalid Position");
+                throw new ChessException("Invalid Position");
             }
             return !Common.IsObjectNull(FindPiece(cell));
         }

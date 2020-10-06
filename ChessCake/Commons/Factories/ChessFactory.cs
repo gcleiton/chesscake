@@ -49,9 +49,6 @@ namespace ChessCake.Commons {
             return new Movement(source, target, player);
         }
 
-
-        
-
         public static BasePiece CreatePiece(PieceType type, ChessColor color, IPosition position) {
             BasePiece piece = null;
             switch (type) {

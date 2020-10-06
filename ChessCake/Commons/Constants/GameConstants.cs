@@ -5,17 +5,19 @@ using System.Text;
 
 namespace ChessCake.Commons.Constants {
     class GameConstants {
-        public static readonly IEnumerable<PieceType> MAJOR_PIECES_SEQUENCE = new List<PieceType>
-            {
-                PieceType.ROOK,
-                PieceType.KNIGHT,
-                PieceType.BISHOP,
-                PieceType.QUEEN,
-                PieceType.KING,
-                PieceType.BISHOP,
-                PieceType.KNIGHT,
-                PieceType.ROOK,
-            };
+
+        public const int STANDARD_NUMBER_OF_PLAYERS_GAME = 2;
+
+        public static readonly IEnumerable<PieceType> MAJOR_PIECES_SEQUENCE = new List<PieceType> {
+            PieceType.ROOK,
+            PieceType.KNIGHT,
+            PieceType.BISHOP,
+            PieceType.QUEEN,
+            PieceType.KING,
+            PieceType.BISHOP,
+            PieceType.KNIGHT,
+            PieceType.ROOK,
+        };
 
         public static readonly IList<PieceType> AVAILABLE_PIECES_FOR_PROMOTION = new List<PieceType> {
             PieceType.QUEEN,

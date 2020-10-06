@@ -14,28 +14,26 @@ namespace ChessCake.Engines
     public class GameStart {
 
         public static void Start() {
-            //try {
-                //bool canStartGame = InputProvider.ReadStartGame();
+            try {
+                Console.BackgroundColor = ConsoleColor.Red;
 
-                //Console.WriteLine(canStartGame);
+                InputProvider.ReadStartGame();
 
-                //if (!canStartGame) Common.QuitGame();
+                IDictionary<ChessColor, IPlayer> players = InputProvider.ReadPlayers();
 
-                //IDictionary<ChessColor, IPlayer> players = InputProvider.ReadPlayers();
-
-                IDictionary<ChessColor, IPlayer> players = new Dictionary<ChessColor, IPlayer>()
-                {
-                    { ChessColor.BLACK, ChessFactory.CreatePlayer("Gabriel", ChessColor.BLACK)},
-                    { ChessColor.WHITE, ChessFactory.CreatePlayer("Cleiton", ChessColor.WHITE)}
-                };
+                //IDictionary<ChessColor, IPlayer> players = new Dictionary<ChessColor, IPlayer>()
+                //{
+                //    { ChessColor.BLACK, ChessFactory.CreatePlayer("Gabriel", ChessColor.BLACK)},
+                //    { ChessColor.WHITE, ChessFactory.CreatePlayer("Cleiton", ChessColor.WHITE)}
+                //};
 
                 StandardGame engine = GameFactory.CreateStandardGame(players);
 
                 engine.Initialize();
 
-            //} catch (Exception e) {
-            //    Console.WriteLine(e.Message);
-            //}
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
 
         }
 

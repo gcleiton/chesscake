@@ -21,12 +21,11 @@ namespace ChessCake.Providers.Inputs
     class InputProvider {
 
         public static Boolean ReadStartGame() {
-            Screen.PrintHome();
+            Screen.PrintHome(); // problema de cor de Fundo aqui
             Screen.PrintWelcome();
             Console.WriteLine();
             Console.Write("Type 'yes' to start the game, otherwise type 'no' to quit application: ");
             string answer = Console.ReadLine().ToUpper();
-            Console.WriteLine(answer); 
 
             switch(answer) {
                 case "YES":
@@ -59,8 +58,8 @@ namespace ChessCake.Providers.Inputs
             var players = new Dictionary<ChessColor, IPlayer>();
             IList<ChessColor> orderPlayers = Common.GenerateOrderPlayers();
 
-            for (int i = 0; i < GlobalConstants.STANDARD_NUMBER_OF_PLAYERS_GAME; i++) {
-                Console.Write(string.Format(GlobalConstants.PLAYER_NAME_FORMATTER_INPUT, i + 1));
+            for (int i = 0; i < GameConstants.STANDARD_NUMBER_OF_PLAYERS_GAME; i++) {
+                Console.Write(string.Format(ScreenConstants.PLAYER_NAME_FORMATTER_INPUT, i + 1));
 
                 string name = Console.ReadLine();
                 ChessColor playerColor = orderPlayers[i];
@@ -108,23 +107,6 @@ namespace ChessCake.Providers.Inputs
                 throw new ChessException("Error reading chess position! Try again.");
             }
         }
-
-        //public static IMovement ReadMove(IEngine engine) {
-        //    IBoard board = engine.Board;
-
-        //    IPosition source = ReadChessPosition().ToPosition();
-        //    IList<ICell> legalMoves = engine.LegalMoves(source);
-
-        //    Console.WriteLine(legalMoves.Count);
-
-        //    Console.Clear();
-
-        //    Screen.PrintBoard(engine, legalMoves);
-
-        //    IPosition target = ReadChessPosition(false).ToPosition();
-
-        //    return ChessFactory.CreateMovement(board.GetCell(source), board.GetCell(target));
-        //}
 
     }
 }
