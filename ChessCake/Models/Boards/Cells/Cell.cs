@@ -2,13 +2,14 @@
 using ChessCake.Models.Boards.Cells.Contracts;
 using ChessCake.Models.Pieces.Contracts;
 using ChessCake.Models.Positions;
+using ChessCake.Models.Positions.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ChessCake.Models.Boards.Cells {
     public class Cell : ICell {
-        public Position Position { get; protected set; }
+        public IPosition Position { get; protected set; }
         public BasePiece Piece { get; protected set; }
 
         //public bool isOccupied { get; set; }

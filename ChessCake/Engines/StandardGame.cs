@@ -22,7 +22,6 @@ using System.Linq;
 namespace ChessCake.Engines {
     class StandardGame : IEngine {
 
-        // Interface properties
         public IBoard Board { get; private set; }
 
         public IPlayer CurrentPlayer { get; set; }
@@ -33,28 +32,15 @@ namespace ChessCake.Engines {
 
         public BasePiece EnPassant { get; private set; }
 
-        public BasePiece Promoted { get; private set; }
-
         public IDictionary<IPlayer, IList<BasePiece>> Pieces { get; private set; }
 
         public IDictionary<IPlayer, IList<BasePiece>> CapturedPieces { get; private set; }
 
         public IDictionary<ChessColor, IPlayer> Players { get; private set; }
 
+        public BasePiece Promoted { get; private set; }
 
         // Helper properties
-        public IPlayer BlackPlayer {
-            get { 
-                return Players[ChessColor.BLACK];
-            }
-
-            private set {
-                if (value.Color == ChessColor.BLACK) {
-                    BlackPlayer = value;
-                }
-            }
-
-        }
 
         public IPlayer WhitePlayer {
             get {
@@ -68,8 +54,21 @@ namespace ChessCake.Engines {
             }
         }
 
+        public IPlayer BlackPlayer {
+            get {
+                return Players[ChessColor.BLACK];
+            }
+
+            private set {
+                if (value.Color == ChessColor.BLACK) {
+                    BlackPlayer = value;
+                }
+            }
+
+        }
+
         // Provider properties
-        public IMovementProvider movementProvider { get; private set; }
+        public IMovementProvider MovementProvider { get; private set; }
 
         public StandardGame(IDictionary<ChessColor, IPlayer> players) {
             Board = ChessFactory.CreateBoard(); 
@@ -85,7 +84,7 @@ namespace ChessCake.Engines {
 
             InitBoard(); // initializes the pieces on the board
 
-            movementProvider = GameFactory.CreateMovementProvider(this);
+            MovementProvider = GameFactory.CreateMovementProvider(this);
 
         }
 
@@ -369,15 +368,15 @@ namespace ChessCake.Engines {
                 throw new ChessException("The selected piece does not belong to you.");
             }
 
-            if (!movementProvider.IsThereAnyLegalMove(source)) {
+            if (!MovementProvider.IsThereAnyLegalMove(source)) {
                 throw new ChessException("There are no possible movements for the selected piece.");
             }
 
         }
 
         private void ValidateTarget(ICell source, ICell target) { // validate target move
-            if (!movementProvider.IsLegalMovement(source, target)) {
-                throw new ChessException("A peça selecionada não pode mover para essa posição.");
+            if (!MovementProvider.IsLegalMovement(source, target)) {
+                throw new ChessException("The selected piece cannot move to that position.");
             }
         }
 
@@ -442,7 +441,7 @@ namespace ChessCake.Engines {
 
             if (!isTestCheck) ValidateSource(sourceCell);
 
-            IList<ICell> legalMoves = movementProvider.GenerateLegalMoves(sourceCell);
+            IList<ICell> legalMoves = MovementProvider.GenerateLegalMoves(sourceCell);
 
             return legalMoves;
         }

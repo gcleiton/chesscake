@@ -6,7 +6,6 @@ using ChessCake.Models.Positions.Contracts;
 namespace ChessCake.Models.Pieces {
     class Pawn: BasePiece {
 
-        public const PieceType pieceType = PieceType.PAWN;
         public Pawn(ChessColor color, IPosition position) : base(color, position) {
             Type = PieceType.PAWN;
         }

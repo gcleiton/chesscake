@@ -76,10 +76,6 @@ namespace ChessCake.Commons {
                     piece = new King(color, position);
                     break;
 
-                case PieceType.EMPTY:
-                    piece = new Empty(color, position);
-                    break;
-
                 default:
                     piece = null;
                     break;

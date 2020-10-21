@@ -8,8 +8,6 @@ using System.Text;
 
 namespace ChessCake.Models.Pieces {
     class Rook : BasePiece {
-
-        public const PieceType pieceType = PieceType.ROOK;
         public Rook(ChessColor color, IPosition position) : base(color, position) {
             Type = PieceType.ROOK;
         }

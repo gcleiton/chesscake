@@ -1,0 +1,619 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="ChessCake.ChessCake">
+    <Position X="28.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>ChessCake.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Commons.Constants.BoardConstants">
+    <Position X="50.25" Y="13.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>CAAIAAAAAAAAEAAQAAAAEAAQAAAAAAAAABAgAAAIgAA=</HashCode>
+      <FileName>Commons\Constants\BoardConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Commons.Constants.GameConstants">
+    <Position X="50.25" Y="10.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>ABACAAAAAAAEAAAAAAQAAAAAABAAAAAAAAAAAAEBAAA=</HashCode>
+      <FileName>Commons\Constants\GameConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Commons.Constants.GlobalConstants">
+    <Position X="50.25" Y="9" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Commons\Constants\GlobalConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Commons.Constants.ScreenConstants">
+    <Position X="50.25" Y="16.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAABAARAAAAgAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commons\Constants\ScreenConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Commons.ChessFactory">
+    <Position X="55.25" Y="11.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMAAAAAAAAAAAAAgAAAAABAFAAAAgAAAAAAAIA=</HashCode>
+      <FileName>Commons\Factories\ChessFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Commons.GameFactory">
+    <Position X="55.25" Y="14.75" Width="5.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commons\Factories\GameFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Commons.Common">
+    <Position X="43.75" Y="9" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAIAACAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Commons\Common.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Commons.Factories.MovementGeneratorFactory">
+    <Position X="55.25" Y="16.75" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AABAEAAAAIAAAABAAAAAAAAQAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Commons\Factories\MovementGeneratorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Engines.Screens.Screen">
+    <Position X="43.75" Y="11.25" Width="5.25" />
+    <TypeIdentifier>
+      <HashCode>QAAAAEBAQAAABAAAIACBAAQAAAAAQCAAAEAAsEEAAAA=</HashCode>
+      <FileName>Engines\Screens\Screen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Engines.GameStart">
+    <Position X="28.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Engines\GameStart.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Engines.StandardGame" BaseTypeListCollapsed="true">
+    <Position X="20.25" Y="11.25" Width="5.75" />
+    <AssociationLine Name="Status" Type="ChessCake.Commons.Enumerations.GameStatus" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="25.531" Y="21.459" />
+        <Point X="25.531" Y="26.439" />
+        <Point X="19.583" Y="26.439" Type="JumpStart" />
+        <Point X="19.417" Y="26.439" Type="JumpEnd" />
+        <Point X="17.208" Y="26.439" Type="JumpStart" />
+        <Point X="17.042" Y="26.439" Type="JumpEnd" />
+        <Point X="13.762" Y="26.439" Type="JumpStart" />
+        <Point X="13.595" Y="26.439" Type="JumpEnd" />
+        <Point X="12.147" Y="26.439" />
+        <Point X="12.147" Y="35.125" />
+        <Point X="8.25" Y="35.125" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="WhitePlayer" Type="ChessCake.Models.Players.Contracts.IPlayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="26" Y="13.677" />
+        <Point X="34.542" Y="13.677" Type="JumpStart" />
+        <Point X="34.708" Y="13.677" Type="JumpEnd" />
+        <Point X="35.667" Y="13.677" Type="JumpStart" />
+        <Point X="35.833" Y="13.677" Type="JumpEnd" />
+        <Point X="36.479" Y="13.677" Type="JumpStart" />
+        <Point X="36.646" Y="13.677" Type="JumpEnd" />
+        <Point X="37.625" Y="13.677" />
+        <Point X="37.625" Y="4.632" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="BlackPlayer" Type="ChessCake.Models.Players.Contracts.IPlayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="26" Y="16.895" />
+        <Point X="34.542" Y="16.895" Type="JumpStart" />
+        <Point X="34.708" Y="16.895" Type="JumpEnd" />
+        <Point X="35.75" Y="16.895" />
+        <Point X="35.75" Y="4.632" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CurrentPlayer" Type="ChessCake.Models.Players.Contracts.IPlayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="26" Y="18.063" />
+        <Point X="34.625" Y="18.063" />
+        <Point X="34.625" Y="4.25" />
+        <Point X="35" Y="4.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EADAEoAMgEZECQQAEAFCQQugAEIkYoAAAAgApSYQJIg=</HashCode>
+      <FileName>Engines\StandardGame.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Board" />
+      <Property Name="Status" />
+      <Property Name="EnPassant" />
+      <Property Name="Promoted" />
+      <Property Name="WhitePlayer" />
+      <Property Name="MovementProvider" />
+      <Property Name="BlackPlayer" />
+      <Property Name="CurrentPlayer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChessCake.Exceptions.ChessException">
+    <Position X="55.25" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Exceptions\ChessException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Models.Boards.Cells.Cell" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="30.75" Width="2.75" />
+    <AssociationLine Name="Piece" Type="ChessCake.Models.Pieces.Contracts.BasePiece" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="52.5" Y="32.505" />
+        <Point X="30.583" Y="32.505" Type="JumpStart" />
+        <Point X="30.417" Y="32.505" Type="JumpEnd" />
+        <Point X="12.23" Y="32.505" Type="JumpStart" />
+        <Point X="12.064" Y="32.505" Type="JumpEnd" />
+        <Point X="10.521" Y="32.505" Type="JumpStart" />
+        <Point X="10.354" Y="32.505" Type="JumpEnd" />
+        <Point X="7.375" Y="32.505" />
+        <Point X="7.375" Y="16.625" />
+        <Point X="7.75" Y="16.625" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAkAAAAAgAAAAAAAAACAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Boards\Cells\Cell.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Piece" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChessCake.Models.Boards.Board" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="26" Width="5.5" />
+    <AssociationLine Name="Grid" Type="ChessCake.Models.Boards.Cells.Contracts.ICell" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="52.5" Y="29.465" />
+        <Point X="19.5" Y="29.465" />
+        <Point X="19.5" Y="4.44" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.14" Y="0.08" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAAAgAAAAAAAEAAAAAAAAAAAAAEAQgCAAAAAAgAACA=</HashCode>
+      <FileName>Models\Boards\Board.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Grid" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="ChessCake.Models.Movements.Movement" BaseTypeListCollapsed="true">
+    <Position X="59.5" Y="26.25" Width="3.5" />
+    <AssociationLine Name="Player" Type="ChessCake.Models.Players.Contracts.IPlayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="59.5" Y="26.802" />
+        <Point X="58.25" Y="26.802" />
+        <Point X="58.25" Y="25.75" />
+        <Point X="36.562" Y="25.75" />
+        <Point X="36.562" Y="4.632" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Source" Type="ChessCake.Models.Boards.Cells.Contracts.ICell" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="59.5" Y="26.495" />
+        <Point X="58.25" Y="26.495" />
+        <Point X="58.25" Y="25.75" />
+        <Point X="25.614" Y="25.75" Type="JumpStart" />
+        <Point X="25.448" Y="25.75" Type="JumpEnd" />
+        <Point X="19.583" Y="25.75" Type="JumpStart" />
+        <Point X="19.417" Y="25.75" Type="JumpEnd" />
+        <Point X="18.312" Y="25.75" />
+        <Point X="18.312" Y="4.44" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Target" Type="ChessCake.Models.Boards.Cells.Contracts.ICell" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="59.5" Y="27.109" />
+        <Point X="58.25" Y="27.109" />
+        <Point X="58.25" Y="25.75" />
+        <Point X="25.614" Y="25.75" Type="JumpStart" />
+        <Point X="25.448" Y="25.75" Type="JumpEnd" />
+        <Point X="19.583" Y="25.75" Type="JumpStart" />
+        <Point X="19.417" Y="25.75" Type="JumpEnd" />
+        <Point X="17.125" Y="25.75" />
+        <Point X="17.125" Y="3.5" />
+        <Point X="17.5" Y="3.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="MovedPiece" Type="ChessCake.Models.Pieces.Contracts.BasePiece" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="62" Y="26.25" />
+        <Point X="62" Y="25.75" />
+        <Point X="25.614" Y="25.75" Type="JumpStart" />
+        <Point X="25.448" Y="25.75" Type="JumpEnd" />
+        <Point X="19.583" Y="25.75" Type="JumpStart" />
+        <Point X="19.417" Y="25.75" Type="JumpEnd" />
+        <Point X="17.208" Y="25.75" Type="JumpStart" />
+        <Point X="17.042" Y="25.75" Type="JumpEnd" />
+        <Point X="13.762" Y="25.75" Type="JumpStart" />
+        <Point X="13.595" Y="25.75" Type="JumpEnd" />
+        <Point X="10.521" Y="25.75" Type="JumpStart" />
+        <Point X="10.354" Y="25.75" Type="JumpEnd" />
+        <Point X="10.312" Y="25.75" />
+        <Point X="10.312" Y="17.132" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAACAAAAAAAAAAAAEAAQAAIAA=</HashCode>
+      <FileName>Models\Movements\Movement.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Player" />
+      <Property Name="Source" />
+      <Property Name="Target" />
+      <Property Name="MovedPiece" />
+      <Property Name="CapturedPiece" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChessCake.Models.Pieces.Contracts.BasePiece">
+    <Position X="7.75" Y="15" Width="3.25" />
+    <AssociationLine Name="Color" Type="ChessCake.Commons.Enumerations.ChessColor" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.438" Y="17.132" />
+        <Point X="10.438" Y="34" />
+        <Point X="6.625" Y="34" />
+        <Point X="6.625" Y="34.25" />
+        <Point X="6.25" Y="34.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.095" Y="0.31" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Position" Type="ChessCake.Models.Positions.Contracts.IPosition" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.641" Y="15" />
+        <Point X="10.641" Y="8.108" />
+        <Point X="13.595" Y="8.108" Type="JumpStart" />
+        <Point X="13.762" Y="8.108" Type="JumpEnd" />
+        <Point X="15.037" Y="8.108" Type="JumpStart" />
+        <Point X="15.204" Y="8.108" Type="JumpEnd" />
+        <Point X="17.042" Y="8.108" Type="JumpStart" />
+        <Point X="17.208" Y="8.108" Type="JumpEnd" />
+        <Point X="18.229" Y="8.108" Type="JumpStart" />
+        <Point X="18.396" Y="8.108" Type="JumpEnd" />
+        <Point X="19.417" Y="8.108" Type="JumpStart" />
+        <Point X="19.583" Y="8.108" Type="JumpEnd" />
+        <Point X="19.698" Y="8.108" Type="JumpStart" />
+        <Point X="19.865" Y="8.108" Type="JumpEnd" />
+        <Point X="23.167" Y="8.108" Type="JumpStart" />
+        <Point X="23.333" Y="8.108" Type="JumpEnd" />
+        <Point X="28.188" Y="8.108" />
+        <Point X="28.188" Y="4.247" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Type" Type="ChessCake.Commons.Enumerations.PieceType" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.875" Y="17.132" />
+        <Point X="7.875" Y="31.254" />
+        <Point X="7.458" Y="31.254" Type="JumpStart" />
+        <Point X="7.292" Y="31.254" Type="JumpEnd" />
+        <Point X="6.146" Y="31.254" Type="JumpStart" />
+        <Point X="5.979" Y="31.254" Type="JumpEnd" />
+        <Point X="4.25" Y="31.254" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAIIAAAAAAAAAAAAQAAgKAAAAA=</HashCode>
+      <FileName>Models\Pieces\Contracts\BasePiece.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Color" />
+      <Property Name="Position" />
+      <Property Name="Type" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChessCake.Models.Pieces.Bishop">
+    <Position X="2.75" Y="16.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Pieces\Bishop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Models.Pieces.King">
+    <Position X="2.75" Y="19" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Pieces\King.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Models.Pieces.Knight">
+    <Position X="2.75" Y="21" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Pieces\Knight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Models.Pieces.Pawn">
+    <Position X="2.75" Y="9.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Pieces\Pawn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Models.Pieces.Queen">
+    <Position X="2.75" Y="12" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Pieces\Queen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Models.Pieces.Rook">
+    <Position X="2.75" Y="14.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Pieces\Rook.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Models.Players.Player" BaseTypeListCollapsed="true">
+    <Position X="59.5" Y="29" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAQAAAAAAQgAAAAAoAAAAAA=</HashCode>
+      <FileName>Models\Players\Player.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Color" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChessCake.Models.Positions.Chess.ChessPosition" BaseTypeListCollapsed="true">
+    <Position X="59.5" Y="32" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgACAEAABAAAAAEAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Positions\Chess\ChessPosition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChessCake.Models.Positions.Position" BaseTypeListCollapsed="true">
+    <Position X="52.5" Y="33.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAADAAAAAAAgAggAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Positions\Position.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.165" />
+  </Class>
+  <Class Name="ChessCake.Providers.Inputs.InputProvider">
+    <Position X="41" Y="27.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAEAAAAAAIQAAAA=</HashCode>
+      <FileName>Providers\Inputs\InputProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Providers.Movements.Pieces.Contracts.BasePieceMovement">
+    <Position X="28.75" Y="30" Width="3.5" />
+    <AssociationLine Name="Source" Type="ChessCake.Models.Boards.Cells.Contracts.ICell" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="28.75" Y="30.437" />
+        <Point X="17.125" Y="30.437" />
+        <Point X="17.125" Y="2.812" />
+        <Point X="17.5" Y="2.812" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAEAAAAAAAEAAAAAAAAAQBAAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Pieces\Contracts\BasePieceMovement.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Engine" />
+      <Property Name="Source" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ChessCake.Providers.Movements.Pieces.BishopMovement">
+    <Position X="30.75" Y="33.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Pieces\BishopMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Providers.Movements.Pieces.KingMovement">
+    <Position X="36.25" Y="33.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAQAAgQAQAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Pieces\KingMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Providers.Movements.Pieces.KnightMovement">
+    <Position X="41.75" Y="33.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Pieces\KnightMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Providers.Movements.Pieces.PawnMovement">
+    <Position X="14" Y="33.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAgQAAAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Pieces\PawnMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Providers.Movements.Pieces.QueenMovement">
+    <Position X="19.75" Y="33.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Pieces\QueenMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Providers.Movements.Pieces.RookMovement">
+    <Position X="25.25" Y="33.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Pieces\RookMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChessCake.Providers.Movements.MovementProvider" BaseTypeListCollapsed="true">
+    <Position X="41" Y="22.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAgIAAAAAAAAAgAgAAAAAEAAASBQAAAAAQAAA=</HashCode>
+      <FileName>Providers\Movements\MovementProvider.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Engine" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="ChessCake.Engines.Contracts.IEngine">
+    <Position X="12.25" Y="2.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEgAAAAQAAAABCAAAAAAAgAAAAAAAAoCAABAA=</HashCode>
+      <FileName>Engines\Contracts\IEngine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ChessCake.Models.Boards.Cells.Contracts.ICell">
+    <Position X="17.5" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAgAAAAAgAAAAAAAAACAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Boards\Cells\Contracts\ICell.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Piece" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="ChessCake.Models.Boards.Contracts.IBoard">
+    <Position X="20.5" Y="2.5" Width="5.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAgAAAAAAAEAAAAAAAAAAAAAEAQgCAAAAAAgAACA=</HashCode>
+      <FileName>Models\Boards\Contracts\IBoard.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Grid" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="ChessCake.Models.Movements.Contracts.IMovement">
+    <Position X="42.75" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAACAAAAAAAAAAAAEAAQAAIAA=</HashCode>
+      <FileName>Models\Movements\Contracts\IMovement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ChessCake.Models.Pieces.Contracts.IPiece">
+    <Position X="32.25" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAQAAgCAAAAA=</HashCode>
+      <FileName>Models\Pieces\Contracts\IPiece.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ChessCake.Models.Players.Contracts.IPlayer">
+    <Position X="35" Y="2.5" Width="2.75" />
+    <AssociationLine Name="Color" Type="ChessCake.Commons.Enumerations.ChessColor" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="35" Y="3.566" />
+        <Point X="34.5" Y="3.566" />
+        <Point X="34.5" Y="6.613" />
+        <Point X="28.271" Y="6.613" Type="JumpStart" />
+        <Point X="28.105" Y="6.613" Type="JumpEnd" />
+        <Point X="23.333" Y="6.613" Type="JumpStart" />
+        <Point X="23.167" Y="6.613" Type="JumpEnd" />
+        <Point X="19.865" Y="6.613" Type="JumpStart" />
+        <Point X="19.698" Y="6.613" Type="JumpEnd" />
+        <Point X="19.583" Y="6.613" Type="JumpStart" />
+        <Point X="19.417" Y="6.613" Type="JumpEnd" />
+        <Point X="18.396" Y="6.613" Type="JumpStart" />
+        <Point X="18.229" Y="6.613" Type="JumpEnd" />
+        <Point X="17.208" Y="6.613" Type="JumpStart" />
+        <Point X="17.042" Y="6.613" Type="JumpEnd" />
+        <Point X="15.204" Y="6.613" Type="JumpStart" />
+        <Point X="15.037" Y="6.613" Type="JumpEnd" />
+        <Point X="13.762" Y="6.613" Type="JumpStart" />
+        <Point X="13.595" Y="6.613" Type="JumpEnd" />
+        <Point X="6.062" Y="6.613" />
+        <Point X="6.062" Y="34.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAQAAAAAAQgAAAAAoAAAAAA=</HashCode>
+      <FileName>Models\Players\Contracts\IPlayer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Color" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="ChessCake.Models.ChessPositions.Contracts.IChessPosition">
+    <Position X="30" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAEAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Positions\Chess\Contracts\IChessPosition.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ChessCake.Models.Positions.Contracts.IPosition">
+    <Position X="26.5" Y="2.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAADAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Positions\Contracts\IPosition.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ChessCake.Providers.Movements.Contracts.IMovementProvider">
+    <Position X="38.5" Y="2.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAgIAAAAAAAAAAAAAAAAAAAAASBAAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Contracts\IMovementProvider.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ChessCake.Providers.Movements.Pieces.Contracts.IPieceMovement">
+    <Position X="46.25" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQBAAAAAAAAAA=</HashCode>
+      <FileName>Providers\Movements\Pieces\Contracts\IPieceMovement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ChessCake.Commons.Enumerations.BoardDirection">
+    <Position X="2.75" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAEAAAAAAAAAAoAAAAAAAAAAA=</HashCode>
+      <FileName>Commons\Enumerations\BoardDirection.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ChessCake.Commons.Enumerations.CastlingDirection">
+    <Position X="2.75" Y="32.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Commons\Enumerations\CastlingDirection.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ChessCake.Commons.Enumerations.ChessColor">
+    <Position X="4.75" Y="34.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAgAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commons\Enumerations\ChessColor.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ChessCake.Commons.Enumerations.GameStatus">
+    <Position X="6.75" Y="34.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commons\Enumerations\GameStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ChessCake.Commons.Enumerations.GridCoordinate">
+    <Position X="2.75" Y="34.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commons\Enumerations\GridCoordinate.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ChessCake.Commons.Enumerations.PieceType">
+    <Position X="2.75" Y="30.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAgAAAABAAAAAAAACAAAAAAAAAAAAAgBAAAg=</HashCode>
+      <FileName>Commons\Enumerations\PieceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -22,10 +22,10 @@ namespace ChessCake.Models.Players {
         public void AddPiece(BasePiece piece) {
             Console.WriteLine(piece);
             if (Common.IsObjectNull(piece)) {
-                throw new ChessException("Peça inválida!");
+                throw new ChessException("Invalid Piece!");
             }
             if (isPieceExists(piece)) {
-                throw new ChessException("O jogador já possui essa peça.");
+                throw new ChessException("The player already has this piece.");
             }
 
             Pieces.Add(piece);
@@ -33,11 +33,11 @@ namespace ChessCake.Models.Players {
 
         public void removePiece(BasePiece piece) {
             if (Common.IsObjectNull(piece)) {
-                throw new ChessException("Peça inválida!");
+                throw new ChessException("Invalid Piece!");
             }
 
             if (!isPieceExists(piece)) {
-                throw new ChessException("O jogador não possui essa peça.");
+                throw new ChessException("The player already has this piece.");
             }
 
             Pieces.Remove(piece);

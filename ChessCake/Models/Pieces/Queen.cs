@@ -9,7 +9,6 @@ using System.Text;
 namespace ChessCake.Models.Pieces {
     class Queen : BasePiece {
 
-        public const PieceType pieceType = PieceType.QUEEN;
         public Queen(ChessColor color, IPosition position) : base(color, position) {
             Type = PieceType.QUEEN;
         }

@@ -8,8 +8,6 @@ using System.Text;
 
 namespace ChessCake.Models.Pieces {
     class Knight : BasePiece {
-
-        public const PieceType pieceType = PieceType.KNIGHT;
         public Knight(ChessColor color, IPosition position) : base(color, position) {
             Type = PieceType.KNIGHT;
         }
